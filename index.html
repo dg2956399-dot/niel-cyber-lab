@@ -93,7 +93,7 @@ const db = window.supabase.createClient(
 
 async function testarConexao() {
   const status = document.getElementById("status");
-  status.textContent = "Testando...";
+  status.textContent = "Testando conexão...";
 
   const { error } = await db
     .from("lab_logs")
@@ -106,7 +106,6 @@ async function testarConexao() {
     status.textContent = "Banco conectado!";
   }
 }
-
 
 async function registrarTeste() {
   const campo = document.getElementById("nomeTeste");
@@ -121,13 +120,12 @@ async function registrarTeste() {
 
   mensagem.textContent = "Salvando registro...";
 
-  const { data, error } = await db
+  const { error } = await db
     .from("lab_logs")
     .insert([{
       name: nome,
       event: "teste_registrado"
-    }])
-    .select();
+    }]);
 
   if (error) {
     mensagem.textContent = "Erro: " + error.message;
@@ -139,9 +137,6 @@ async function registrarTeste() {
 
   await carregarHistorico();
 }
-  }
-}
-
 
 async function carregarHistorico() {
   const historico = document.getElementById("historico");
@@ -179,11 +174,10 @@ async function carregarHistorico() {
   });
 }
 
-
 testarConexao();
 carregarHistorico();
-
 </script>
 </body>
 </html>
+
 
