@@ -9,101 +9,256 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+* { box-sizing:border-box; }
+
 body {
+  margin:0;
+  padding:20px;
   background:#080d16;
   color:#00ff99;
   font-family:Arial,sans-serif;
-  margin:0;
-  padding:20px;
 }
+
 .container {
-  max-width:650px;
+  max-width:850px;
   margin:auto;
 }
-h1 {text-align:center;}
+
+header {
+  text-align:center;
+  padding:20px 0;
+}
+
+header h1 {
+  font-size:28px;
+  text-shadow:0 0 12px #00ff99;
+}
+
+header p { color:#91a5b5; }
+
 .card {
   background:#111b29;
-  border:1px solid #00ff99;
-  border-radius:12px;
-  padding:18px;
-  margin:15px 0;
+  border:1px solid #174b3b;
+  border-radius:14px;
+  padding:20px;
+  margin:18px 0;
+  box-shadow:0 0 15px #00ff9910;
 }
-input,button {
-  box-sizing:border-box;
-  width:100%;
-  padding:13px;
-  margin-top:10px;
-  border-radius:7px;
-  border:1px solid #00ff99;
+
+.card h3 {
+  margin-top:0;
+  color:#00ff99;
 }
+
+.status {
+  font-weight:bold;
+  color:#fff;
+}
+
 input {
+  width:100%;
+  padding:14px;
+  margin:8px 0;
+  border-radius:8px;
+  border:1px solid #245b49;
   background:#080d16;
   color:white;
+  outline:none;
 }
+
+input:focus {
+  border-color:#00ff99;
+}
+
 button {
+  padding:12px 15px;
+  border:0;
+  border-radius:8px;
   background:#00ff99;
   color:#080d16;
   font-weight:bold;
   cursor:pointer;
+  margin:5px 3px 5px 0;
 }
-.status {color:#00ff99;}
-.log {
+
+button:hover { opacity:.85; }
+
+.secondary {
+  background:#263747;
   color:white;
-  border-bottom:1px solid #263747;
-  padding:10px 0;
+}
+
+.danger {
+  background:#e53935;
+  color:white;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.stat {
+  background:#080d16;
+  border:1px solid #245b49;
+  border-radius:10px;
+  padding:18px;
+  text-align:center;
+}
+
+.stat strong {
+  display:block;
+  font-size:27px;
+  margin-top:8px;
+}
+
+.log {
+  background:#080d16;
+  border:1px solid #263747;
+  border-radius:9px;
+  padding:14px;
+  margin-top:12px;
+  color:white;
+  overflow-wrap:anywhere;
+}
+
+.log-title {
+  color:#00ff99;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.log small {
+  display:block;
+  color:#91a5b5;
+  margin:8px 0;
+}
+
+#mensagem {
+  overflow-wrap:anywhere;
+}
+
+footer {
+  text-align:center;
+  color:#627586;
+  padding:20px;
+  font-size:12px;
+}
+
+@media(max-width:500px) {
+  body { padding:12px; }
+  header h1 { font-size:23px; }
+  .card { padding:15px; }
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
-<h1>🔐 NIEL CYBER LAB</h1>
-<p style="text-align:center">Laboratório de Segurança Digital</p>
+<header>
+  <h1>🔐 NIEL CYBER LAB</h1>
+  <p>Laboratório de Segurança Digital</p>
+</header>
 
 <div class="card">
-<h3>Status do Banco</h3>
-<p id="status">Conectando...</p>
-<button onclick="testarConexao()">Testar conexão</button>
+  <h3>📡 Status do Banco</h3>
+  <p id="status" class="status">Conectando...</p>
+  <button onclick="testarConexao()">Testar conexão</button>
 </div>
 
 <div class="card">
-<h3>Registro de testes</h3>
-<input id="nomeTeste" placeholder="Nome do teste">
-<button onclick="registrarTeste()">Registrar</button>
-<p id="mensagem"></p>
+  <h3>📊 Painel de Controle</h3>
+
+  <div class="stats">
+    <div class="stat">
+      Total de testes
+      <strong id="total">0</strong>
+    </div>
+
+    <div class="stat">
+      Banco de dados
+      <strong id="banco">...</strong>
+    </div>
+  </div>
 </div>
 
 <div class="card">
-<h3>Histórico de testes</h3>
-<button onclick="carregarHistorico()">Atualizar histórico</button>
-<div id="historico">Carregando...</div>
+  <h3>🧪 Registrar novo teste</h3>
+
+  <input
+    id="nomeTeste"
+    placeholder="Digite o nome do teste"
+    maxlength="120"
+  >
+
+  <button onclick="registrarTeste()">
+    + Registrar teste
+  </button>
+
+  <p id="mensagem"></p>
 </div>
+
+<div class="card">
+  <h3>📋 Histórico de testes</h3>
+
+  <input
+    id="pesquisa"
+    placeholder="Pesquisar teste..."
+    oninput="filtrarHistorico()"
+  >
+
+  <button class="secondary" onclick="carregarHistorico()">
+    ↻ Atualizar histórico
+  </button>
+
+  <div id="historico">Carregando...</div>
+</div>
+
+<footer>
+  NIEL CYBER LAB © 2026<br>
+  Ambiente de aprendizagem e testes autorizados
+</footer>
 
 </div>
 
 <script>
-const SUPABASE_URL = "https://rnzmrbadzmgpunwhrifw.supabase.co";
-const SUPABASE_KEY = "sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r";
+const SUPABASE_URL =
+"https://rnzmrbadzmgpunwhrifw.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r";
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
+let registros = [];
+
 async function testarConexao() {
   const status = document.getElementById("status");
+  const banco = document.getElementById("banco");
+
   status.textContent = "Testando conexão...";
+  banco.textContent = "...";
 
-  const { error } = await db
-    .from("lab_logs")
-    .select("id")
-    .limit(1);
+  try {
+    const { error } = await db
+      .from("lab_logs")
+      .select("id")
+      .limit(1);
 
-  if (error) {
-    status.textContent = "Erro: " + error.message;
-  } else {
-    status.textContent = "Banco conectado!";
+    if (error) throw error;
+
+    status.textContent = "🟢 Banco conectado!";
+    banco.textContent = "ONLINE";
+
+  } catch(error) {
+    status.textContent = "🔴 Erro: " + error.message;
+    banco.textContent = "OFFLINE";
   }
 }
 
@@ -118,66 +273,159 @@ async function registrarTeste() {
     return;
   }
 
-  mensagem.textContent = "Salvando registro...";
+  mensagem.textContent = "Salvando...";
 
-  const { error } = await db
-    .from("lab_logs")
-    .insert([{
-      name: nome,
-      event: "teste_registrado"
-    }]);
+  try {
+    const { error } = await db
+      .from("lab_logs")
+      .insert([{
+        name: nome,
+        event: "teste_registrado"
+      }]);
 
-  if (error) {
+    if (error) throw error;
+
+    mensagem.textContent = "✅ Teste registrado com sucesso!";
+    campo.value = "";
+
+    await carregarHistorico();
+
+  } catch(error) {
     mensagem.textContent = "Erro: " + error.message;
-    return;
   }
-
-  mensagem.textContent = "Registro salvo com sucesso!";
-  campo.value = "";
-
-  await carregarHistorico();
 }
 
 async function carregarHistorico() {
   const historico = document.getElementById("historico");
+
   historico.textContent = "Carregando...";
 
-  const { data, error } = await db
-    .from("lab_logs")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(30);
+  try {
+    const { data, error } = await db
+      .from("lab_logs")
+      .select("id,name,event,created_at")
+      .order("created_at", { ascending:false })
+      .limit(100);
 
-  if (error) {
+    if (error) throw error;
+
+    registros = data || [];
+
+    document.getElementById("total").textContent =
+      registros.length;
+
+    filtrarHistorico();
+
+  } catch(error) {
     historico.textContent = "Erro: " + error.message;
-    return;
   }
+}
+
+function filtrarHistorico() {
+  const historico = document.getElementById("historico");
+
+  const termo = document
+    .getElementById("pesquisa")
+    .value.toLowerCase();
 
   historico.innerHTML = "";
 
-  if (!data || data.length === 0) {
-    historico.textContent = "Nenhum teste registrado.";
+  const encontrados = registros.filter(item =>
+    (item.name || "").toLowerCase().includes(termo)
+  );
+
+  if (encontrados.length === 0) {
+    historico.textContent = "Nenhum teste encontrado.";
     return;
   }
 
-  data.forEach(item => {
+  encontrados.forEach(item => {
     const div = document.createElement("div");
     div.className = "log";
 
-    div.textContent =
-      (item.name || "Teste sem nome") + " — " +
-      (item.created_at
-        ? new Date(item.created_at).toLocaleString("pt-BR")
-        : "");
+    const titulo = document.createElement("div");
+    titulo.className = "log-title";
+    titulo.textContent = item.name || "Teste sem nome";
 
+    const evento = document.createElement("small");
+    evento.textContent = "Evento: " + (item.event || "Não informado");
+
+    const data = document.createElement("small");
+    data.textContent = item.created_at
+      ? new Date(item.created_at).toLocaleString("pt-BR")
+      : "Data não informada";
+
+    const editar = document.createElement("button");
+    editar.className = "secondary";
+    editar.textContent = "✏️ Editar";
+    editar.onclick = () => editarTeste(item);
+
+    const excluir = document.createElement("button");
+    excluir.className = "danger";
+    excluir.textContent = "🗑 Excluir";
+    excluir.onclick = () => excluirTeste(item.id);
+
+    div.append(titulo, evento, data, editar, excluir);
     historico.appendChild(div);
   });
+}
+
+async function editarTeste(item) {
+  const novoNome = prompt(
+    "Digite o novo nome do teste:",
+    item.name || ""
+  );
+
+  if (novoNome === null) return;
+
+  if (!novoNome.trim()) {
+    alert("O nome não pode ficar vazio.");
+    return;
+  }
+
+  try {
+    const { error } = await db
+      .from("lab_logs")
+      .update({ name: novoNome.trim() })
+      .eq("id", item.id);
+
+    if (error) throw error;
+
+    alert("Teste atualizado!");
+    await carregarHistorico();
+
+  } catch(error) {
+    alert("Erro ao editar: " + error.message);
+  }
+}
+
+async function excluirTeste(id) {
+  if (!confirm("Deseja realmente excluir este teste?")) {
+    return;
+  }
+
+  try {
+    const { error } = await db
+      .from("lab_logs")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    alert("Registro excluído!");
+    await carregarHistorico();
+
+  } catch(error) {
+    alert("Erro ao excluir: " + error.message);
+  }
 }
 
 testarConexao();
 carregarHistorico();
 </script>
+
 </body>
 </html>
+
 
 
