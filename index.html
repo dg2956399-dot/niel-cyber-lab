@@ -107,28 +107,38 @@ async function testarConexao() {
   }
 }
 
+
 async function registrarTeste() {
-  const nome = document.getElementById("nomeTeste").value.trim();
+  const campo = document.getElementById("nomeTeste");
   const mensagem = document.getElementById("mensagem");
+
+  const nome = campo.value.trim();
 
   if (!nome) {
     mensagem.textContent = "Digite o nome do teste.";
     return;
   }
 
-  const { error } = await db
+  mensagem.textContent = "Salvando registro...";
+
+  const { data, error } = await db
     .from("lab_logs")
     .insert([{
-  name: nome,
-  event: "teste_registrado"
-}]);
+      name: nome,
+      event: "teste_registrado"
+    }])
+    .select();
 
   if (error) {
     mensagem.textContent = "Erro: " + error.message;
-  } else {
-    mensagem.textContent = "Registro salvo com sucesso!";
-    document.getElementById("nomeTeste").value = "";
-    carregarHistorico();
+    return;
+  }
+
+  mensagem.textContent = "Registro salvo com sucesso!";
+  campo.value = "";
+
+  await carregarHistorico();
+}
   }
 }
 
