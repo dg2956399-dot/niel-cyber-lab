@@ -148,13 +148,13 @@ async function carregarHistorico() {
 
   data.forEach(item => {
     const div = document.createElement("div");
-    div.className = "log";
-    div.textContent =
-      item.name + " — " +
-      (item.created_at
-        ? new Date(item.created_at).toLocaleString("pt-BR")
-        : "");
-    historico.appendChild(div);
+div.className = "log";
+div.textContent =
+  item.test_name + " — " +
+  (item.created_at
+    ? new Date(item.created_at).toLocaleString("pt-BR")
+    : "");
+historico.appendChild(div);
   });
 
     if (data.length === 0) {
