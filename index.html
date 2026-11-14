@@ -129,6 +129,7 @@ async function registrarTeste() {
   }
 }
 
+
 async function carregarHistorico() {
   const historico = document.getElementById("historico");
   historico.textContent = "Carregando...";
@@ -146,24 +147,25 @@ async function carregarHistorico() {
 
   historico.innerHTML = "";
 
-  data.forEach(item => {
-  const div = document.createElement("div");
-  div.className = "log";
-
-  div.textContent =
-    item.name + " — " +
-    (item.created_at
-      ? new Date(item.created_at).toLocaleString("pt-BR")
-      : "");
-
-  historico.appendChild(div);
-});
-  });
-
-    if (data.length === 0) {
+  if (!data || data.length === 0) {
     historico.textContent = "Nenhum teste registrado.";
+    return;
   }
+
+  data.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "log";
+
+    div.textContent =
+      (item.name || "Teste sem nome") + " — " +
+      (item.created_at
+        ? new Date(item.created_at).toLocaleString("pt-BR")
+        : "");
+
+    historico.appendChild(div);
+  });
 }
+
 
 testarConexao();
 carregarHistorico();
