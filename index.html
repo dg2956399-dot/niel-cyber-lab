@@ -1,86 +1,171 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Niel Cyber Lab</title>
+<title>NIEL CYBER LAB</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 body {
-  background: #080d16;
-  color: #00ff99;
-  font-family: Arial, sans-serif;
-  padding: 25px;
+  background:#080d16;
+  color:#00ff99;
+  font-family:Arial,sans-serif;
+  margin:0;
+  padding:20px;
 }
-h1 { color: #00ff99; }
+.container {
+  max-width:650px;
+  margin:auto;
+}
+h1 {text-align:center;}
 .card {
-  background: #111c2b;
-  padding: 20px;
-  border-radius: 12px;
-  margin-top: 20px;
+  background:#111b29;
+  border:1px solid #00ff99;
+  border-radius:12px;
+  padding:18px;
+  margin:15px 0;
+}
+input,button {
+  box-sizing:border-box;
+  width:100%;
+  padding:13px;
+  margin-top:10px;
+  border-radius:7px;
+  border:1px solid #00ff99;
+}
+input {
+  background:#080d16;
+  color:white;
 }
 button {
-  background: #00ff99;
-  border: 0;
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-weight: bold;
+  background:#00ff99;
+  color:#080d16;
+  font-weight:bold;
+  cursor:pointer;
+}
+.status {color:#00ff99;}
+.log {
+  color:white;
+  border-bottom:1px solid #263747;
+  padding:10px 0;
 }
 </style>
 </head>
+
 <body>
+<div class="container">
 
-<h1> NIEL CYBER LAB</h1>
-<p>Laboratório de Segurança Digital</p>
+<h1>🔐 NIEL CYBER LAB</h1>
+<p style="text-align:center">Laboratório de Segurança Digital</p>
 
 <div class="card">
-<h2>Status do Banco</h2>
+<h3>Status do Banco</h3>
 <p id="status">Conectando...</p>
-<button onclick="testarBanco()">Testar conexão</button>
+<button onclick="testarConexao()">Testar conexão</button>
 </div>
 
 <div class="card">
-<h2>Registro de testes</h2>
-<input id="evento" placeholder="Nome do teste">
-<button onclick="registrar()">Registrar</button>
-<p id="resultado"></p>
+<h3>Registro de testes</h3>
+<input id="nomeTeste" placeholder="Nome do teste">
+<button onclick="registrarTeste()">Registrar</button>
+<p id="mensagem"></p>
 </div>
 
-<script type="module">
-import { createClient } from
-'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+<div class="card">
+<h3>Histórico de testes</h3>
+<button onclick="carregarHistorico()">Atualizar histórico</button>
+<div id="historico">Carregando...</div>
+</div>
 
-const supabase = createClient(
-  'https://rnzmrbadzmgpunwhrifw.supabase.co',
-  'sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r'
+</div>
+
+<script>
+const SUPABASE_URL = "https://rnzmrbadzmgpunwhrifw.supabase.co";
+const SUPABASE_KEY = "COLE_SUA_CHAVE_PUBLISHABLE_AQUI";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
-window.testarBanco = async function() {
-  const { error } = await supabase
-    .from('lab_logs')
-    .select('id')
+async function testarConexao() {
+  const status = document.getElementById("status");
+  status.textContent = "Testando...";
+
+  const { error } = await db
+    .from("lab_logs")
+    .select("id")
     .limit(1);
 
-  document.getElementById('status').textContent =
-    error ? 'Erro na conexão: ' + error.message : 'Banco conectado!';
-};
+  if (error) {
+    status.textContent = "Erro: " + error.message;
+  } else {
+    status.textContent = "Banco conectado!";
+  }
+}
 
-window.registrar = async function() {
-  const evento = document.getElementById('evento').value;
+async function registrarTeste() {
+  const nome = document.getElementById("nomeTeste").value.trim();
+  const mensagem = document.getElementById("mensagem");
 
-  if (!evento.trim()) return;
+  if (!nome) {
+    mensagem.textContent = "Digite o nome do teste.";
+    return;
+  }
 
-  const { error } = await supabase
-    .from('lab_logs')
-    .insert({ event: evento, status: 'info' });
+  const { error } = await db
+    .from("lab_logs")
+    .insert([{ name: nome }]);
 
-  document.getElementById('resultado').textContent =
-    error ? error.message : 'Registro salvo com sucesso!';
+  if (error) {
+    mensagem.textContent = "Erro: " + error.message;
+  } else {
+    mensagem.textContent = "Registro salvo com sucesso!";
+    document.getElementById("nomeTeste").value = "";
+    carregarHistorico();
+  }
+}
 
-  if (!error) document.getElementById('evento').value = '';
-};
+async function carregarHistorico() {
+  const historico = document.getElementById("historico");
+  historico.textContent = "Carregando...";
 
-testarBanco();
+  const { data, error } = await db
+    .from("lab_logs")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(30);
+
+  if (error) {
+    historico.textContent = "Erro: " + error.message;
+    return;
+  }
+
+  historico.innerHTML = "";
+
+  data.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "log";
+    div.textContent =
+      item.name + " — " +
+      (item.created_at
+        ? new Date(item.created_at).toLocaleString("pt-BR")
+        : "");
+    historico.appendChild(div);
+  });
+
+  if (data.length === 0) {
+    historico.textContent = "Nenhum teste registrado.";
+  }
+}
+
+testarConexao();
+carregarHistorico();
 </script>
 
 </body>
 </html>
+
