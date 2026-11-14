@@ -1,51 +1,86 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Niel Cyber Lab</title>
-
-  <style>
-    body {
-      background: #080d16;
-      color: #00ff99;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px 15px;
-    }
-
-    .box {
-      border: 1px solid #00ff99;
-      border-radius: 12px;
-      padding: 25px;
-      max-width: 500px;
-      margin: 30px auto;
-      background: #101a27;
-    }
-
-    h1 {
-      color: #00ff99;
-    }
-
-    p {
-      color: white;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Niel Cyber Lab</title>
+<style>
+body {
+  background: #080d16;
+  color: #00ff99;
+  font-family: Arial, sans-serif;
+  padding: 25px;
+}
+h1 { color: #00ff99; }
+.card {
+  background: #111c2b;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+button {
+  background: #00ff99;
+  border: 0;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+</style>
 </head>
-
 <body>
 
-  <h1>NIEL CYBER LAB</h1>
+<h1> NIEL CYBER LAB</h1>
+<p>Laboratório de Segurança Digital</p>
 
-  <p>Laboratório de Segurança Digital</p>
+<div class="card">
+<h2>Status do Banco</h2>
+<p id="status">Conectando...</p>
+<button onclick="testarBanco()">Testar conexão</button>
+</div>
 
-  <div class="box">
-    <h2>Área de Testes</h2>
+<div class="card">
+<h2>Registro de testes</h2>
+<input id="evento" placeholder="Nome do teste">
+<button onclick="registrar()">Registrar</button>
+<p id="resultado"></p>
+</div>
 
-    <p>Ambiente próprio para estudos de cibersegurança.</p>
+<script type="module">
+import { createClient } from
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-    <p>Reconhecimento | Análise | Defesa</p>
-  </div>
+const supabase = createClient(
+  'https://rnzmrbadzmgpunwhrifw.supabase.co',
+  'sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r'
+);
+
+window.testarBanco = async function() {
+  const { error } = await supabase
+    .from('lab_logs')
+    .select('id')
+    .limit(1);
+
+  document.getElementById('status').textContent =
+    error ? 'Erro na conexão: ' + error.message : 'Banco conectado!';
+};
+
+window.registrar = async function() {
+  const evento = document.getElementById('evento').value;
+
+  if (!evento.trim()) return;
+
+  const { error } = await supabase
+    .from('lab_logs')
+    .insert({ event: evento, status: 'info' });
+
+  document.getElementById('resultado').textContent =
+    error ? error.message : 'Registro salvo com sucesso!';
+
+  if (!error) document.getElementById('evento').value = '';
+};
+
+testarBanco();
+</script>
 
 </body>
 </html>
