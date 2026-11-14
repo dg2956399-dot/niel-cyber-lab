@@ -345,7 +345,7 @@ function filtrarHistorico() {
 
     const titulo = document.createElement("div");
     titulo.className = "log-title";
-    titulo.textContent = item.name || "Teste sem nome";
+    titulo.textContent = item.name ?? item.event ?? "Teste sem nome";
 
     const evento = document.createElement("small");
     evento.textContent = "Evento: " + (item.event || "Não informado");
