@@ -118,7 +118,7 @@ async function registrarTeste() {
 
   const { error } = await db
     .from("lab_logs")
-    .insert([{ event: nome }]);
+    .insert([{ name: nome }]);
 
   if (error) {
     mensagem.textContent = "Erro: " + error.message;
