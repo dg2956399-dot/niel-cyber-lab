@@ -4,113 +4,309 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIEL CYBER LAB V4</title>
+<title>NIEL SECURITY OPERATIONS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:16px;background:#080d16;color:#00ff99;font-family:Arial,sans-serif}
-.container{max-width:950px;margin:auto}
+body{
+ margin:0;padding:16px;background:#050a0c;color:#00ff99;
+ font-family:Arial,sans-serif;min-height:100vh;
+}
+#matrix{
+ position:fixed;inset:0;width:100%;height:100%;
+ z-index:0;pointer-events:none;opacity:.25;
+}
+.container,.login-screen{position:relative;z-index:1}
+.container{max-width:1000px;margin:auto}
 header{text-align:center;padding:25px 0}
-header h1{text-shadow:0 0 15px #00ff99;letter-spacing:2px}
+header h1{
+ color:#00ff99;text-shadow:0 0 15px #00ff99;
+ letter-spacing:3px;font-size:29px
+}
 header p{color:#91a5b5}
-.card{background:#111b29;border:1px solid #174b3b;border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 0 15px #00ff9910}
-h3{margin-top:0}
-input{width:100%;padding:13px;margin:8px 0;border-radius:8px;border:1px solid #245b49;background:#080d16;color:white}
+.card{
+ background:rgba(10,20,25,.94);
+ border:1px solid #08784d;border-radius:14px;
+ padding:20px;margin:16px 0;
+ box-shadow:0 0 18px #00ff9910
+}
+h3{margin-top:0;color:#00ff99}
+input{
+ width:100%;padding:13px;margin:8px 0;
+ border-radius:8px;border:1px solid #245b49;
+ background:#050d12;color:white
+}
 input:focus{outline:1px solid #00ff99}
-button{padding:12px 15px;border:0;border-radius:8px;background:#00ff99;color:#080d16;font-weight:bold;cursor:pointer;margin:5px 3px 5px 0}
+button{
+ padding:12px 15px;border:0;border-radius:8px;
+ background:#00ff99;color:#06110c;
+ font-weight:bold;cursor:pointer;margin:5px 3px 5px 0
+}
 button:hover{opacity:.85}
 button:disabled{opacity:.5;cursor:wait}
 .secondary{background:#263747;color:white}
 .danger{background:#e53935;color:white}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stat{background:#080d16;border:1px solid #245b49;border-radius:10px;padding:18px;text-align:center;color:#91a5b5}
-.stat strong{display:block;font-size:28px;color:#00ff99;margin-top:8px}
-.log{background:#080d16;border:1px solid #263747;border-radius:9px;padding:14px;margin-top:12px;color:white;overflow-wrap:anywhere}
+.stat{
+ background:#050d12;border:1px solid #245b49;
+ border-radius:10px;padding:18px;text-align:center;color:#91a5b5
+}
+.stat strong{
+ display:block;font-size:28px;color:#00ff99;margin-top:8px
+}
+.log{
+ background:#050d12;border:1px solid #263747;
+ border-radius:9px;padding:14px;margin-top:12px;
+ color:white;overflow-wrap:anywhere
+}
 .log-title{color:#00ff99;font-weight:bold;margin-bottom:8px}
 .log small{display:block;color:#91a5b5;margin:8px 0}
 #mensagem{overflow-wrap:anywhere}
 .online{color:#00ff99}
 .offline{color:#ff5252}
 #ultimaAtualizacao{color:#91a5b5;font-size:12px}
-.login-screen{max-width:420px;margin:70px auto;background:#111b29;border:1px solid #174b3b;border-radius:15px;padding:25px;box-shadow:0 0 20px #00ff9910}
-.login-screen h2{text-align:center;text-shadow:0 0 12px #00ff99}
+.login-screen{
+ max-width:440px;margin:55px auto;
+ background:rgba(10,20,25,.96);
+ border:1px solid #08784d;border-radius:16px;
+ padding:25px;box-shadow:0 0 30px #00ff9920
+}
+.login-screen h2{
+ text-align:center;color:#00ff99;
+ text-shadow:0 0 12px #00ff99;letter-spacing:2px
+}
 .login-screen p{color:#91a5b5;text-align:center}
 #erroLogin{color:#ff5252;text-align:center;overflow-wrap:anywhere}
 #painel{display:none}
 footer{text-align:center;color:#627586;padding:20px;font-size:12px}
+
+/* IDENTIDADE VISUAL */
+.hero{
+ display:flex;align-items:center;justify-content:center;
+ gap:25px;flex-wrap:wrap;text-align:left;
+ background:linear-gradient(120deg,#071510,#101b24);
+ border:1px solid #08784d;border-radius:16px;
+ padding:22px;margin:15px 0;
+ box-shadow:0 0 25px #00ff9915
+}
+.hero-text{flex:1;min-width:220px}
+.hero-text h2{
+ color:#00ff99;letter-spacing:2px;
+ text-shadow:0 0 12px #00ff99
+}
+.hero-text p{color:#91a5b5;line-height:1.6}
+.tag{
+ display:inline-block;border:1px solid #00ff99;
+ padding:6px 10px;border-radius:20px;
+ font-size:11px;color:#00ff99;letter-spacing:1px
+}
+
+/* PERSONAGEM ENCAPUZADO CSS */
+.hacker{
+ width:155px;height:175px;position:relative;
+ flex-shrink:0;display:flex;justify-content:center;
+}
+.hood{
+ position:absolute;top:5px;width:140px;height:150px;
+ background:linear-gradient(145deg,#26343c,#080d12);
+ border:2px solid #00a968;border-radius:75px 75px 25px 25px;
+ box-shadow:0 0 25px #00ff9920
+}
+.face{
+ position:absolute;top:43px;width:88px;height:93px;
+ background:#10191e;border-radius:45% 45% 35% 35%;
+ border:1px solid #45605a
+}
+.eye{
+ position:absolute;top:34px;width:17px;height:5px;
+ background:#00ff99;box-shadow:0 0 12px #00ff99;
+ border-radius:50%
+}
+.eye.left{left:17px}
+.eye.right{right:17px}
+.mask{
+ position:absolute;bottom:10px;left:8px;right:8px;
+ height:34px;background:#17272b;
+ border:1px solid #00a968;border-radius:7px
+}
+.mask:after{
+ content:"";position:absolute;left:12px;right:12px;
+ top:15px;border-top:1px solid #00ff99;
+ box-shadow:0 0 7px #00ff99
+}
+.body-hacker{
+ position:absolute;bottom:0;width:155px;height:55px;
+ background:linear-gradient(90deg,#080d12,#1a2b31,#080d12);
+ border:1px solid #08784d;border-radius:55px 55px 12px 12px
+}
 @media(max-width:500px){
-body{padding:10px}
-header h1{font-size:22px}
-.card{padding:14px}
-.stats{grid-template-columns:1fr 1fr}
+ body{padding:10px}
+ header h1{font-size:21px}
+ .card{padding:14px}
+ .stats{grid-template-columns:1fr 1fr}
+ .hero{text-align:center}
+ .hacker{transform:scale(.9)}
+}
+@media(prefers-reduced-motion:reduce){
+ #matrix{opacity:.10}
 }
 </style>
 </head>
 
 <body>
 
+<canvas id="matrix" aria-hidden="true"></canvas>
+
 <div class="login-screen" id="loginTela">
-<h2>🔐 NIEL CYBER LAB</h2>
-<p>Acesso restrito ao laboratório</p>
-<form onsubmit="entrar(event)">
-<input id="emailLogin" type="email" placeholder="Seu e-mail" autocomplete="username" required>
-<input id="senhaLogin" type="password" placeholder="Sua senha" autocomplete="current-password" required>
-<button id="btnEntrar" type="submit" style="width:100%">ENTRAR</button>
-</form>
-<p id="erroLogin"></p>
+ <div class="hacker" aria-hidden="true">
+  <div class="hood"></div>
+  <div class="face">
+   <div class="eye left"></div>
+   <div class="eye right"></div>
+   <div class="mask"></div>
+  </div>
+  <div class="body-hacker"></div>
+ </div>
+
+ <h2>NIEL SECURITY OPERATIONS</h2>
+ <p>ACESSO RESTRITO | CENTRAL DE SEGURANÇA</p>
+
+ <form onsubmit="entrar(event)">
+  <input id="emailLogin" type="email" placeholder="Seu e-mail"
+   autocomplete="username" required>
+  <input id="senhaLogin" type="password" placeholder="Sua senha"
+   autocomplete="current-password" required>
+  <button id="btnEntrar" type="submit" style="width:100%">
+   ACESSAR SISTEMA
+  </button>
+ </form>
+ <p id="erroLogin"></p>
 </div>
 
 <div class="container" id="painel">
+
 <header>
-<h1>🔐 NIEL CYBER LAB</h1>
-<p>Laboratório de Segurança Digital | V4.0</p>
-<p id="tipoUsuario"></p>
-<button class="danger" onclick="sair()">🚪 Sair da conta</button>
+ <h1>🔐 NIEL SECURITY OPERATIONS</h1>
+ <p>SECURITY OPERATIONS CENTER | V4.0</p>
+ <p id="tipoUsuario"></p>
+ <button class="danger" onclick="sair()">🚪 Sair da conta</button>
 </header>
 
-<div class="card">
-<h3>📡 Status do Banco</h3>
-<p id="status">Conectando ao Supabase...</p>
-<button onclick="testarConexao()">Testar conexão</button>
+<div class="hero">
+ <div class="hacker" aria-hidden="true">
+  <div class="hood"></div>
+  <div class="face">
+   <div class="eye left"></div>
+   <div class="eye right"></div>
+   <div class="mask"></div>
+  </div>
+  <div class="body-hacker"></div>
+ </div>
+ <div class="hero-text">
+  <span class="tag">SYSTEM ONLINE</span>
+  <h2>OPERAÇÕES DE SEGURANÇA</h2>
+  <p>Ambiente privado de aprendizagem, monitoramento
+  e testes de segurança autorizados.</p>
+ </div>
 </div>
 
 <div class="card">
-<h3>📊 Painel de Controle</h3>
-<div class="stats">
-<div class="stat">Total de registros<strong id="total">0</strong></div>
-<div class="stat">Banco de dados<strong id="banco">...</strong></div>
-</div>
-<p id="ultimaAtualizacao">Aguardando atualização...</p>
+ <h3>📡 Status do Banco</h3>
+ <p id="status">Conectando ao Supabase...</p>
+ <button onclick="testarConexao()">Testar conexão</button>
 </div>
 
 <div class="card">
-<h3>🧪 Registrar novo teste</h3>
-<input id="nomeTeste" type="text" placeholder="Nome do teste" maxlength="120">
-<input id="eventoTeste" type="text" placeholder="Descrição do evento" maxlength="500">
-<button id="btnRegistrar" onclick="registrarTeste()">+ Registrar teste</button>
-<p id="mensagem">Aguardando registro...</p>
+ <h3>📊 Painel de Controle</h3>
+ <div class="stats">
+  <div class="stat">Total de registros
+   <strong id="total">0</strong>
+  </div>
+  <div class="stat">Banco de dados
+   <strong id="banco">...</strong>
+  </div>
+ </div>
+ <p id="ultimaAtualizacao">Aguardando atualização...</p>
 </div>
 
 <div class="card">
-<h3>📋 Histórico de testes</h3>
-<input id="pesquisa" type="text" placeholder="Pesquisar por nome ou evento..." oninput="filtrarHistorico()">
-<button class="secondary" onclick="atualizarTudo()">↻ Atualizar histórico</button>
-<div id="historico">Carregando histórico...</div>
+ <h3>🧪 Registrar novo teste</h3>
+ <input id="nomeTeste" type="text"
+  placeholder="Nome do teste" maxlength="120">
+ <input id="eventoTeste" type="text"
+  placeholder="Descrição do evento" maxlength="500">
+ <button id="btnRegistrar" onclick="registrarTeste()">
+  + Registrar teste
+ </button>
+ <p id="mensagem">Aguardando registro...</p>
+</div>
+
+<div class="card">
+ <h3>📋 Histórico de testes</h3>
+ <input id="pesquisa" type="text"
+  placeholder="Pesquisar por nome ou evento..."
+  oninput="filtrarHistorico()">
+ <button class="secondary" onclick="atualizarTudo()">
+  ↻ Atualizar histórico
+ </button>
+ <div id="historico">Carregando histórico...</div>
 </div>
 
 <footer>
-NIEL CYBER LAB © 2026<br>
-Ambiente de aprendizagem e testes autorizados
+ NIEL SECURITY OPERATIONS © 2026<br>
+ Ambiente de aprendizagem e testes autorizados
 </footer>
 </div>
 
 <script>
+/* ANIMAÇÃO MATRIX */
+(function(){
+ const canvas=document.getElementById("matrix");
+ const ctx=canvas.getContext("2d");
+ const letras="01アイウエオカキクケコサシスセソタチツテト";
+ let colunas=[],fonte=15;
+
+ function ajustar(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=window.innerWidth*dpr;
+  canvas.height=window.innerHeight*dpr;
+  canvas.style.width=window.innerWidth+"px";
+  canvas.style.height=window.innerHeight+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  colunas=Array(Math.ceil(window.innerWidth/fonte))
+   .fill(0).map(()=>Math.random()*-50);
+ }
+ function desenhar(){
+  ctx.fillStyle="rgba(5,10,12,0.09)";
+  ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
+  ctx.fillStyle="#00ff99";
+  ctx.font=fonte+"px monospace";
+  for(let i=0;i<colunas.length;i++){
+   const letra=letras[Math.floor(Math.random()*letras.length)];
+   ctx.fillText(letra,i*fonte,colunas[i]*fonte);
+   if(colunas[i]*fonte>window.innerHeight&&Math.random()>.975){
+    colunas[i]=0;
+   }
+   colunas[i]+=.65;
+  }
+  requestAnimationFrame(desenhar);
+ }
+ window.addEventListener("resize",ajustar);
+ ajustar();
+ desenhar();
+})();
+
+/* SUPABASE */
 const SUPABASE_URL="https://rnzmrbadzmgpunwhrifw.supabase.co";
 const SUPABASE_KEY="sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r";
 
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
-auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+ auth:{
+  persistSession:true,
+  autoRefreshToken:true,
+  detectSessionInUrl:true
+ }
 });
 
 let registros=[];
@@ -120,346 +316,365 @@ let acessoLiberado=false;
 let papelUsuario=null;
 
 function mensagem(texto,erro=false){
-const campo=document.getElementById("mensagem");
-campo.textContent=texto;
-campo.style.color=erro?"#ff5252":"#00ff99";
+ const campo=document.getElementById("mensagem");
+ campo.textContent=texto;
+ campo.style.color=erro?"#ff5252":"#00ff99";
 }
 
 function mostrarErro(error){
-console.error("Supabase:",error);
-return error.message+(error.code?" | Código: "+error.code:"");
+ console.error("Supabase:",error);
+ return error.message+(error.code?" | Código: "+error.code:"");
 }
 
 /* LOGIN */
 async function entrar(event){
-event.preventDefault();
-const botao=document.getElementById("btnEntrar");
-const erro=document.getElementById("erroLogin");
-const email=document.getElementById("emailLogin").value.trim();
-const senha=document.getElementById("senhaLogin").value;
+ event.preventDefault();
+ const botao=document.getElementById("btnEntrar");
+ const erro=document.getElementById("erroLogin");
+ const email=document.getElementById("emailLogin").value.trim();
+ const senha=document.getElementById("senhaLogin").value;
 
-botao.disabled=true;
-botao.textContent="VERIFICANDO...";
-erro.textContent="";
+ botao.disabled=true;
+ botao.textContent="VERIFICANDO...";
+ erro.textContent="";
 
-try{
-const {data,error}=await db.auth.signInWithPassword({email,password:senha});
-if(error) throw error;
-await verificarAcesso(data.user);
-}catch(error){
-console.error(error);
-erro.textContent="Erro no login: "+error.message;
-await db.auth.signOut();
-}finally{
-botao.disabled=false;
-botao.textContent="ENTRAR";
-}
+ try{
+  const {data,error}=await db.auth.signInWithPassword({
+   email,password:senha
+  });
+  if(error)throw error;
+  await verificarAcesso(data.user);
+ }catch(error){
+  console.error(error);
+  erro.textContent="Erro no login: "+error.message;
+  await db.auth.signOut();
+ }finally{
+  botao.disabled=false;
+  botao.textContent="ACESSAR SISTEMA";
+ }
 }
 
 /* VERIFICAR PERFIL */
 async function verificarAcesso(user){
-const erro=document.getElementById("erroLogin");
+ const erro=document.getElementById("erroLogin");
 
-if(!user){
-acessoLiberado=false;
-papelUsuario=null;
-mostrarLogin();
-return;
-}
+ if(!user){
+  acessoLiberado=false;
+  papelUsuario=null;
+  mostrarLogin();
+  return;
+ }
 
-try{
-const {data:perfil,error}=await db
-.from("user_profiles")
-.select("role")
-.eq("id",user.id)
-.maybeSingle();
+ try{
+  const {data:perfil,error}=await db
+   .from("user_profiles")
+   .select("role")
+   .eq("id",user.id)
+   .maybeSingle();
 
-if(error) throw error;
+  if(error)throw error;
 
-if(!perfil||!["admin","approved"].includes(perfil.role)){
-await db.auth.signOut();
-throw new Error("Sua conta ainda não está autorizada pelo administrador.");
-}
+  if(!perfil||!["admin","approved"].includes(perfil.role)){
+   await db.auth.signOut();
+   throw new Error("Sua conta ainda não está autorizada pelo administrador.");
+  }
 
-papelUsuario=perfil.role;
-acessoLiberado=true;
+  papelUsuario=perfil.role;
+  acessoLiberado=true;
 
-document.getElementById("tipoUsuario").textContent=
-papelUsuario==="admin"?"👑 Administrador":"👤 Usuário aprovado";
+  document.getElementById("tipoUsuario").textContent=
+   papelUsuario==="admin"?"👑 Administrador":"👤 Usuário aprovado";
 
-document.getElementById("loginTela").style.display="none";
-document.getElementById("painel").style.display="block";
-erro.textContent="";
+  document.getElementById("loginTela").style.display="none";
+  document.getElementById("painel").style.display="block";
+  erro.textContent="";
+  await iniciarPainel();
 
-await iniciarPainel();
-
-}catch(error){
-console.error(error);
-acessoLiberado=false;
-papelUsuario=null;
-await db.auth.signOut();
-mostrarLogin();
-erro.textContent=error.message;
-}
+ }catch(error){
+  console.error(error);
+  acessoLiberado=false;
+  papelUsuario=null;
+  await db.auth.signOut();
+  mostrarLogin();
+  erro.textContent=error.message;
+ }
 }
 
 function mostrarLogin(){
-document.getElementById("painel").style.display="none";
-document.getElementById("loginTela").style.display="block";
+ document.getElementById("painel").style.display="none";
+ document.getElementById("loginTela").style.display="block";
 }
 
+/* SAIR */
 async function sair(){
-if(intervaloAtualizacao){
-clearInterval(intervaloAtualizacao);
-intervaloAtualizacao=null;
-}
-acessoLiberado=false;
-papelUsuario=null;
-await db.auth.signOut();
-mostrarLogin();
-document.getElementById("emailLogin").value="";
-document.getElementById("senhaLogin").value="";
-document.getElementById("erroLogin").textContent="Você saiu da sua conta.";
+ if(intervaloAtualizacao){
+  clearInterval(intervaloAtualizacao);
+  intervaloAtualizacao=null;
+ }
+ acessoLiberado=false;
+ papelUsuario=null;
+ await db.auth.signOut();
+ mostrarLogin();
+ document.getElementById("emailLogin").value="";
+ document.getElementById("senhaLogin").value="";
+ document.getElementById("erroLogin").textContent="Você saiu da sua conta.";
 }
 
 /* CONEXÃO */
 async function testarConexao(){
-if(!acessoLiberado)return;
-const status=document.getElementById("status");
-const banco=document.getElementById("banco");
-status.textContent="Testando conexão...";
-banco.textContent="...";
-try{
-const {error}=await db.from("lab_logs").select("id").limit(1);
-if(error)throw error;
-status.textContent="🟢 Banco conectado!";
-status.className="online";
-banco.textContent="ONLINE";
-}catch(error){
-status.textContent="🔴 "+mostrarErro(error);
-status.className="offline";
-banco.textContent="OFFLINE";
-}
+ if(!acessoLiberado)return;
+ const status=document.getElementById("status");
+ const banco=document.getElementById("banco");
+ status.textContent="Testando conexão...";
+ banco.textContent="...";
+
+ try{
+  const {error}=await db.from("lab_logs").select("id").limit(1);
+  if(error)throw error;
+  status.textContent="🟢 Banco conectado!";
+  status.className="online";
+  banco.textContent="ONLINE";
+ }catch(error){
+  status.textContent="🔴 "+mostrarErro(error);
+  status.className="offline";
+  banco.textContent="OFFLINE";
+ }
 }
 
 /* REGISTRAR */
 async function registrarTeste(){
-if(!acessoLiberado)return;
-const campoNome=document.getElementById("nomeTeste");
-const campoEvento=document.getElementById("eventoTeste");
-const botao=document.getElementById("btnRegistrar");
-const nome=campoNome.value.trim();
-const evento=campoEvento.value.trim()||"teste_registrado";
+ if(!acessoLiberado)return;
+ const campoNome=document.getElementById("nomeTeste");
+ const campoEvento=document.getElementById("eventoTeste");
+ const botao=document.getElementById("btnRegistrar");
+ const nome=campoNome.value.trim();
+ const evento=campoEvento.value.trim()||"teste_registrado";
 
-if(!nome){mensagem("Digite o nome do teste.",true);return;}
+ if(!nome){mensagem("Digite o nome do teste.",true);return;}
 
-botao.disabled=true;
-mensagem("Salvando registro...");
+ botao.disabled=true;
+ mensagem("Salvando registro...");
 
-try{
-const {error}=await db.from("lab_logs").insert([{name:nome,event:evento}]);
-if(error)throw error;
-campoNome.value="";
-campoEvento.value="";
-mensagem("✅ Teste registrado com sucesso!");
-await atualizarTudo();
-}catch(error){
-mensagem("Erro: "+mostrarErro(error),true);
-}finally{
-botao.disabled=false;
-}
+ try{
+  const {error}=await db.from("lab_logs").insert([
+   {name:nome,event:evento}
+  ]);
+  if(error)throw error;
+  campoNome.value="";
+  campoEvento.value="";
+  mensagem("✅ Teste registrado com sucesso!");
+  await atualizarTudo();
+ }catch(error){
+  mensagem("Erro: "+mostrarErro(error),true);
+ }finally{
+  botao.disabled=false;
+ }
 }
 
 /* TOTAL */
 async function carregarTotal(){
-const {count,error}=await db.from("lab_logs").select("id",{count:"exact",head:true});
-if(error)throw error;
-document.getElementById("total").textContent=count??0;
+ const {count,error}=await db.from("lab_logs")
+  .select("id",{count:"exact",head:true});
+ if(error)throw error;
+ document.getElementById("total").textContent=count??0;
 }
 
 /* HISTÓRICO */
 async function carregarHistorico(){
-const historico=document.getElementById("historico");
-historico.textContent="Carregando...";
-const {data,error}=await db.from("lab_logs")
-.select("id,name,event,created_at")
-.order("created_at",{ascending:false})
-.limit(100);
-if(error)throw error;
-registros=data||[];
-filtrarHistorico();
+ const historico=document.getElementById("historico");
+ historico.textContent="Carregando...";
+
+ const {data,error}=await db.from("lab_logs")
+  .select("id,name,event,created_at")
+  .order("created_at",{ascending:false})
+  .limit(100);
+
+ if(error)throw error;
+ registros=data||[];
+ filtrarHistorico();
 }
 
 /* ATUALIZAR */
 async function atualizarTudo(){
-if(!acessoLiberado||atualizando)return;
-atualizando=true;
-try{
-await Promise.all([carregarTotal(),carregarHistorico()]);
-document.getElementById("ultimaAtualizacao").textContent=
-"Última atualização: "+new Date().toLocaleTimeString("pt-BR");
-}catch(error){
-console.error(error);
-document.getElementById("historico").textContent="Erro ao atualizar: "+mostrarErro(error);
-}finally{
-atualizando=false;
-}
+ if(!acessoLiberado||atualizando)return;
+ atualizando=true;
+
+ try{
+  await Promise.all([carregarTotal(),carregarHistorico()]);
+  document.getElementById("ultimaAtualizacao").textContent=
+   "Última atualização: "+new Date().toLocaleTimeString("pt-BR");
+ }catch(error){
+  console.error(error);
+  document.getElementById("historico").textContent=
+   "Erro ao atualizar: "+mostrarErro(error);
+ }finally{
+  atualizando=false;
+ }
 }
 
 /* PESQUISAR */
 function filtrarHistorico(){
-const historico=document.getElementById("historico");
-const termo=document.getElementById("pesquisa").value.toLowerCase().trim();
-historico.innerHTML="";
+ const historico=document.getElementById("historico");
+ const termo=document.getElementById("pesquisa").value.toLowerCase().trim();
+ historico.innerHTML="";
 
-const encontrados=registros.filter(item=>
-(item.name||"").toLowerCase().includes(termo)||
-(item.event||"").toLowerCase().includes(termo)
-);
+ const encontrados=registros.filter(item=>
+  (item.name||"").toLowerCase().includes(termo)||
+  (item.event||"").toLowerCase().includes(termo)
+ );
 
-if(encontrados.length===0){
-historico.textContent="Nenhum teste encontrado.";
-return;
-}
+ if(encontrados.length===0){
+  historico.textContent="Nenhum teste encontrado.";
+  return;
+ }
 
-encontrados.forEach(item=>{
-const div=document.createElement("div");
-div.className="log";
+ encontrados.forEach(item=>{
+  const div=document.createElement("div");
+  div.className="log";
 
-const titulo=document.createElement("div");
-titulo.className="log-title";
-titulo.textContent=item.name||"Teste sem nome";
+  const titulo=document.createElement("div");
+  titulo.className="log-title";
+  titulo.textContent=item.name||"Teste sem nome";
 
-const evento=document.createElement("small");
-evento.textContent="Evento: "+(item.event||"Não informado");
+  const evento=document.createElement("small");
+  evento.textContent="Evento: "+(item.event||"Não informado");
 
-const data=document.createElement("small");
-data.textContent=item.created_at?new Date(item.created_at).toLocaleString("pt-BR"):"Data não informada";
+  const data=document.createElement("small");
+  data.textContent=item.created_at?
+   new Date(item.created_at).toLocaleString("pt-BR"):
+   "Data não informada";
 
-div.append(titulo,evento,data);
+  div.append(titulo,evento,data);
 
-if(papelUsuario==="admin"){
-const editar=document.createElement("button");
-editar.className="secondary";
-editar.textContent="✏️ Editar";
-editar.onclick=()=>editarTeste(item,div);
+  if(papelUsuario==="admin"){
+   const editar=document.createElement("button");
+   editar.className="secondary";
+   editar.textContent="✏️ Editar";
+   editar.onclick=()=>editarTeste(item,div);
 
-const excluir=document.createElement("button");
-excluir.className="danger";
-excluir.textContent="🗑 Excluir";
-excluir.onclick=()=>excluirTeste(item.id);
+   const excluir=document.createElement("button");
+   excluir.className="danger";
+   excluir.textContent="🗑 Excluir";
+   excluir.onclick=()=>excluirTeste(item.id);
 
-div.append(editar,excluir);
-}
+   div.append(editar,excluir);
+  }
 
-historico.appendChild(div);
-});
+  historico.appendChild(div);
+ });
 }
 
 /* EDITAR */
 async function editarTeste(item,div){
-if(!acessoLiberado||papelUsuario!=="admin")return;
+ if(!acessoLiberado||papelUsuario!=="admin")return;
 
-div.innerHTML="";
+ div.innerHTML="";
 
-const campoNome=document.createElement("input");
-campoNome.value=item.name||"";
-campoNome.maxLength=120;
-campoNome.placeholder="Nome do teste";
+ const campoNome=document.createElement("input");
+ campoNome.value=item.name||"";
+ campoNome.maxLength=120;
+ campoNome.placeholder="Nome do teste";
 
-const campoEvento=document.createElement("input");
-campoEvento.value=item.event||"";
-campoEvento.maxLength=500;
-campoEvento.placeholder="Descrição do evento";
+ const campoEvento=document.createElement("input");
+ campoEvento.value=item.event||"";
+ campoEvento.maxLength=500;
+ campoEvento.placeholder="Descrição do evento";
 
-const salvar=document.createElement("button");
-salvar.textContent="💾 Salvar";
+ const salvar=document.createElement("button");
+ salvar.textContent="💾 Salvar";
 
-const cancelar=document.createElement("button");
-cancelar.textContent="Cancelar";
-cancelar.className="secondary";
+ const cancelar=document.createElement("button");
+ cancelar.textContent="Cancelar";
+ cancelar.className="secondary";
 
-salvar.onclick=async()=>{
-if(!acessoLiberado||papelUsuario!=="admin")return;
+ salvar.onclick=async()=>{
+  if(!acessoLiberado||papelUsuario!=="admin")return;
 
-const nome=campoNome.value.trim();
-const evento=campoEvento.value.trim();
+  const nome=campoNome.value.trim();
+  const evento=campoEvento.value.trim();
 
-if(!nome||!evento){alert("Preencha o nome e o evento.");return;}
+  if(!nome||!evento){
+   alert("Preencha o nome e o evento.");
+   return;
+  }
 
-salvar.disabled=true;
-cancelar.disabled=true;
+  salvar.disabled=true;
+  cancelar.disabled=true;
 
-try{
-const {data,error}=await db.from("lab_logs")
-.update({name:nome,event:evento})
-.eq("id",item.id)
-.select("id,name,event");
+  try{
+   const {data,error}=await db.from("lab_logs")
+    .update({name:nome,event:evento})
+    .eq("id",item.id)
+    .select("id,name,event");
 
-if(error)throw error;
-if(!data||data.length===0)throw new Error("Nenhuma linha foi atualizada. Verifique as políticas RLS.");
+   if(error)throw error;
+   if(!data||data.length===0){
+    throw new Error("Nenhuma linha foi atualizada. Verifique as políticas RLS.");
+   }
 
-mensagem("✅ Registro atualizado e confirmado no banco!");
-registros=registros.map(registro=>
-registro.id===item.id?{...registro,...data[0]}:registro
-);
-await atualizarTudo();
+   mensagem("✅ Registro atualizado e confirmado no banco!");
+   registros=registros.map(registro=>
+    registro.id===item.id?{...registro,...data[0]}:registro
+   );
+   await atualizarTudo();
 
-}catch(error){
-alert("Erro ao editar: "+mostrarErro(error));
-salvar.disabled=false;
-cancelar.disabled=false;
-}
-};
+  }catch(error){
+   alert("Erro ao editar: "+mostrarErro(error));
+   salvar.disabled=false;
+   cancelar.disabled=false;
+  }
+ };
 
-cancelar.onclick=()=>filtrarHistorico();
-div.append(campoNome,campoEvento,salvar,cancelar);
-campoNome.focus();
+ cancelar.onclick=()=>filtrarHistorico();
+ div.append(campoNome,campoEvento,salvar,cancelar);
+ campoNome.focus();
 }
 
 /* EXCLUIR */
 async function excluirTeste(id){
-if(!acessoLiberado||papelUsuario!=="admin")return;
+ if(!acessoLiberado||papelUsuario!=="admin")return;
+ if(!confirm("Deseja realmente excluir este registro?"))return;
 
-if(!confirm("Deseja realmente excluir este registro?"))return;
+ try{
+  const {data,error}=await db.from("lab_logs")
+   .delete()
+   .eq("id",id)
+   .select("id");
 
-try{
-const {data,error}=await db.from("lab_logs")
-.delete()
-.eq("id",id)
-.select("id");
+  if(error)throw error;
+  if(!data||data.length===0){
+   throw new Error("Nenhum registro excluído. Verifique a política DELETE.");
+  }
 
-if(error)throw error;
-if(!data||data.length===0)throw new Error("Nenhum registro excluído. Verifique a política DELETE.");
+  mensagem("🗑 Registro excluído!");
+  await atualizarTudo();
 
-mensagem("🗑 Registro excluído!");
-await atualizarTudo();
-
-}catch(error){
-alert("Erro ao excluir: "+mostrarErro(error));
-}
+ }catch(error){
+  alert("Erro ao excluir: "+mostrarErro(error));
+ }
 }
 
 /* INICIAR PAINEL */
 async function iniciarPainel(){
-await testarConexao();
-await atualizarTudo();
+ await testarConexao();
+ await atualizarTudo();
 
-if(intervaloAtualizacao)clearInterval(intervaloAtualizacao);
-intervaloAtualizacao=setInterval(atualizarTudo,15000);
+ if(intervaloAtualizacao)clearInterval(intervaloAtualizacao);
+ intervaloAtualizacao=setInterval(atualizarTudo,15000);
 }
 
 /* VERIFICAR SESSÃO */
 async function iniciar(){
-mostrarLogin();
-const {data,error}=await db.auth.getSession();
+ mostrarLogin();
+ const {data,error}=await db.auth.getSession();
 
-if(error){
-document.getElementById("erroLogin").textContent="Erro ao verificar sessão: "+error.message;
-return;
-}
+ if(error){
+  document.getElementById("erroLogin").textContent=
+   "Erro ao verificar sessão: "+error.message;
+  return;
+ }
 
-if(data.session)await verificarAcesso(data.session.user);
+ if(data.session)await verificarAcesso(data.session.user);
 }
 
 iniciar();
