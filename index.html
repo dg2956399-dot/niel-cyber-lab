@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NIEL SECURITY OPERATIONS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;padding:15px;background:#030807;color:#00ff99;font-family:Arial,sans-serif;min-height:100vh}
@@ -80,30 +79,22 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 .tool-label{color:#91a5b5;font-size:12px;margin-top:12px}
 .command-box{background:#000;color:#00ff99;border:1px solid #245b49;border-radius:8px;padding:13px;margin:10px 0;overflow-wrap:anywhere;font-family:monospace;font-size:12px}
 @media(max-width:500px){
- body{padding:9px}
- header h1{font-size:19px}
- .card{padding:14px}
- .stats{grid-template-columns:1fr 1fr}
- .hero{padding:12px}
- .hero .hacker{transform:scale(.85)}
- .scanner-tools,.search-tabs{grid-template-columns:1fr}
- .modules-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- .module-button{min-height:130px;padding:12px 7px}
- .module-icon{font-size:27px}
- .module-name{font-size:11px}
- .module-description{font-size:10px}
+body{padding:9px}header h1{font-size:19px}.card{padding:14px}
+.stats{grid-template-columns:1fr 1fr}.hero{padding:12px}
+.hero .hacker{transform:scale(.85)}
+.scanner-tools,.search-tabs{grid-template-columns:1fr}
+.modules-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.module-button{min-height:130px;padding:12px 7px}
+.module-icon{font-size:27px}.module-name{font-size:11px}
+.module-description{font-size:10px}
 }
 </style>
 </head>
 <body>
-
 <canvas id="matrix"></canvas>
 
-<!-- LOGIN -->
 <div class="login-screen" id="loginTela">
- <div class="hacker">
-  <div class="hood"></div><div class="face"><div class="white-mask"><div class="mask-eye left"></div><div class="mask-eye right"></div><div class="mask-mark"></div><div class="mask-mouth"></div></div></div><div class="hood-body"></div>
- </div>
+ <div class="hacker"><div class="hood"></div><div class="face"><div class="white-mask"><div class="mask-eye left"></div><div class="mask-eye right"></div><div class="mask-mark"></div><div class="mask-mouth"></div></div></div><div class="hood-body"></div></div>
  <h2>NIEL SECURITY OPERATIONS</h2>
  <p>ACESSO RESTRITO AO SISTEMA</p>
  <form onsubmit="entrar(event)">
@@ -114,7 +105,6 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
  <p id="erroLogin"></p>
 </div>
 
-<!-- PAINEL -->
 <div class="container" id="painel">
 <header>
  <h1>🔐 NIEL SECURITY OPERATIONS</h1>
@@ -124,9 +114,7 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 </header>
 
 <div class="hero">
- <div class="hacker">
-  <div class="hood"></div><div class="face"><div class="white-mask"><div class="mask-eye left"></div><div class="mask-eye right"></div><div class="mask-mark"></div><div class="mask-mouth"></div></div></div><div class="hood-body"></div>
- </div>
+ <div class="hacker"><div class="hood"></div><div class="face"><div class="white-mask"><div class="mask-eye left"></div><div class="mask-eye right"></div><div class="mask-mark"></div><div class="mask-mouth"></div></div></div><div class="hood-body"></div></div>
  <div class="hero-text">
   <span class="tag">● CENTRAL DE OPERAÇÕES</span>
   <h2>NIEL SECURITY OPERATIONS</h2>
@@ -135,12 +123,8 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
  </div>
 </div>
 
-<!-- MENU -->
 <div id="menuModulos">
- <div class="menu-heading">
-  <h2>PAINEL DE OPERAÇÕES</h2>
-  <p>Selecione um módulo para acessar suas ferramentas.</p>
- </div>
+ <div class="menu-heading"><h2>PAINEL DE OPERAÇÕES</h2><p>Selecione um módulo para acessar suas ferramentas.</p></div>
  <div class="modules-grid">
   <button class="module-button" onclick="abrirModulo('controle')"><span class="module-icon">📊</span><span class="module-name">PAINEL DE CONTROLE</span><span class="module-description">Status do banco e estatísticas</span></button>
   <button class="module-button" onclick="abrirModulo('registro')"><span class="module-icon">🧪</span><span class="module-name">REGISTRAR ATIVIDADE</span><span class="module-description">Registrar atividades no sistema</span></button>
@@ -153,49 +137,27 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
  <p class="menu-status">● SISTEMA V4.0 | MÓDULOS OPERACIONAIS</p>
 </div>
 
-<!-- CONTROLE -->
 <section class="module-view" id="modulo-controle">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">📊 PAINEL DE CONTROLE</h2>
- <div class="card">
-  <h3>📡 Status do Banco</h3>
-  <p id="status">Conectando ao Supabase...</p>
-  <button onclick="testarConexao()">Testar conexão</button>
- </div>
- <div class="card">
-  <h3>📊 Estatísticas do Sistema</h3>
-  <div class="stats">
-   <div class="stat">Total de registros<strong id="total">0</strong></div>
-   <div class="stat">Banco de dados<strong id="banco">...</strong></div>
-  </div>
-  <p id="ultimaAtualizacao">Aguardando atualização...</p>
-  <button class="secondary" onclick="atualizarTudo()">↻ Atualizar painel</button>
- </div>
+ <div class="card"><h3>📡 Status do Banco</h3><p id="status">Conectando ao Supabase...</p><button onclick="testarConexao()">Testar conexão</button></div>
+ <div class="card"><h3>📊 Estatísticas do Sistema</h3><div class="stats"><div class="stat">Total de registros<strong id="total">0</strong></div><div class="stat">Banco de dados<strong id="banco">...</strong></div></div><p id="ultimaAtualizacao">Aguardando atualização...</p><button class="secondary" onclick="atualizarTudo()">↻ Atualizar painel</button></div>
 </section>
 
-<!-- REGISTRO -->
 <section class="module-view" id="modulo-registro">
- <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
- <h2 class="module-title">🧪 REGISTRAR ATIVIDADE</h2>
- <div class="card">
-  <h3>Registrar nova atividade</h3>
-  <input id="nomeTeste" placeholder="Nome da atividade" maxlength="120">
-  <input id="eventoTeste" placeholder="Descrição do evento" maxlength="500">
-  <button id="btnRegistrar" onclick="registrarTeste()">+ Registrar atividade</button>
-  <p id="mensagem">Aguardando registro...</p>
- </div>
+ <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button><h2 class="module-title">🧪 REGISTRAR ATIVIDADE</h2>
+ <div class="card"><h3>Registrar nova atividade</h3><input id="nomeTeste" placeholder="Nome da atividade" maxlength="120"><input id="eventoTeste" placeholder="Descrição do evento" maxlength="500"><button id="btnRegistrar" onclick="registrarTeste()">+ Registrar atividade</button><p id="mensagem">Aguardando registro...</p></div>
 </section>
 
-<!-- SCANNER -->
 <section class="module-view" id="modulo-scanner">
- <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
- <h2 class="module-title">🛡️ WEB SECURITY SCANNER</h2>
+ <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button><h2 class="module-title">🛡️ WEB SECURITY SCANNER</h2>
  <div class="card">
   <h3>WEB SECURITY SCANNER</h3>
-  <p class="note">Ferramentas externas para avaliar a configuração de segurança de domínios próprios ou autorizados.</p>
+  <p class="note">Análise de configuração de segurança de domínios próprios ou autorizados.</p>
   <input id="dominioScanner" placeholder="Ex: meusite.com.br" maxlength="253">
   <label class="authorized"><input type="checkbox" id="autorizacaoScanner"> Confirmo que tenho autorização para analisar este domínio.</label>
-  <button onclick="iniciarScanner()">🔍 PREPARAR ANÁLISE</button>
+  <button onclick="iniciarScanner()">🔍 PREPARAR DOMÍNIO</button>
+  <button id="btnAnalisarAPI" onclick="analisarDominioAPI()" disabled>🛡️ ANALISAR COM API</button>
   <div id="resultadoScanner" class="scanner-result">Aguardando domínio autorizado...</div>
   <div class="section-tag">FERRAMENTAS EXTERNAS</div>
   <div class="scanner-tools">
@@ -203,142 +165,63 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
    <button class="secondary" onclick="abrirScanner('headers')">🛡️ SECURITY HEADERS</button>
    <button class="secondary" onclick="abrirScanner('mozilla')">🌐 MOZILLA OBSERVATORY</button>
   </div>
-  <p class="note">Os serviços externos realizam as análises. Abrir uma ferramenta não significa que a verificação foi concluída.</p>
+  <p class="note">Os serviços externos realizam suas próprias análises. Abrir uma ferramenta não significa que a verificação foi concluída.</p>
  </div>
 </section>
 
-<!-- PASSWORD -->
 <section class="module-view" id="modulo-password">
- <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
- <h2 class="module-title">🔐 PASSWORD SECURITY LAB</h2>
+ <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button><h2 class="module-title">🔐 PASSWORD SECURITY LAB</h2>
  <div class="card">
-  <h3>Analisador de força de senha</h3>
-  <p class="note">A análise acontece localmente no navegador. A senha não é enviada ao Supabase.</p>
+  <h3>Analisador de força de senha</h3><p class="note">A análise acontece localmente no navegador. A senha não é enviada ao Supabase.</p>
   <input id="senhaAnalise" type="password" placeholder="Digite uma senha para analisar" autocomplete="new-password" maxlength="128">
-  <button onclick="analisarSenha()">ANALISAR SENHA</button>
-  <button class="secondary" onclick="limparSenha()">LIMPAR</button>
-  <div class="meter"><div class="meter-fill" id="forcaBarra"></div></div>
-  <div id="resultadoSenha" class="scanner-result">Aguardando análise...</div>
-  <div class="section-tag">IDENTIFICADOR DE FORMATO DE HASH</div>
-  <input id="hashEntrada" placeholder="Cole um hash de exemplo" maxlength="300">
-  <button onclick="identificarHash()">IDENTIFICAR FORMATO</button>
-  <div id="resultadoHash" class="scanner-result">Aguardando hash...</div>
+  <button onclick="analisarSenha()">ANALISAR SENHA</button><button class="secondary" onclick="limparSenha()">LIMPAR</button>
+  <div class="meter"><div class="meter-fill" id="forcaBarra"></div></div><div id="resultadoSenha" class="scanner-result">Aguardando análise...</div>
+  <div class="section-tag">IDENTIFICADOR DE FORMATO DE HASH</div><input id="hashEntrada" placeholder="Cole um hash de exemplo" maxlength="300"><button onclick="identificarHash()">IDENTIFICAR FORMATO</button><div id="resultadoHash" class="scanner-result">Aguardando hash...</div>
   <p class="note">A identificação é baseada no formato. Não recupera senhas nem confirma a origem do hash.</p>
-  <div class="section-tag">SIMULADOR EDUCATIVO</div>
-  <p class="note">Demonstração local com uma senha fictícia fixa.</p>
-  <button onclick="simularAtaque()">▶ EXECUTAR SIMULAÇÃO DIDÁTICA</button>
-  <div id="resultadoSimulacao" class="scanner-result">Simulador aguardando execução...</div>
+  <div class="section-tag">SIMULADOR EDUCATIVO</div><p class="note">Demonstração local com uma senha fictícia fixa.</p><button onclick="simularAtaque()">▶ EXECUTAR SIMULAÇÃO DIDÁTICA</button><div id="resultadoSimulacao" class="scanner-result">Simulador aguardando execução...</div>
  </div>
 </section>
 
-<!-- HISTORICO -->
 <section class="module-view" id="modulo-historico">
- <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
- <h2 class="module-title">📋 HISTÓRICO DE ATIVIDADES</h2>
- <div class="card">
-  <h3>Histórico</h3>
-  <input id="pesquisa" placeholder="Pesquisar por nome ou evento..." oninput="filtrarHistorico()">
-  <button class="secondary" onclick="atualizarTudo()">↻ Atualizar histórico</button>
-  <div id="historico">Carregando histórico...</div>
- </div>
+ <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button><h2 class="module-title">📋 HISTÓRICO DE ATIVIDADES</h2>
+ <div class="card"><h3>Histórico</h3><input id="pesquisa" placeholder="Pesquisar por nome ou evento..." oninput="filtrarHistorico()"><button class="secondary" onclick="atualizarTudo()">↻ Atualizar histórico</button><div id="historico">Carregando histórico...</div></div>
 </section>
 
-<!-- NMAP -->
 <section class="module-view" id="modulo-nmap">
- <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
- <h2 class="module-title">🌐 NMAP NETWORK SCANNER</h2>
-
- <div class="card">
-  <h3>📡 INTEGRAÇÃO COM TERMUX</h3>
-  <p class="note">O Nmap precisa ser executado no Termux. Este painel prepara comandos para redes privadas sob sua administração ou autorização.</p>
-  <div class="tool-label">INSTALAÇÃO</div>
-  <div class="command-box" id="nmapInstall">pkg update && pkg install nmap</div>
-  <button onclick="copiarElemento('nmapInstall')">📋 COPIAR INSTALAÇÃO</button>
- </div>
-
- <div class="card">
-  <h3>🔍 DESCOBERTA DE DISPOSITIVOS</h3>
-  <label class="tool-label">REDE PRIVADA IPv4/CIDR</label>
-  <input id="nmapRede" placeholder="Ex: 192.168.1.0/24" maxlength="18">
-  <label class="authorized"><input type="checkbox" id="nmapAutorizacao"> Confirmo que tenho permissão para analisar esta rede.</label>
-  <button onclick="gerarNmapRede()">GERAR COMANDO</button>
-  <div id="nmapResultado" class="tool-output">Aguardando rede...</div>
-  <button class="secondary" onclick="copiarElemento('nmapResultado')">📋 COPIAR COMANDO</button>
- </div>
-
- <div class="card">
-  <h3>🛡️ ANÁLISE DE PORTAS</h3>
-  <label class="tool-label">IP PRIVADO DO DISPOSITIVO</label>
-  <input id="nmapHost" placeholder="Ex: 192.168.1.10" maxlength="15">
-  <label class="authorized"><input type="checkbox" id="nmapHostAutorizacao"> Confirmo que administro ou tenho autorização para analisar este dispositivo.</label>
-  <button onclick="gerarNmapPortas()">GERAR COMANDO</button>
-  <div id="nmapPortasResultado" class="tool-output">Aguardando endereço...</div>
-  <button class="secondary" onclick="copiarElemento('nmapPortasResultado')">📋 COPIAR COMANDO</button>
-  <p class="note">A execução ocorre manualmente no Termux. O painel não inventa nem simula resultados de varredura.</p>
- </div>
+ <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button><h2 class="module-title">🌐 NMAP NETWORK SCANNER</h2>
+ <div class="card"><h3>📡 INTEGRAÇÃO COM TERMUX</h3><p class="note">O Nmap precisa ser executado no Termux. Este painel prepara comandos para redes privadas sob sua administração ou autorização.</p><div class="tool-label">INSTALAÇÃO</div><div class="command-box" id="nmapInstall">pkg update && pkg install nmap</div><button onclick="copiarElemento('nmapInstall')">📋 COPIAR INSTALAÇÃO</button></div>
+ <div class="card"><h3>🔍 DESCOBERTA DE DISPOSITIVOS</h3><label class="tool-label">REDE PRIVADA IPv4/CIDR</label><input id="nmapRede" placeholder="Ex: 192.168.1.0/24" maxlength="18"><label class="authorized"><input type="checkbox" id="nmapAutorizacao"> Confirmo que tenho permissão para analisar esta rede.</label><button onclick="gerarNmapRede()">GERAR COMANDO</button><div id="nmapResultado" class="tool-output">Aguardando rede...</div><button class="secondary" onclick="copiarElemento('nmapResultado')">📋 COPIAR COMANDO</button></div>
+ <div class="card"><h3>🛡️ ANÁLISE DE PORTAS</h3><label class="tool-label">IP PRIVADO DO DISPOSITIVO</label><input id="nmapHost" placeholder="Ex: 192.168.1.10" maxlength="15"><label class="authorized"><input type="checkbox" id="nmapHostAutorizacao"> Confirmo que administro ou tenho autorização para analisar este dispositivo.</label><button onclick="gerarNmapPortas()">GERAR COMANDO</button><div id="nmapPortasResultado" class="tool-output">Aguardando endereço...</div><button class="secondary" onclick="copiarElemento('nmapPortasResultado')">📋 COPIAR COMANDO</button><p class="note">A execução ocorre manualmente no Termux. O painel não inventa nem simula resultados de varredura.</p></div>
 </section>
 
-<!-- DATA SEARCH -->
 <section class="module-view" id="modulo-datasearch">
- <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
- <h2 class="module-title">🔎 DATA SEARCH</h2>
- <div class="card">
-  <h3>📂 CENTRAL DE PESQUISA</h3>
-  <p class="note">Validação de formatos e organização de consultas. Não acessa cadastros privados, bases vazadas ou dados sigilosos.</p>
-  <div class="search-tabs">
-   <button onclick="selecionarPesquisa('nome')">👤 NOME</button>
-   <button onclick="selecionarPesquisa('telefone')">📱 TELEFONE</button>
-   <button onclick="selecionarPesquisa('cpf')">🪪 CPF</button>
-   <button onclick="selecionarPesquisa('placa')">🚘 PLACA</button>
-  </div>
-  <div class="tool-label">TIPO DE PESQUISA</div>
-  <input id="tipoPesquisa" value="/nome" readonly>
-  <div class="tool-label">INFORMAÇÃO</div>
-  <input id="valorPesquisa" placeholder="Digite a informação" maxlength="120" autocomplete="off">
-  <label class="authorized"><input type="checkbox" id="pesquisaAutorizada"> Confirmo que tenho direito ou autorização para realizar esta consulta.</label>
-  <button onclick="executarPesquisa()">🔍 VALIDAR INFORMAÇÃO</button>
-  <button class="secondary" onclick="limparPesquisa()">LIMPAR</button>
-  <div id="resultadoPesquisa" class="tool-output">Aguardando consulta...</div>
-  <p class="note">Por segurança, o conteúdo digitado não é enviado ao banco de dados nem armazenado no histórico.</p>
- </div>
- <div class="card">
-  <h3>📚 FONTES OFICIAIS</h3>
-  <p class="note">Use os canais oficiais para consultar informações próprias ou serviços disponibilizados legalmente.</p>
-  <button class="secondary" onclick="abrirLink('https://www.gov.br/pt-br')">🌐 PORTAL GOV.BR</button>
-  <button class="secondary" onclick="abrirLink('https://www.gov.br/transportes/pt-br')">🚘 PORTAL DE TRANSPORTES</button>
-  <button class="secondary" onclick="abrirLink('https://www.gov.br/receitafederal/pt-br')">🪪 RECEITA FEDERAL</button>
- </div>
+ <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button><h2 class="module-title">🔎 DATA SEARCH</h2>
+ <div class="card"><h3>📂 CENTRAL DE PESQUISA</h3><p class="note">Validação de formatos e organização de consultas. Não acessa cadastros privados, bases vazadas ou dados sigilosos.</p>
+ <div class="search-tabs"><button onclick="selecionarPesquisa('nome')">👤 NOME</button><button onclick="selecionarPesquisa('telefone')">📱 TELEFONE</button><button onclick="selecionarPesquisa('cpf')">🪪 CPF</button><button onclick="selecionarPesquisa('placa')">🚘 PLACA</button></div>
+ <div class="tool-label">TIPO DE PESQUISA</div><input id="tipoPesquisa" value="/nome" readonly><div class="tool-label">INFORMAÇÃO</div><input id="valorPesquisa" placeholder="Digite a informação" maxlength="120" autocomplete="off">
+ <label class="authorized"><input type="checkbox" id="pesquisaAutorizada"> Confirmo que tenho direito ou autorização para realizar esta consulta.</label><button onclick="executarPesquisa()">🔍 VALIDAR INFORMAÇÃO</button><button class="secondary" onclick="limparPesquisa()">LIMPAR</button><div id="resultadoPesquisa" class="tool-output">Aguardando consulta...</div><p class="note">Por segurança, o conteúdo digitado não é enviado ao banco de dados nem armazenado no histórico.</p></div>
+ <div class="card"><h3>📚 FONTES OFICIAIS</h3><p class="note">Use os canais oficiais para consultar informações próprias ou serviços disponibilizados legalmente.</p><button class="secondary" onclick="abrirLink('https://www.gov.br/pt-br')">🌐 PORTAL GOV.BR</button><button class="secondary" onclick="abrirLink('https://www.gov.br/transportes/pt-br')">🚘 PORTAL DE TRANSPORTES</button><button class="secondary" onclick="abrirLink('https://www.gov.br/receitafederal/pt-br')">🪪 RECEITA FEDERAL</button></div>
 </section>
 
-<footer>
- NIEL SECURITY OPERATIONS © 2026<br>
- SEGURANÇA • CONHECIMENTO • EVOLUÇÃO<br>
- Ambiente de aprendizagem e análise
-</footer>
+<footer>NIEL SECURITY OPERATIONS © 2026<br>SEGURANÇA • CONHECIMENTO • EVOLUÇÃO<br>Ambiente de aprendizagem e análise</footer>
 </div>
 
 <script>
 /* MATRIX */
 (function(){
- const canvas=document.getElementById("matrix");
- const ctx=canvas.getContext("2d");
- const letras="01アイウエオカキクケコサシスセソタチツテト";
- const tamanho=16;
+ const canvas=document.getElementById("matrix"),ctx=canvas.getContext("2d");
+ const letras="01アイウエオカキクケコサシスセソタチツテト",tamanho=16;
  let colunas=[];
  function ajustar(){
   const dpr=Math.min(window.devicePixelRatio||1,2);
-  canvas.width=innerWidth*dpr;
-  canvas.height=innerHeight*dpr;
-  canvas.style.width=innerWidth+"px";
-  canvas.style.height=innerHeight+"px";
+  canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;
+  canvas.style.width=innerWidth+"px";canvas.style.height=innerHeight+"px";
   ctx.setTransform(dpr,0,0,dpr,0,0);
   colunas=Array(Math.ceil(innerWidth/tamanho)).fill(0).map(()=>Math.random()*-40);
  }
  function animar(){
-  ctx.fillStyle="rgba(3,8,7,0.09)";
-  ctx.fillRect(0,0,innerWidth,innerHeight);
-  ctx.fillStyle="#00ff99";
-  ctx.font=tamanho+"px monospace";
+  ctx.fillStyle="rgba(3,8,7,0.09)";ctx.fillRect(0,0,innerWidth,innerHeight);
+  ctx.fillStyle="#00ff99";ctx.font=tamanho+"px monospace";
   colunas.forEach((y,i)=>{
    ctx.fillText(letras[Math.floor(Math.random()*letras.length)],i*tamanho,y*tamanho);
    if(y*tamanho>innerHeight&&Math.random()>.975)colunas[i]=0;
@@ -346,18 +229,15 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
   });
   requestAnimationFrame(animar);
  }
- window.addEventListener("resize",ajustar);
- ajustar();animar();
+ window.addEventListener("resize",ajustar);ajustar();animar();
 })();
 
 /* NAVEGACAO */
 function abrirModulo(nome){
- const destino=document.getElementById("modulo-"+nome);
- if(!destino)return;
+ const destino=document.getElementById("modulo-"+nome);if(!destino)return;
  document.getElementById("menuModulos").style.display="none";
  document.querySelectorAll(".module-view").forEach(m=>m.classList.remove("active"));
- destino.classList.add("active");
- window.scrollTo({top:0,behavior:"smooth"});
+ destino.classList.add("active");window.scrollTo({top:0,behavior:"smooth"});
 }
 function voltarMenu(){
  document.querySelectorAll(".module-view").forEach(m=>m.classList.remove("active"));
@@ -368,22 +248,15 @@ function voltarMenu(){
 /* SUPABASE */
 const SUPABASE_URL="https://rnzmrbadzmgpunwhrifw.supabase.co";
 const SUPABASE_KEY="sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r";
-
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
 });
-
-let registros=[];
-let atualizando=false;
-let intervaloAtualizacao=null;
-let acessoLiberado=false;
-let papelUsuario=null;
-let dominioAutorizado=null;
+let registros=[],atualizando=false,intervaloAtualizacao=null;
+let acessoLiberado=false,papelUsuario=null,dominioAutorizado=null;
 
 function mensagem(texto,erro=false){
  const campo=document.getElementById("mensagem");
- campo.textContent=texto;
- campo.style.color=erro?"#ff5252":"#00ff99";
+ campo.textContent=texto;campo.style.color=erro?"#ff5252":"#00ff99";
 }
 function mostrarErro(error){
  console.error("Supabase:",error);
@@ -393,22 +266,15 @@ function mostrarErro(error){
 /* LOGIN */
 async function entrar(event){
  event.preventDefault();
- const botao=document.getElementById("btnEntrar");
- const erro=document.getElementById("erroLogin");
- const email=document.getElementById("emailLogin").value.trim();
- const senha=document.getElementById("senhaLogin").value;
+ const botao=document.getElementById("btnEntrar"),erro=document.getElementById("erroLogin");
+ const email=document.getElementById("emailLogin").value.trim(),senha=document.getElementById("senhaLogin").value;
  botao.disabled=true;botao.textContent="VERIFICANDO...";erro.textContent="";
  try{
   const {data,error}=await db.auth.signInWithPassword({email,password:senha});
-  if(error)throw error;
-  await verificarAcesso(data.user);
+  if(error)throw error;await verificarAcesso(data.user);
  }catch(error){
-  console.error(error);
-  erro.textContent="Erro no login: "+error.message;
-  await db.auth.signOut();
- }finally{
-  botao.disabled=false;botao.textContent="ENTRAR NO SISTEMA";
- }
+  console.error(error);erro.textContent="Erro no login: "+error.message;await db.auth.signOut();
+ }finally{botao.disabled=false;botao.textContent="ENTRAR NO SISTEMA";}
 }
 
 /* PERMISSOES */
@@ -419,23 +285,17 @@ async function verificarAcesso(user){
   const {data:perfil,error}=await db.from("user_profiles").select("role").eq("id",user.id).maybeSingle();
   if(error)throw error;
   if(!perfil||!["admin","approved"].includes(perfil.role)){
-   await db.auth.signOut();
-   throw new Error("Sua conta ainda não está autorizada pelo administrador.");
+   await db.auth.signOut();throw new Error("Sua conta ainda não está autorizada pelo administrador.");
   }
-  papelUsuario=perfil.role;
-  acessoLiberado=true;
+  papelUsuario=perfil.role;acessoLiberado=true;
   document.getElementById("tipoUsuario").textContent=papelUsuario==="admin"?"👑 Administrador":"👤 Usuário aprovado";
   document.getElementById("loginTela").style.display="none";
   document.getElementById("painel").style.display="block";
   document.getElementById("menuModulos").style.display="block";
-  erro.textContent="";
-  await iniciarPainel();
+  erro.textContent="";await iniciarPainel();
  }catch(error){
-  console.error(error);
-  acessoLiberado=false;papelUsuario=null;
-  await db.auth.signOut();
-  mostrarLogin();
-  erro.textContent=error.message;
+  console.error(error);acessoLiberado=false;papelUsuario=null;
+  await db.auth.signOut();mostrarLogin();erro.textContent=error.message;
  }
 }
 function mostrarLogin(){
@@ -447,8 +307,7 @@ function mostrarLogin(){
 async function sair(){
  if(intervaloAtualizacao){clearInterval(intervaloAtualizacao);intervaloAtualizacao=null;}
  acessoLiberado=false;papelUsuario=null;dominioAutorizado=null;
- await db.auth.signOut();
- mostrarLogin();
+ await db.auth.signOut();mostrarLogin();
  document.getElementById("emailLogin").value="";
  document.getElementById("senhaLogin").value="";
  document.getElementById("erroLogin").textContent="Você saiu da sua conta.";
@@ -457,36 +316,30 @@ async function sair(){
 /* CONEXAO */
 async function testarConexao(){
  if(!acessoLiberado)return;
- const status=document.getElementById("status");
- const banco=document.getElementById("banco");
+ const status=document.getElementById("status"),banco=document.getElementById("banco");
  status.textContent="Testando conexão...";banco.textContent="...";
  try{
   const {error}=await db.from("lab_logs").select("id").limit(1);
   if(error)throw error;
-  status.textContent="🟢 Banco conectado!";
-  status.className="online";banco.textContent="ONLINE";
+  status.textContent="🟢 Banco conectado!";status.className="online";banco.textContent="ONLINE";
  }catch(error){
-  status.textContent="🔴 "+mostrarErro(error);
-  status.className="offline";banco.textContent="OFFLINE";
+  status.textContent="🔴 "+mostrarErro(error);status.className="offline";banco.textContent="OFFLINE";
  }
 }
 
 /* REGISTRO */
 async function registrarTeste(){
  if(!acessoLiberado)return;
- const campoNome=document.getElementById("nomeTeste");
- const campoEvento=document.getElementById("eventoTeste");
+ const campoNome=document.getElementById("nomeTeste"),campoEvento=document.getElementById("eventoTeste");
  const botao=document.getElementById("btnRegistrar");
- const nome=campoNome.value.trim();
- const evento=campoEvento.value.trim()||"atividade_registrada";
+ const nome=campoNome.value.trim(),evento=campoEvento.value.trim()||"atividade_registrada";
  if(!nome){mensagem("Digite o nome da atividade.",true);return;}
  botao.disabled=true;mensagem("Salvando registro...");
  try{
   const {error}=await db.from("lab_logs").insert([{name:nome,event:evento}]);
   if(error)throw error;
   campoNome.value="";campoEvento.value="";
-  mensagem("✅ Atividade registrada com sucesso!");
-  await atualizarTudo();
+  mensagem("✅ Atividade registrada com sucesso!");await atualizarTudo();
  }catch(error){mensagem("Erro: "+mostrarErro(error),true);}
  finally{botao.disabled=false;}
 }
@@ -494,27 +347,20 @@ async function registrarTeste(){
 /* TOTAL E HISTORICO */
 async function carregarTotal(){
  const {count,error}=await db.from("lab_logs").select("id",{count:"exact",head:true});
- if(error)throw error;
- document.getElementById("total").textContent=count??0;
+ if(error)throw error;document.getElementById("total").textContent=count??0;
 }
 async function carregarHistorico(){
- const historico=document.getElementById("historico");
- historico.textContent="Carregando histórico...";
+ const historico=document.getElementById("historico");historico.textContent="Carregando histórico...";
  const {data,error}=await db.from("lab_logs").select("id,name,event,created_at").order("created_at",{ascending:false}).limit(100);
- if(error)throw error;
- registros=data||[];
- filtrarHistorico();
+ if(error)throw error;registros=data||[];filtrarHistorico();
 }
 async function atualizarTudo(){
- if(!acessoLiberado||atualizando)return;
- atualizando=true;
+ if(!acessoLiberado||atualizando)return;atualizando=true;
  try{
   await Promise.all([carregarTotal(),carregarHistorico()]);
   document.getElementById("ultimaAtualizacao").textContent="Última atualização: "+new Date().toLocaleTimeString("pt-BR");
- }catch(error){
-  console.error(error);
-  document.getElementById("historico").textContent="Erro ao atualizar: "+mostrarErro(error);
- }finally{atualizando=false;}
+ }catch(error){console.error(error);document.getElementById("historico").textContent="Erro ao atualizar: "+mostrarErro(error);}
+ finally{atualizando=false;}
 }
 function filtrarHistorico(){
  const historico=document.getElementById("historico");
@@ -554,13 +400,10 @@ async function editarTeste(item,div){
    if(error)throw error;
    if(!data||!data.length)throw new Error("Nenhuma linha atualizada. Verifique as políticas RLS.");
    mensagem("✅ Registro atualizado!");
-   registros=registros.map(r=>r.id===item.id?{...r,...data[0]}:r);
-   await atualizarTudo();
+   registros=registros.map(r=>r.id===item.id?{...r,...data[0]}:r);await atualizarTudo();
   }catch(error){alert("Erro ao editar: "+mostrarErro(error));salvar.disabled=false;cancelar.disabled=false;}
  };
- cancelar.onclick=()=>filtrarHistorico();
- div.append(campoNome,campoEvento,salvar,cancelar);
- campoNome.focus();
+ cancelar.onclick=()=>filtrarHistorico();div.append(campoNome,campoEvento,salvar,cancelar);campoNome.focus();
 }
 
 /* EXCLUIR */
@@ -571,18 +414,18 @@ async function excluirTeste(id){
   const {data,error}=await db.from("lab_logs").delete().eq("id",id).select("id");
   if(error)throw error;
   if(!data||!data.length)throw new Error("Nenhum registro excluído. Verifique a política DELETE.");
-  mensagem("🗑 Registro excluído!");
-  await atualizarTudo();
+  mensagem("🗑 Registro excluído!");await atualizarTudo();
  }catch(error){alert("Erro ao excluir: "+mostrarErro(error));}
 }
 
-/* WEB SCANNER */
+/* WEB SCANNER - API VERCEL */
 function iniciarScanner(){
  if(!acessoLiberado)return;
  const campo=document.getElementById("dominioScanner");
  const autorizacao=document.getElementById("autorizacaoScanner");
  const resultado=document.getElementById("resultadoScanner");
- if(!autorizacao.checked){resultado.textContent="⚠️ Confirme a autorização.";dominioAutorizado=null;return;}
+ const botao=document.getElementById("btnAnalisarAPI");
+ if(!autorizacao.checked){resultado.textContent="⚠️ Confirme a autorização.";dominioAutorizado=null;botao.disabled=true;return;}
  const entrada=campo.value.trim();
  if(!entrada){resultado.textContent="Digite um domínio.";return;}
  let url;
@@ -590,11 +433,62 @@ function iniciarScanner(){
   url=new URL(entrada.includes("://")?entrada:"https://"+entrada);
   if(!["http:","https:"].includes(url.protocol)||!url.hostname.includes(".")||url.username||url.password)throw new Error("Domínio inválido.");
   if(url.hostname==="localhost"||url.hostname.endsWith(".localhost")||url.hostname.endsWith(".local"))throw new Error("Domínio não permitido.");
- }catch(error){resultado.textContent="❌ "+error.message;dominioAutorizado=null;return;}
+ }catch(error){resultado.textContent="❌ "+error.message;dominioAutorizado=null;botao.disabled=true;return;}
  dominioAutorizado=url.hostname;
- resultado.textContent="✅ Domínio preparado: "+dominioAutorizado+"\n\nSelecione uma ferramenta externa para realizar a análise.";
- registrarEventoScanner("Domínio preparado: "+dominioAutorizado);
+ resultado.textContent="✅ Domínio preparado: "+dominioAutorizado+"\n\nAgora clique em ANALISAR COM API.";
+ botao.disabled=false;
+ registrarEventoScanner("Domínio preparado para análise: "+dominioAutorizado);
 }
+
+async function analisarDominioAPI(){
+ if(!acessoLiberado||!dominioAutorizado)return;
+ const botao=document.getElementById("btnAnalisarAPI");
+ const resultado=document.getElementById("resultadoScanner");
+ if(!document.getElementById("autorizacaoScanner").checked){
+  resultado.textContent="⚠️ Confirme a autorização antes de analisar.";return;
+ }
+ botao.disabled=true;botao.textContent="ANALISANDO...";
+ resultado.textContent="Conectando à API de segurança da Vercel...\nAguarde a resposta.";
+ try{
+  const resposta=await fetch("/api/security-headers",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({dominio:dominioAutorizado})
+  });
+  let dados;
+  try{dados=await resposta.json();}
+  catch(e){throw new Error("A API retornou uma resposta que não é JSON.");}
+  if(!resposta.ok)throw new Error(dados.erro||dados.detalhe||("Erro HTTP "+resposta.status));
+  if(!dados||!dados.verificacoes)throw new Error("A API respondeu, mas não enviou o campo verificacoes.");
+  const verificacoes=dados.verificacoes;
+  const linhas=Object.entries(verificacoes).map(([nome,valor])=>{
+   const presente=valor===true||(valor&&typeof valor==="object"&&(valor.presente===true||valor.ok===true));
+   const ausente=valor===false||(valor&&typeof valor==="object"&&(valor.presente===false||valor.ok===false));
+   const status=presente?"✅ PRESENTE":ausente?"❌ AUSENTE":"ℹ️ "+String(valor);
+   return nome+": "+status;
+  });
+  const texto=[
+   "ANÁLISE CONCLUÍDA",
+   "Domínio: "+(dados.dominio||dominioAutorizado),
+   "Status HTTP: "+(dados.statusHTTP??"Não informado"),
+   "Cabeçalhos encontrados: "+(dados.encontrados??"Não informado"),
+   "Total verificado: "+(dados.total??Object.keys(verificacoes).length),
+   "",
+   "RESULTADO DOS CABEÇALHOS",
+   ...linhas
+  ];
+  if(dados.redirecionamento)texto.push("Redirecionamento: "+dados.redirecionamento);
+  if(dados.aviso)texto.push("Aviso: "+dados.aviso);
+  resultado.textContent=texto.join("\n");
+  registrarEventoScanner("Análise de cabeçalhos concluída para "+dominioAutorizado);
+ }catch(error){
+  console.error("Erro na API de segurança:",error);
+  resultado.textContent="❌ NÃO FOI POSSÍVEL CONCLUIR A ANÁLISE\n\n"+error.message+"\n\nConfira se a API está publicada e se o endereço /api/security-headers está correto.";
+ }finally{
+  botao.disabled=false;botao.textContent="🛡️ ANALISAR COM API";
+ }
+}
+
 async function registrarEventoScanner(evento){
  if(!acessoLiberado)return;
  const {error}=await db.from("lab_logs").insert([{name:"WEB SECURITY SCANNER",event:evento}]);
@@ -616,22 +510,15 @@ function abrirScanner(tipo){
 function analisarSenha(){
  if(!acessoLiberado)return;
  const senha=document.getElementById("senhaAnalise").value;
- const resultado=document.getElementById("resultadoSenha");
- const barra=document.getElementById("forcaBarra");
+ const resultado=document.getElementById("resultadoSenha"),barra=document.getElementById("forcaBarra");
  if(!senha){resultado.textContent="Digite uma senha.";barra.style.width="0%";return;}
  let pontos=0;
- if(senha.length>=12)pontos++;
- if(senha.length>=16)pontos++;
- if(/[a-z]/.test(senha))pontos++;
- if(/[A-Z]/.test(senha))pontos++;
- if(/[0-9]/.test(senha))pontos++;
- if(/[^A-Za-z0-9]/.test(senha))pontos++;
+ if(senha.length>=12)pontos++;if(senha.length>=16)pontos++;
+ if(/[a-z]/.test(senha))pontos++;if(/[A-Z]/.test(senha))pontos++;
+ if(/[0-9]/.test(senha))pontos++;if(/[^A-Za-z0-9]/.test(senha))pontos++;
  if(["123456","password","senha","qwerty","admin","12345678"].includes(senha.toLowerCase()))pontos=0;
  barra.style.width=Math.round(pontos/6*100)+"%";
- let nivel="Fraca";
- if(pontos>=3)nivel="Moderada";
- if(pontos>=5)nivel="Forte";
- if(pontos===6)nivel="Muito forte";
+ let nivel="Fraca";if(pontos>=3)nivel="Moderada";if(pontos>=5)nivel="Forte";if(pontos===6)nivel="Muito forte";
  resultado.textContent="Resultado: "+nivel+"\nComprimento: "+senha.length+" caracteres\nCritérios atendidos: "+pontos+" de 6\n\nUse uma senha longa, única e não reutilizada.";
 }
 function limparSenha(){
@@ -641,8 +528,7 @@ function limparSenha(){
 }
 function identificarHash(){
  if(!acessoLiberado)return;
- const valor=document.getElementById("hashEntrada").value.trim();
- const resultado=document.getElementById("resultadoHash");
+ const valor=document.getElementById("hashEntrada").value.trim(),resultado=document.getElementById("resultadoHash");
  if(!valor){resultado.textContent="Cole um hash.";return;}
  let tipo="Formato não reconhecido";
  if(/^\$2[aby]\$\d{2}\$/.test(valor))tipo="Possível bcrypt";
@@ -656,8 +542,7 @@ function identificarHash(){
 }
 function simularAtaque(){
  if(!acessoLiberado)return;
- const alvo="LAB-2026";
- const lista=["123456","admin","senha","qwerty","LAB-2026"];
+ const alvo="LAB-2026",lista=["123456","admin","senha","qwerty","LAB-2026"];
  let tentativas=0,encontrou=false;
  for(const tentativa of lista){tentativas++;if(tentativa===alvo){encontrou=true;break;}}
  document.getElementById("resultadoSimulacao").textContent="SIMULAÇÃO EDUCATIVA CONCLUÍDA\nAmbiente: demonstração fictícia local\nTentativas ilustrativas: "+tentativas+"\nResultado: "+(encontrou?"senha fictícia encontrada":"não encontrada")+"\n\nNenhuma conta ou senha real foi testada.";
@@ -665,13 +550,10 @@ function simularAtaque(){
 
 /* FERRAMENTAS DE COPIA */
 function copiarElemento(id){
- const elemento=document.getElementById(id);
- const texto=elemento.innerText||elemento.textContent;
+ const elemento=document.getElementById(id),texto=elemento.innerText||elemento.textContent;
  if(navigator.clipboard&&window.isSecureContext){
   navigator.clipboard.writeText(texto).then(()=>alert("Copiado!")).catch(()=>alert("Não foi possível copiar. Selecione o texto manualmente."));
- }else{
-  alert("Selecione e copie o comando manualmente.");
- }
+ }else alert("Selecione e copie o texto manualmente.");
 }
 
 /* NMAP */
@@ -686,9 +568,7 @@ function ipPrivado(ip){
 }
 function gerarNmapRede(){
  if(!acessoLiberado)return;
- const campo=document.getElementById("nmapRede");
- const saida=document.getElementById("nmapResultado");
- const rede=campo.value.trim();
+ const rede=document.getElementById("nmapRede").value.trim(),saida=document.getElementById("nmapResultado");
  if(!document.getElementById("nmapAutorizacao").checked){saida.textContent="⚠️ Confirme a autorização.";return;}
  const m=rede.match(/^(\d{1,3}(?:\.\d{1,3}){3})\/(24|25|26|27|28|29|30|31|32)$/);
  if(!m||!ipPrivado(m[1])){saida.textContent="❌ Informe uma rede IPv4 privada válida, por exemplo 192.168.1.0/24.";return;}
@@ -697,8 +577,7 @@ function gerarNmapRede(){
 }
 function gerarNmapPortas(){
  if(!acessoLiberado)return;
- const ip=document.getElementById("nmapHost").value.trim();
- const saida=document.getElementById("nmapPortasResultado");
+ const ip=document.getElementById("nmapHost").value.trim(),saida=document.getElementById("nmapPortasResultado");
  if(!document.getElementById("nmapHostAutorizacao").checked){saida.textContent="⚠️ Confirme que administra ou tem autorização para analisar o dispositivo.";return;}
  if(!ipPrivado(ip)){saida.textContent="❌ Informe um endereço IPv4 privado válido.";return;}
  saida.textContent="Comando para executar no Termux:\n\nnmap -sV --top-ports 100 "+ip+"\n\nAnalisa as 100 portas mais comuns e identifica serviços quando possível.";
@@ -708,14 +587,8 @@ function gerarNmapPortas(){
 /* DATA SEARCH */
 let tipoBusca="nome";
 function selecionarPesquisa(tipo){
- tipoBusca=tipo;
- document.getElementById("tipoPesquisa").value="/"+tipo;
- const placeholders={
-  nome:"Digite o nome",
-  telefone:"Digite o telefone",
-  cpf:"Digite o CPF",
-  placa:"Digite a placa"
- };
+ tipoBusca=tipo;document.getElementById("tipoPesquisa").value="/"+tipo;
+ const placeholders={nome:"Digite o nome",telefone:"Digite o telefone",cpf:"Digite o CPF",placa:"Digite a placa"};
  document.getElementById("valorPesquisa").placeholder=placeholders[tipo];
  document.getElementById("valorPesquisa").value="";
  document.getElementById("resultadoPesquisa").textContent="Tipo selecionado: /"+tipo+"\nDigite a informação para validar.";
@@ -724,43 +597,21 @@ function executarPesquisa(){
  if(!acessoLiberado)return;
  const valor=document.getElementById("valorPesquisa").value.trim();
  const saida=document.getElementById("resultadoPesquisa");
- const autorizada=document.getElementById("pesquisaAutorizada").checked;
- if(!autorizada){saida.textContent="⚠️ Confirme que tem direito ou autorização para realizar a consulta.";return;}
+ if(!document.getElementById("pesquisaAutorizada").checked){saida.textContent="⚠️ Confirme que tem direito ou autorização para realizar a consulta.";return;}
  if(!valor){saida.textContent="Digite uma informação.";return;}
  let valido=false,descricao="";
- if(tipoBusca==="nome"){
-  valido=/^[\p{L}\s.'-]{2,100}$/u.test(valor);
-  descricao="Formato de nome "+(valido?"válido":"inválido")+".";
- }
- if(tipoBusca==="telefone"){
-  const digitos=valor.replace(/\D/g,"");
-  valido=/^(?:55)?[1-9]{2}9?[0-9]{8}$/.test(digitos);
-  descricao="Formato de telefone brasileiro "+(valido?"aparentemente válido":"inválido")+".";
- }
- if(tipoBusca==="cpf"){
-  const digitos=valor.replace(/\D/g,"");
-  valido=validarCPF(digitos);
-  descricao="CPF "+(valido?"com dígitos verificadores válidos":"inválido")+".";
- }
- if(tipoBusca==="placa"){
-  const placa=valor.toUpperCase().replace(/[\s-]/g,"");
-  valido=/^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(placa);
-  descricao="Formato de placa Mercosul ou padrão antigo "+(valido?"reconhecido":"não reconhecido")+".";
- }
+ if(tipoBusca==="nome"){valido=/^[\p{L}\s.'-]{2,100}$/u.test(valor);descricao="Formato de nome "+(valido?"válido":"inválido")+".";}
+ if(tipoBusca==="telefone"){const digitos=valor.replace(/\D/g,"");valido=/^(?:55)?[1-9]{2}9?[0-9]{8}$/.test(digitos);descricao="Formato de telefone brasileiro "+(valido?"aparentemente válido":"inválido")+".";}
+ if(tipoBusca==="cpf"){const digitos=valor.replace(/\D/g,"");valido=validarCPF(digitos);descricao="CPF "+(valido?"com dígitos verificadores válidos":"inválido")+".";}
+ if(tipoBusca==="placa"){const placa=valor.toUpperCase().replace(/[\s-]/g,"");valido=/^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(placa);descricao="Formato de placa Mercosul ou padrão antigo "+(valido?"reconhecido":"não reconhecido")+".";}
  saida.textContent="PESQUISA: /"+tipoBusca+"\n"+descricao+"\n\nEsta ferramenta valida somente o formato informado. Não consulta cadastros, não identifica titulares e não recupera dados pessoais.";
 }
 function validarCPF(cpf){
  if(!/^\d{11}$/.test(cpf)||/^(\d)\1{10}$/.test(cpf))return false;
- let soma=0;
- for(let i=0;i<9;i++)soma+=Number(cpf[i])*(10-i);
- let resto=(soma*10)%11;
- if(resto===10)resto=0;
- if(resto!==Number(cpf[9]))return false;
- soma=0;
- for(let i=0;i<10;i++)soma+=Number(cpf[i])*(11-i);
- resto=(soma*10)%11;
- if(resto===10)resto=0;
- return resto===Number(cpf[10]);
+ let soma=0;for(let i=0;i<9;i++)soma+=Number(cpf[i])*(10-i);
+ let resto=(soma*10)%11;if(resto===10)resto=0;if(resto!==Number(cpf[9]))return false;
+ soma=0;for(let i=0;i<10;i++)soma+=Number(cpf[i])*(11-i);
+ resto=(soma*10)%11;if(resto===10)resto=0;return resto===Number(cpf[10]);
 }
 function limparPesquisa(){
  document.getElementById("valorPesquisa").value="";
@@ -771,8 +622,7 @@ function abrirLink(url){window.open(url,"_blank","noopener,noreferrer");}
 
 /* INICIAR PAINEL */
 async function iniciarPainel(){
- await testarConexao();
- await atualizarTudo();
+ await testarConexao();await atualizarTudo();
  if(intervaloAtualizacao)clearInterval(intervaloAtualizacao);
  intervaloAtualizacao=setInterval(atualizarTudo,15000);
 }
@@ -781,14 +631,10 @@ async function iniciarPainel(){
 async function iniciar(){
  mostrarLogin();
  const {data,error}=await db.auth.getSession();
- if(error){
-  document.getElementById("erroLogin").textContent="Erro ao verificar sessão: "+error.message;
-  return;
- }
+ if(error){document.getElementById("erroLogin").textContent="Erro ao verificar sessão: "+error.message;return;}
  if(data.session)await verificarAcesso(data.session.user);
 }
 iniciar();
 </script>
 </body>
 </html>
-
