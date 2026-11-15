@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -21,7 +20,6 @@ body{
 }
 
 .container{max-width:950px;margin:auto}
-
 header{text-align:center;padding:25px 0}
 header h1{text-shadow:0 0 15px #00ff99;letter-spacing:2px}
 header p{color:#91a5b5}
@@ -62,7 +60,6 @@ button{
 
 button:hover{opacity:.85}
 button:disabled{opacity:.5;cursor:wait}
-
 .secondary{background:#263747;color:white}
 .danger{background:#e53935;color:white}
 
@@ -152,6 +149,7 @@ Banco de dados
 
 <div class="card">
 <h3>🧪 Registrar novo teste</h3>
+
 <input id="nomeTeste" type="text"
  placeholder="Nome do teste" maxlength="120">
 
@@ -161,6 +159,7 @@ Banco de dados
 <button id="btnRegistrar" onclick="registrarTeste()">
 + Registrar teste
 </button>
+
 <p id="mensagem">Aguardando registro...</p>
 </div>
 
@@ -207,62 +206,62 @@ const db = window.supabase.createClient(
 let registros = [];
 let atualizando = false;
 
-function mensagem(texto, erro=false){
- const campo = document.getElementById("mensagem");
- campo.textContent = texto;
- campo.style.color = erro ? "#ff5252" : "#00ff99";
+function mensagem(texto,erro=false){
+ const campo=document.getElementById("mensagem");
+ campo.textContent=texto;
+ campo.style.color=erro?"#ff5252":"#00ff99";
 }
 
 function mostrarErro(error){
  console.error("Supabase:",error);
- return error.message +
-  (error.code ? " | Código: "+error.code : "");
+ return error.message+
+  (error.code?" | Código: "+error.code:"");
 }
 
 async function testarConexao(){
- const status = document.getElementById("status");
- const banco = document.getElementById("banco");
+ const status=document.getElementById("status");
+ const banco=document.getElementById("banco");
 
- status.textContent = "Testando conexão...";
- banco.textContent = "...";
+ status.textContent="Testando conexão...";
+ banco.textContent="...";
 
  try{
-  const {error} = await db
+  const {error}=await db
    .from("lab_logs")
    .select("id")
    .limit(1);
 
   if(error) throw error;
 
-  status.textContent = "🟢 Banco conectado!";
-  status.className = "online";
-  banco.textContent = "ONLINE";
+  status.textContent="🟢 Banco conectado!";
+  status.className="online";
+  banco.textContent="ONLINE";
 
  }catch(error){
-  status.textContent = "🔴 " + mostrarErro(error);
-  status.className = "offline";
-  banco.textContent = "OFFLINE";
+  status.textContent="🔴 "+mostrarErro(error);
+  status.className="offline";
+  banco.textContent="OFFLINE";
  }
 }
 
 async function registrarTeste(){
- const campoNome = document.getElementById("nomeTeste");
- const campoEvento = document.getElementById("eventoTeste");
- const botao = document.getElementById("btnRegistrar");
+ const campoNome=document.getElementById("nomeTeste");
+ const campoEvento=document.getElementById("eventoTeste");
+ const botao=document.getElementById("btnRegistrar");
 
- const nome = campoNome.value.trim();
- const evento = campoEvento.value.trim() || "teste_registrado";
+ const nome=campoNome.value.trim();
+ const evento=campoEvento.value.trim()||"teste_registrado";
 
  if(!nome){
   mensagem("Digite o nome do teste.",true);
   return;
  }
 
- botao.disabled = true;
+ botao.disabled=true;
  mensagem("Salvando registro...");
 
  try{
-  const {error} = await db
+  const {error}=await db
    .from("lab_logs")
    .insert([{
     name:nome,
@@ -271,8 +270,8 @@ async function registrarTeste(){
 
   if(error) throw error;
 
-  campoNome.value = "";
-  campoEvento.value = "";
+  campoNome.value="";
+  campoEvento.value="";
 
   mensagem("✅ Teste registrado com sucesso!");
   await atualizarTudo();
@@ -280,12 +279,12 @@ async function registrarTeste(){
  }catch(error){
   mensagem("Erro: "+mostrarErro(error),true);
  }finally{
-  botao.disabled = false;
+  botao.disabled=false;
  }
 }
 
 async function carregarTotal(){
- const {count,error} = await db
+ const {count,error}=await db
   .from("lab_logs")
   .select("id",{
    count:"exact",
@@ -294,14 +293,14 @@ async function carregarTotal(){
 
  if(error) throw error;
 
- document.getElementById("total").textContent = count ?? 0;
+ document.getElementById("total").textContent=count??0;
 }
 
 async function carregarHistorico(){
- const historico = document.getElementById("historico");
- historico.textContent = "Carregando...";
+ const historico=document.getElementById("historico");
+ historico.textContent="Carregando...";
 
- const {data,error} = await db
+ const {data,error}=await db
   .from("lab_logs")
   .select("id,name,event,created_at")
   .order("created_at",{ascending:false})
@@ -309,14 +308,14 @@ async function carregarHistorico(){
 
  if(error) throw error;
 
- registros = data || [];
+ registros=data||[];
  filtrarHistorico();
 }
 
 async function atualizarTudo(){
  if(atualizando) return;
 
- atualizando = true;
+ atualizando=true;
 
  try{
   await Promise.all([
@@ -324,122 +323,136 @@ async function atualizarTudo(){
    carregarHistorico()
   ]);
 
-  document.getElementById("ultimaAtualizacao").textContent =
+  document.getElementById("ultimaAtualizacao").textContent=
    "Última atualização: "+
    new Date().toLocaleTimeString("pt-BR");
 
  }catch(error){
   console.error(error);
-  document.getElementById("historico").textContent =
+  document.getElementById("historico").textContent=
    "Erro ao atualizar: "+mostrarErro(error);
  }finally{
-  atualizando = false;
+  atualizando=false;
  }
 }
 
 function filtrarHistorico(){
- const historico = document.getElementById("historico");
- const termo = document.getElementById("pesquisa")
+ const historico=document.getElementById("historico");
+ const termo=document.getElementById("pesquisa")
   .value.toLowerCase().trim();
 
- historico.innerHTML = "";
+ historico.innerHTML="";
 
- const encontrados = registros.filter(item =>
-  (item.name || "").toLowerCase().includes(termo) ||
-  (item.event || "").toLowerCase().includes(termo)
+ const encontrados=registros.filter(item=>
+  (item.name||"").toLowerCase().includes(termo)||
+  (item.event||"").toLowerCase().includes(termo)
  );
 
- if(encontrados.length === 0){
-  historico.textContent = "Nenhum teste encontrado.";
+ if(encontrados.length===0){
+  historico.textContent="Nenhum teste encontrado.";
   return;
  }
 
- encontrados.forEach(item => {
-  const div = document.createElement("div");
-  div.className = "log";
+ encontrados.forEach(item=>{
+  const div=document.createElement("div");
+  div.className="log";
 
-  const titulo = document.createElement("div");
-  titulo.className = "log-title";
-  titulo.textContent = item.name || "Teste sem nome";
+  const titulo=document.createElement("div");
+  titulo.className="log-title";
+  titulo.textContent=item.name||"Teste sem nome";
 
-  const evento = document.createElement("small");
-  evento.textContent = "Evento: "+(item.event || "Não informado");
+  const evento=document.createElement("small");
+  evento.textContent="Evento: "+(item.event||"Não informado");
 
-  const data = document.createElement("small");
-  data.textContent = item.created_at
-   ? new Date(item.created_at).toLocaleString("pt-BR")
-   : "Data não informada";
+  const data=document.createElement("small");
+  data.textContent=item.created_at
+   ?new Date(item.created_at).toLocaleString("pt-BR")
+   :"Data não informada";
 
-  const editar = document.createElement("button");
-  editar.className = "secondary";
-  editar.textContent = "✏️ Editar";
-  editar.onclick = () => editarTeste(item,div);
+  const editar=document.createElement("button");
+  editar.className="secondary";
+  editar.textContent="✏️ Editar";
+  editar.onclick=()=>editarTeste(item,div);
 
-  const excluir = document.createElement("button");
-  excluir.className = "danger";
-  excluir.textContent = "🗑 Excluir";
-  excluir.onclick = () => excluirTeste(item.id);
+  const excluir=document.createElement("button");
+  excluir.className="danger";
+  excluir.textContent="🗑 Excluir";
+  excluir.onclick=()=>excluirTeste(item.id);
 
   div.append(titulo,evento,data,editar,excluir);
   historico.appendChild(div);
  });
 }
 
-function editarTeste(item,div){
- div.innerHTML = "";
+// FUNÇÃO DE EDIÇÃO CORRIGIDA
+async function editarTeste(item,div){
+ div.innerHTML="";
 
- const campoNome = document.createElement("input");
- campoNome.value = item.name || "";
- campoNome.maxLength = 120;
- campoNome.placeholder = "Nome do teste";
+ const campoNome=document.createElement("input");
+ campoNome.value=item.name||"";
+ campoNome.maxLength=120;
+ campoNome.placeholder="Nome do teste";
 
- const campoEvento = document.createElement("input");
- campoEvento.value = item.event || "";
- campoEvento.maxLength = 500;
- campoEvento.placeholder = "Descrição do evento";
+ const campoEvento=document.createElement("input");
+ campoEvento.value=item.event||"";
+ campoEvento.maxLength=500;
+ campoEvento.placeholder="Descrição do evento";
 
- const salvar = document.createElement("button");
- salvar.textContent = "💾 Salvar";
+ const salvar=document.createElement("button");
+ salvar.textContent="💾 Salvar";
 
- const cancelar = document.createElement("button");
- cancelar.textContent = "Cancelar";
- cancelar.className = "secondary";
+ const cancelar=document.createElement("button");
+ cancelar.textContent="Cancelar";
+ cancelar.className="secondary";
 
- salvar.onclick = async () => {
-  const nome = campoNome.value.trim();
-  const evento = campoEvento.value.trim();
+ salvar.onclick=async()=>{
+  const nome=campoNome.value.trim();
+  const evento=campoEvento.value.trim();
 
-  if(!nome || !evento){
+  if(!nome||!evento){
    alert("Preencha o nome e o evento.");
    return;
   }
 
-  salvar.disabled = true;
+  salvar.disabled=true;
+  cancelar.disabled=true;
 
   try{
-   // UPDATE sem retorno de representação.
-   // Isso evita solicitar dados de retorno na mesma operação.
-   const {error} = await db
+   const {data,error}=await db
     .from("lab_logs")
     .update({
      name:nome,
      event:evento
     })
-    .eq("id",item.id);
+    .eq("id",item.id)
+    .select("id,name,event");
 
    if(error) throw error;
 
-   mensagem("✅ Comando de atualização aceito pelo banco!");
+   if(!data||data.length===0){
+    throw new Error(
+     "Nenhuma linha foi atualizada. Verifique as políticas RLS."
+    );
+   }
+
+   mensagem("✅ Registro atualizado e confirmado no banco!");
+
+   registros=registros.map(registro=>
+    registro.id===item.id
+     ?{...registro,...data[0]}
+     :registro
+   );
 
    await atualizarTudo();
 
   }catch(error){
    alert("Erro ao editar: "+mostrarErro(error));
-   salvar.disabled = false;
+   salvar.disabled=false;
+   cancelar.disabled=false;
   }
  };
 
- cancelar.onclick = () => filtrarHistorico();
+ cancelar.onclick=()=>filtrarHistorico();
 
  div.append(campoNome,campoEvento,salvar,cancelar);
  campoNome.focus();
@@ -451,12 +464,19 @@ async function excluirTeste(id){
  }
 
  try{
-  const {error} = await db
+  const {data,error}=await db
    .from("lab_logs")
    .delete()
-   .eq("id",id);
+   .eq("id",id)
+   .select("id");
 
   if(error) throw error;
+
+  if(!data||data.length===0){
+   throw new Error(
+    "Nenhum registro excluído. Verifique a política DELETE."
+   );
+  }
 
   mensagem("🗑 Registro excluído!");
   await atualizarTudo();
