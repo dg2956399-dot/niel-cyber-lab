@@ -1,52 +1,65 @@
 
-async function analisarCabecalhosReais() {
-  if (!acessoLiberado || !dominioAutorizado) {
-    alert("Prepare primeiro um domínio autorizado.");
-    return;
+module.exports = async (req, res) => {
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      erro: "Método não permitido."
+    });
   }
-
-  const saida = document.getElementById("resultadoScanner");
-  saida.textContent = "Consultando cabeçalhos HTTP reais...";
 
   try {
-    const resposta = await fetch("/api/security-headers", {
-      method: "POST",
+    const { dominio } = req.body || {};
+
+    if (
+      typeof dominio !== "string" ||
+      dominio.length > 253 ||
+      !/^(?=.{1,253}$)(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}$/.test(dominio)
+    ) {
+      return res.status(400).json({
+        erro: "Informe um domínio válido, sem protocolo ou caminho."
+      });
+    }
+
+    const resposta = await fetch(`https://${dominio}`, {
+      method: "GET",
+      redirect: "manual",
+      signal: AbortSignal.timeout(8000),
       headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        dominio: dominioAutorizado
-      })
+        "User-Agent": "NIEL-SECURITY-OPERATIONS/4.0"
+      }
     });
 
-    const dados = await resposta.json();
-
-    if (!resposta.ok) {
-      throw new Error(dados.erro || "Falha na consulta.");
+    if (resposta.status >= 300 && resposta.status < 400) {
+      return res.status(400).json({
+        erro: "O domínio redirecionou a consulta. Verifique o endereço informado."
+      });
     }
 
-    let texto = "ANÁLISE HTTP REAL\n";
-    texto += "Domínio: " + dados.dominio + "\n";
-    texto += "Status HTTP: " + dados.statusHTTP + "\n\n";
+    const cabecalhos = resposta.headers;
 
-    for (const [nome, presente] of Object.entries(dados.verificacoes)) {
-      texto += (presente ? "🟢 " : "🔴 ") +
-        nome + ": " +
-        (presente ? "PRESENTE" : "AUSENTE") + "\n";
-    }
+    const verificacoes = {
+      "Strict-Transport-Security": cabecalhos.has("strict-transport-security"),
+      "Content-Security-Policy": cabecalhos.has("content-security-policy"),
+      "X-Content-Type-Options": cabecalhos.has("x-content-type-options"),
+      "X-Frame-Options": cabecalhos.has("x-frame-options"),
+      "Referrer-Policy": cabecalhos.has("referrer-policy"),
+      "Permissions-Policy": cabecalhos.has("permissions-policy")
+    };
 
-    texto += "\nResultado: " + dados.encontrados +
-      "/" + dados.total + " verificações presentes.";
+    const encontrados = Object.values(verificacoes)
+      .filter(Boolean).length;
 
-    texto += "\n\n" + dados.aviso;
-
-    saida.textContent = texto;
-
-    await registrarEventoScanner(
-      "Análise HTTP realizada: " + dados.dominio
-    );
+    return res.status(200).json({
+      dominio,
+      statusHTTP: resposta.status,
+      verificacoes,
+      encontrados,
+      total: Object.keys(verificacoes).length,
+      aviso: "Verificação básica dos cabeçalhos recebidos. A ausência de um cabeçalho não confirma, sozinha, uma vulnerabilidade."
+    });
 
   } catch (erro) {
-    saida.textContent = "ERRO NA ANÁLISE:\n" + erro.message;
+    return res.status(502).json({
+      erro: "Não foi possível consultar o domínio. Verifique o endereço e tente novamente."
+    });
   }
-}
+};
