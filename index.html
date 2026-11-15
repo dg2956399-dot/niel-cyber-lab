@@ -473,9 +473,9 @@ if(error) throw error;
 if(!data || data.length === 0){
  throw new Error("Nenhum registro foi atualizado. Verifique o acesso UPDATE no Supabase.");
 }
-
-   await atualizarTudo();
-
+mensagem("✅ Registro atualizado!");
+await atualizarTudo();
+   
   }catch(error){
    alert("Erro ao editar: " + error.message);
    salvar.disabled = false;
