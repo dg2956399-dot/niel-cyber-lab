@@ -459,17 +459,20 @@ function editarTeste(item,div){
   salvar.disabled = true;
 
   try{
-   const {error} = await db
-    .from("lab_logs")
-    .update({
-     name:nome,
-     event:evento
-    })
-    .eq("id",item.id);
+   const {data,error} = await db
+ .from("lab_logs")
+ .update({
+  name:nome,
+  event:evento
+ })
+ .eq("id",item.id)
+ .select();
 
-   if(error) throw error;
+if(error) throw error;
 
-   mensagem("✅ Registro atualizado!");
+if(!data || data.length === 0){
+ throw new Error("Nenhum registro foi atualizado. Verifique o acesso UPDATE no Supabase.");
+}
 
    await atualizarTudo();
 
