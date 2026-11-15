@@ -1,12 +1,47 @@
 
+const { createClient } = require("@supabase/supabase-js");
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
+
+const ADMIN_UID = process.env.ADMIN_UID;
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     return res.status(405).json({
+      sucesso: false,
       erro: "Método não permitido."
     });
   }
 
   try {
+    const authorization = req.headers.authorization || "";
+    const token = authorization.startsWith("Bearer ")
+      ? authorization.slice(7)
+      : null;
+
+    if (!token) {
+      return res.status(401).json({
+        sucesso: false,
+        erro: "Sessão não autorizada."
+      });
+    }
+
+    const { data, error } = await supabase.auth.getUser(token);
+
+    if (
+      error ||
+      !data.user ||
+      data.user.id !== ADMIN_UID
+    ) {
+      return res.status(403).json({
+        sucesso: false,
+        erro: "Acesso exclusivo do administrador."
+      });
+    }
+
     const { dominio } = req.body || {};
 
     if (
@@ -15,7 +50,8 @@ module.exports = async (req, res) => {
       !/^(?=.{1,253}$)(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,63}$/.test(dominio)
     ) {
       return res.status(400).json({
-        erro: "Informe um domínio válido, sem protocolo ou caminho."
+        sucesso: false,
+        erro: "Informe um domínio válido."
       });
     }
 
@@ -30,7 +66,8 @@ module.exports = async (req, res) => {
 
     if (resposta.status >= 300 && resposta.status < 400) {
       return res.status(400).json({
-        erro: "O domínio redirecionou a consulta. Verifique o endereço informado."
+        sucesso: false,
+        erro: "Redirecionamento bloqueado."
       });
     }
 
@@ -45,21 +82,23 @@ module.exports = async (req, res) => {
       "Permissions-Policy": cabecalhos.has("permissions-policy")
     };
 
-    const encontrados = Object.values(verificacoes)
-      .filter(Boolean).length;
+    const encontrados = Object.values(verificacoes).filter(Boolean).length;
 
     return res.status(200).json({
+      sucesso: true,
+      versao: "4.0",
       dominio,
       statusHTTP: resposta.status,
       verificacoes,
       encontrados,
       total: Object.keys(verificacoes).length,
-      aviso: "Verificação básica dos cabeçalhos recebidos. A ausência de um cabeçalho não confirma, sozinha, uma vulnerabilidade."
+      aviso: "Auditoria básica dos cabeçalhos HTTP."
     });
 
   } catch (erro) {
     return res.status(502).json({
-      erro: "Não foi possível consultar o domínio. Verifique o endereço e tente novamente."
+      sucesso: false,
+      erro: "Não foi possível concluir a auditoria."
     });
   }
 };
