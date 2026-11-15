@@ -1,10 +1,11 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIEL CYBER LAB V3</title>
+<title>NIEL CYBER LAB V4</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -21,16 +22,8 @@ body{
 
 .container{max-width:950px;margin:auto}
 
-header{
- text-align:center;
- padding:25px 0;
-}
-
-header h1{
- text-shadow:0 0 15px #00ff99;
- letter-spacing:2px;
-}
-
+header{text-align:center;padding:25px 0}
+header h1{text-shadow:0 0 15px #00ff99;letter-spacing:2px}
 header p{color:#91a5b5}
 
 .card{
@@ -54,9 +47,7 @@ input{
  color:white;
 }
 
-input:focus{
- outline:1px solid #00ff99;
-}
+input:focus{outline:1px solid #00ff99}
 
 button{
  padding:12px 15px;
@@ -107,18 +98,8 @@ button:disabled{opacity:.5;cursor:wait}
  overflow-wrap:anywhere;
 }
 
-.log-title{
- color:#00ff99;
- font-weight:bold;
- margin-bottom:8px;
-}
-
-.log small{
- display:block;
- color:#91a5b5;
- margin:8px 0;
-}
-
+.log-title{color:#00ff99;font-weight:bold;margin-bottom:8px}
+.log small{display:block;color:#91a5b5;margin:8px 0}
 #mensagem{overflow-wrap:anywhere}
 .online{color:#00ff99}
 .offline{color:#ff5252}
@@ -141,12 +122,11 @@ footer{
 </head>
 
 <body>
-
 <div class="container">
 
 <header>
 <h1>🔐 NIEL CYBER LAB</h1>
-<p>Laboratório de Segurança Digital | V3.0</p>
+<p>Laboratório de Segurança Digital | V4.0</p>
 </header>
 
 <div class="card">
@@ -157,57 +137,39 @@ footer{
 
 <div class="card">
 <h3>📊 Painel de Controle</h3>
-
 <div class="stats">
 <div class="stat">
 Total de registros
 <strong id="total">0</strong>
 </div>
-
 <div class="stat">
 Banco de dados
 <strong id="banco">...</strong>
 </div>
 </div>
-
-<p id="ultimaAtualizacao">
-Aguardando atualização...
-</p>
+<p id="ultimaAtualizacao">Aguardando atualização...</p>
 </div>
 
 <div class="card">
 <h3>🧪 Registrar novo teste</h3>
+<input id="nomeTeste" type="text"
+ placeholder="Nome do teste" maxlength="120">
 
-<input
- id="nomeTeste"
- type="text"
- placeholder="Nome do teste"
- maxlength="120"
->
-
-<input
- id="eventoTeste"
- type="text"
- placeholder="Descrição do evento"
- maxlength="500"
->
+<input id="eventoTeste" type="text"
+ placeholder="Descrição do evento" maxlength="500">
 
 <button id="btnRegistrar" onclick="registrarTeste()">
 + Registrar teste
 </button>
-
 <p id="mensagem">Aguardando registro...</p>
 </div>
 
 <div class="card">
 <h3>📋 Histórico de testes</h3>
 
-<input
- id="pesquisa"
- type="text"
+<input id="pesquisa" type="text"
  placeholder="Pesquisar por nome ou evento..."
- oninput="filtrarHistorico()"
->
+ oninput="filtrarHistorico()">
 
 <button class="secondary" onclick="atualizarTudo()">
 ↻ Atualizar histórico
@@ -232,7 +194,14 @@ const SUPABASE_KEY =
 
 const db = window.supabase.createClient(
  SUPABASE_URL,
- SUPABASE_KEY
+ SUPABASE_KEY,
+ {
+  auth:{
+   persistSession:false,
+   autoRefreshToken:false,
+   detectSessionInUrl:false
+  }
+ }
 );
 
 let registros = [];
@@ -242,6 +211,12 @@ function mensagem(texto, erro=false){
  const campo = document.getElementById("mensagem");
  campo.textContent = texto;
  campo.style.color = erro ? "#ff5252" : "#00ff99";
+}
+
+function mostrarErro(error){
+ console.error("Supabase:",error);
+ return error.message +
+  (error.code ? " | Código: "+error.code : "");
 }
 
 async function testarConexao(){
@@ -264,7 +239,7 @@ async function testarConexao(){
   banco.textContent = "ONLINE";
 
  }catch(error){
-  status.textContent = "🔴 " + error.message;
+  status.textContent = "🔴 " + mostrarErro(error);
   status.className = "offline";
   banco.textContent = "OFFLINE";
  }
@@ -300,11 +275,10 @@ async function registrarTeste(){
   campoEvento.value = "";
 
   mensagem("✅ Teste registrado com sucesso!");
-
   await atualizarTudo();
 
  }catch(error){
-  mensagem("Erro: " + error.message,true);
+  mensagem("Erro: "+mostrarErro(error),true);
  }finally{
   botao.disabled = false;
  }
@@ -313,34 +287,29 @@ async function registrarTeste(){
 async function carregarTotal(){
  const {count,error} = await db
   .from("lab_logs")
-  .select("*",{
+  .select("id",{
    count:"exact",
    head:true
   });
 
  if(error) throw error;
 
- document.getElementById("total").textContent =
-  count ?? 0;
+ document.getElementById("total").textContent = count ?? 0;
 }
 
 async function carregarHistorico(){
  const historico = document.getElementById("historico");
-
  historico.textContent = "Carregando...";
 
  const {data,error} = await db
   .from("lab_logs")
   .select("id,name,event,created_at")
-  .order("created_at",{
-   ascending:false
-  })
+  .order("created_at",{ascending:false})
   .limit(100);
 
  if(error) throw error;
 
  registros = data || [];
-
  filtrarHistorico();
 }
 
@@ -356,15 +325,13 @@ async function atualizarTudo(){
   ]);
 
   document.getElementById("ultimaAtualizacao").textContent =
-   "Última atualização: " +
+   "Última atualização: "+
    new Date().toLocaleTimeString("pt-BR");
 
  }catch(error){
   console.error(error);
-
   document.getElementById("historico").textContent =
-   "Erro ao atualizar: " + error.message;
-
+   "Erro ao atualizar: "+mostrarErro(error);
  }finally{
   atualizando = false;
  }
@@ -372,7 +339,6 @@ async function atualizarTudo(){
 
 function filtrarHistorico(){
  const historico = document.getElementById("historico");
-
  const termo = document.getElementById("pesquisa")
   .value.toLowerCase().trim();
 
@@ -397,8 +363,7 @@ function filtrarHistorico(){
   titulo.textContent = item.name || "Teste sem nome";
 
   const evento = document.createElement("small");
-  evento.textContent =
-   "Evento: " + (item.event || "Não informado");
+  evento.textContent = "Evento: "+(item.event || "Não informado");
 
   const data = document.createElement("small");
   data.textContent = item.created_at
@@ -415,14 +380,7 @@ function filtrarHistorico(){
   excluir.textContent = "🗑 Excluir";
   excluir.onclick = () => excluirTeste(item.id);
 
-  div.append(
-   titulo,
-   evento,
-   data,
-   editar,
-   excluir
-  );
-
+  div.append(titulo,evento,data,editar,excluir);
   historico.appendChild(div);
  });
 }
@@ -459,38 +417,31 @@ function editarTeste(item,div){
   salvar.disabled = true;
 
   try{
-   const {data,error} = await db
- .from("lab_logs")
- .update({
-  name:nome,
-  event:evento
- })
- .eq("id",item.id)
- .select();
+   // UPDATE sem retorno de representação.
+   // Isso evita solicitar dados de retorno na mesma operação.
+   const {error} = await db
+    .from("lab_logs")
+    .update({
+     name:nome,
+     event:evento
+    })
+    .eq("id",item.id);
 
-if(error) throw error;
+   if(error) throw error;
 
-if(!data || data.length === 0){
- throw new Error("Nenhum registro foi atualizado. Verifique o acesso UPDATE no Supabase.");
-}
-mensagem("✅ Registro atualizado!");
-await atualizarTudo();
-   
+   mensagem("✅ Comando de atualização aceito pelo banco!");
+
+   await atualizarTudo();
+
   }catch(error){
-   alert("Erro ao editar: " + error.message);
+   alert("Erro ao editar: "+mostrarErro(error));
    salvar.disabled = false;
   }
  };
 
  cancelar.onclick = () => filtrarHistorico();
 
- div.append(
-  campoNome,
-  campoEvento,
-  salvar,
-  cancelar
- );
-
+ div.append(campoNome,campoEvento,salvar,cancelar);
  campoNome.focus();
 }
 
@@ -508,11 +459,10 @@ async function excluirTeste(id){
   if(error) throw error;
 
   mensagem("🗑 Registro excluído!");
-
   await atualizarTudo();
 
  }catch(error){
-  alert("Erro ao excluir: " + error.message);
+  alert("Erro ao excluir: "+mostrarErro(error));
  }
 }
 
@@ -525,6 +475,5 @@ async function iniciar(){
 
 iniciar();
 </script>
-
 </body>
 </html>
