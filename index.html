@@ -11,8 +11,7 @@
 *{box-sizing:border-box}
 body{
  margin:0;padding:15px;background:#030807;
- color:#00ff99;font-family:Arial,sans-serif;
- min-height:100vh
+ color:#00ff99;font-family:Arial,sans-serif;min-height:100vh
 }
 #matrix{
  position:fixed;inset:0;width:100%;height:100%;
@@ -21,45 +20,34 @@ body{
 .container,.login-screen{position:relative;z-index:1}
 .container{max-width:1050px;margin:auto}
 header{text-align:center;padding:20px 0}
-header h1{
- font-size:27px;letter-spacing:3px;
- text-shadow:0 0 15px #00ff99
-}
+header h1{font-size:27px;letter-spacing:3px;text-shadow:0 0 15px #00ff99}
 header p{color:#91a5b5}
 .card{
- background:rgba(8,17,18,.95);
- border:1px solid #08784d;border-radius:12px;
- padding:20px;margin:16px 0;
+ background:rgba(8,17,18,.95);border:1px solid #08784d;
+ border-radius:12px;padding:20px;margin:16px 0;
  box-shadow:0 0 18px #00ff9910
 }
 h3{color:#00ff99;margin-top:0}
 input{
- width:100%;padding:13px;margin:8px 0;
- border-radius:7px;border:1px solid #245b49;
- background:#050d12;color:white
+ width:100%;padding:13px;margin:8px 0;border-radius:7px;
+ border:1px solid #245b49;background:#050d12;color:white
 }
 input:focus{outline:1px solid #00ff99}
 button{
  padding:12px 15px;border:0;border-radius:7px;
- background:#00ff99;color:#03100a;
- font-weight:bold;cursor:pointer;margin:5px 3px 5px 0
+ background:#00ff99;color:#03100a;font-weight:bold;
+ cursor:pointer;margin:5px 3px 5px 0
 }
 button:hover{opacity:.85}
 button:disabled{opacity:.5;cursor:wait}
 .secondary{background:#263747;color:white}
 .danger{background:#e53935;color:white}
-.stats{
- display:grid;grid-template-columns:repeat(2,1fr);gap:12px
-}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .stat{
  background:#050d12;border:1px solid #245b49;
- border-radius:9px;padding:18px;text-align:center;
- color:#91a5b5
+ border-radius:9px;padding:18px;text-align:center;color:#91a5b5
 }
-.stat strong{
- display:block;font-size:28px;
- color:#00ff99;margin-top:8px
-}
+.stat strong{display:block;font-size:28px;color:#00ff99;margin-top:8px}
 .log{
  background:#050d12;border:1px solid #263747;
  border-radius:9px;padding:14px;margin-top:12px;
@@ -72,10 +60,9 @@ button:disabled{opacity:.5;cursor:wait}
 .offline{color:#ff5252}
 #ultimaAtualizacao{color:#91a5b5;font-size:12px}
 .login-screen{
- max-width:430px;margin:35px auto;
- background:rgba(8,17,18,.97);
- border:1px solid #08784d;border-radius:15px;
- padding:25px;box-shadow:0 0 30px #00ff9920
+ max-width:430px;margin:35px auto;background:rgba(8,17,18,.97);
+ border:1px solid #08784d;border-radius:15px;padding:25px;
+ box-shadow:0 0 30px #00ff9920
 }
 .login-screen h2{
  text-align:center;text-shadow:0 0 12px #00ff99;
@@ -85,18 +72,14 @@ button:disabled{opacity:.5;cursor:wait}
 #erroLogin{color:#ff5252;text-align:center;overflow-wrap:anywhere}
 #painel{display:none}
 footer{text-align:center;color:#627586;padding:20px;font-size:12px}
-
-/* PERSONAGEM ENCAPUZADO */
 .hacker{
- position:relative;width:190px;height:205px;
- margin:0 auto 12px;display:flex;
- justify-content:center;flex-shrink:0
+ position:relative;width:190px;height:205px;margin:0 auto 12px;
+ display:flex;justify-content:center;flex-shrink:0
 }
 .hood{
  position:absolute;top:4px;width:155px;height:175px;
  background:linear-gradient(140deg,#29363b,#080d10 70%);
- border:2px solid #08784d;
- border-radius:85px 85px 30px 30px;
+ border:2px solid #08784d;border-radius:85px 85px 30px 30px;
  box-shadow:0 0 25px #00ff9920
 }
 .face{
@@ -105,8 +88,7 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
  border-radius:48% 48% 35% 35%
 }
 .white-mask{
- position:absolute;top:48px;left:7px;
- width:87px;height:67px;
+ position:absolute;top:48px;left:7px;width:87px;height:67px;
  background:linear-gradient(145deg,#fff,#c9d3d0);
  border-radius:40% 40% 35% 35%;
  box-shadow:0 0 12px #ffffff35;
@@ -114,52 +96,69 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 }
 .mask-eye{
  position:absolute;top:25px;width:29px;height:9px;
- background:#07100d;
- transform:skew(-15deg);
- border-radius:50%
+ background:#07100d;transform:skew(-15deg);border-radius:50%
 }
 .mask-eye.left{left:10px}
 .mask-eye.right{right:10px}
 .mask-mark{
- position:absolute;top:48px;left:31px;
- width:25px;height:3px;background:#00a86b;
- box-shadow:0 0 7px #00ff99
+ position:absolute;top:48px;left:31px;width:25px;height:3px;
+ background:#00a86b;box-shadow:0 0 7px #00ff99
 }
 .mask-mouth{
- position:absolute;top:57px;left:26px;
- width:35px;height:2px;background:#65736c
+ position:absolute;top:57px;left:26px;width:35px;height:2px;
+ background:#65736c
 }
 .hood-body{
  position:absolute;bottom:0;width:190px;height:58px;
  background:linear-gradient(90deg,#050809,#202d30,#050809);
- border:1px solid #08784d;
- border-radius:70px 70px 12px 12px
+ border:1px solid #08784d;border-radius:70px 70px 12px 12px
 }
-
-/* CENTRAL DE OPERAÇÕES */
 .hero{
- display:flex;align-items:center;justify-content:center;
- gap:20px;flex-wrap:wrap;text-align:center;
- padding:18px;background:rgba(5,15,15,.95);
- border:1px solid #08784d;border-radius:13px;
- margin:15px 0;box-shadow:0 0 20px #00ff9910
+ display:flex;align-items:center;justify-content:center;gap:20px;
+ flex-wrap:wrap;text-align:center;padding:18px;
+ background:rgba(5,15,15,.95);border:1px solid #08784d;
+ border-radius:13px;margin:15px 0;box-shadow:0 0 20px #00ff9910
 }
 .hero .hacker{margin:0}
 .hero-text{flex:1;min-width:220px}
-.hero-text h2{
- letter-spacing:2px;text-shadow:0 0 12px #00ff99
-}
+.hero-text h2{letter-spacing:2px;text-shadow:0 0 12px #00ff99}
 .hero-text p{color:#91a5b5;line-height:1.6}
 .tag{
- display:inline-block;border:1px solid #00ff99;
- padding:6px 12px;border-radius:20px;
- font-size:11px;letter-spacing:1px
+ display:inline-block;border:1px solid #00ff99;padding:6px 12px;
+ border-radius:20px;font-size:11px;letter-spacing:1px
 }
 .terminal{
- background:#030a08;border:1px solid #174b3b;
- padding:12px;border-radius:8px;
- color:#00ff99;font-family:monospace;
+ background:#030a08;border:1px solid #174b3b;padding:12px;
+ border-radius:8px;color:#00ff99;font-family:monospace;
  overflow-wrap:anywhere
+}
+.scanner-result{
+ background:#030a08;border:1px solid #08784d;
+ border-radius:9px;padding:14px;margin-top:12px;
+ color:#00ff99;overflow-wrap:anywhere;white-space:pre-wrap
+}
+.scanner-tools,.lab-grid{
+ display:grid;grid-template-columns:1fr 1fr;gap:8px
+}
+.scanner-tools button,.lab-grid button{width:100%;min-height:46px}
+.authorized{
+ display:flex;align-items:center;gap:9px;color:#91a5b5;
+ font-size:13px;margin:10px 0
+}
+.authorized input{width:19px;height:19px;margin:0}
+.meter{
+ width:100%;height:12px;background:#263747;
+ border-radius:20px;overflow:hidden;margin:12px 0
+}
+.meter-fill{
+ width:0;height:100%;background:#00ff99;
+ transition:width .3s
+}
+.result-label{font-weight:bold;margin:8px 0}
+.note{color:#91a5b5;font-size:12px;line-height:1.5}
+.section-tag{
+ color:#91a5b5;font-size:11px;letter-spacing:1px;
+ margin:12px 0
 }
 @media(max-width:500px){
  body{padding:9px}
@@ -168,17 +167,16 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
  .stats{grid-template-columns:1fr 1fr}
  .hero{padding:12px}
  .hero .hacker{transform:scale(.85)}
+ .scanner-tools,.lab-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
-
 <canvas id="matrix"></canvas>
 
 <!-- LOGIN -->
 <div class="login-screen" id="loginTela">
-
  <div class="hacker">
   <div class="hood"></div>
   <div class="face">
@@ -191,26 +189,22 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
   </div>
   <div class="hood-body"></div>
  </div>
-
  <h2>NIEL SECURITY OPERATIONS</h2>
  <p>ACESSO RESTRITO AO SISTEMA</p>
-
  <form onsubmit="entrar(event)">
-  <input id="emailLogin" type="email"
-   placeholder="Seu e-mail" autocomplete="username" required>
-  <input id="senhaLogin" type="password"
-   placeholder="Sua senha" autocomplete="current-password" required>
+  <input id="emailLogin" type="email" placeholder="Seu e-mail"
+   autocomplete="username" required>
+  <input id="senhaLogin" type="password" placeholder="Sua senha"
+   autocomplete="current-password" required>
   <button id="btnEntrar" type="submit" style="width:100%">
    ENTRAR NO SISTEMA
   </button>
  </form>
-
  <p id="erroLogin"></p>
 </div>
 
 <!-- PAINEL -->
 <div class="container" id="painel">
-
 <header>
  <h1>🔐 NIEL SECURITY OPERATIONS</h1>
  <p>SECURITY OPERATIONS CENTER | V4.0</p>
@@ -231,12 +225,10 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
   </div>
   <div class="hood-body"></div>
  </div>
-
  <div class="hero-text">
   <span class="tag">● CENTRAL DE OPERAÇÕES</span>
   <h2>NIEL SECURITY OPERATIONS</h2>
-  <p>Segurança digital, monitoramento e
-  testes autorizados.</p>
+  <p>Segurança digital, monitoramento e testes autorizados.</p>
   <div class="terminal">
    SYSTEM STATUS: ACTIVE<br>
    SECURITY MODE: AUTHORIZED
@@ -253,38 +245,100 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 <div class="card">
  <h3>📊 Painel de Controle</h3>
  <div class="stats">
-  <div class="stat">
-   Total de registros
-   <strong id="total">0</strong>
-  </div>
-  <div class="stat">
-   Banco de dados
-   <strong id="banco">...</strong>
-  </div>
+  <div class="stat">Total de registros<strong id="total">0</strong></div>
+  <div class="stat">Banco de dados<strong id="banco">...</strong></div>
  </div>
  <p id="ultimaAtualizacao">Aguardando atualização...</p>
 </div>
 
+<!-- REGISTRO DE TESTES -->
 <div class="card">
  <h3>🧪 Registrar novo teste</h3>
- <input id="nomeTeste" type="text"
-  placeholder="Nome do teste" maxlength="120">
- <input id="eventoTeste" type="text"
-  placeholder="Descrição do evento" maxlength="500">
- <button id="btnRegistrar" onclick="registrarTeste()">
-  + Registrar teste
- </button>
+ <input id="nomeTeste" type="text" placeholder="Nome do teste" maxlength="120">
+ <input id="eventoTeste" type="text" placeholder="Descrição do evento" maxlength="500">
+ <button id="btnRegistrar" onclick="registrarTeste()">+ Registrar teste</button>
  <p id="mensagem">Aguardando registro...</p>
 </div>
 
+<!-- WEB SECURITY SCANNER -->
+<div class="card">
+ <h3>🛡️ WEB SECURITY SCANNER</h3>
+ <p class="note">
+  Ferramentas externas para avaliar a configuração de segurança
+  de domínios próprios ou autorizados.
+ </p>
+ <input id="dominioScanner" type="text"
+  placeholder="Ex: meusite.com.br" maxlength="253">
+ <label class="authorized">
+  <input type="checkbox" id="autorizacaoScanner">
+  Confirmo que tenho autorização para analisar este domínio.
+ </label>
+ <button onclick="iniciarScanner()">🔍 PREPARAR ANÁLISE</button>
+ <div id="resultadoScanner" class="scanner-result">
+  Aguardando domínio autorizado...
+ </div>
+ <div class="section-tag">FERRAMENTAS EXTERNAS</div>
+ <div class="scanner-tools">
+  <button class="secondary" onclick="abrirScanner('ssl')">🔒 SSL LABS</button>
+  <button class="secondary" onclick="abrirScanner('headers')">🛡️ SECURITY HEADERS</button>
+  <button class="secondary" onclick="abrirScanner('mozilla')">🌐 MOZILLA OBSERVATORY</button>
+ </div>
+ <p class="note">
+  Os serviços externos realizam as análises. O painel não afirma
+  que uma verificação foi concluída apenas por abrir essas ferramentas.
+ </p>
+</div>
+
+<!-- PASSWORD SECURITY LAB -->
+<div class="card">
+ <h3>🔐 PASSWORD SECURITY LAB</h3>
+ <p class="note">
+  Laboratório educativo. A análise de força acontece localmente
+  neste navegador: a senha não é enviada ao Supabase.
+ </p>
+
+ <h4>Analisador de força de senha</h4>
+ <input id="senhaAnalise" type="password"
+  placeholder="Digite uma senha para analisar"
+  autocomplete="new-password" maxlength="128">
+ <button onclick="analisarSenha()">ANALISAR SENHA</button>
+ <button class="secondary" onclick="limparSenha()">LIMPAR</button>
+ <div class="meter"><div class="meter-fill" id="forcaBarra"></div></div>
+ <div id="resultadoSenha" class="scanner-result">
+  Aguardando análise...
+ </div>
+
+ <div class="section-tag">IDENTIFICADOR DE FORMATO DE HASH</div>
+ <input id="hashEntrada" type="text"
+  placeholder="Cole um hash de exemplo (não uma senha)"
+  maxlength="300">
+ <button onclick="identificarHash()">IDENTIFICAR FORMATO</button>
+ <div id="resultadoHash" class="scanner-result">
+  Aguardando hash...
+ </div>
+ <p class="note">
+  O identificador reconhece formatos prováveis pelo padrão.
+  Não recupera senhas nem confirma a origem do hash.
+ </p>
+
+ <div class="section-tag">SIMULADOR EDUCATIVO</div>
+ <p class="note">
+  Demonstração local com uma senha fictícia fixa e tentativas
+  ilustrativas. Não testa contas, sites ou senhas reais.
+ </p>
+ <button onclick="simularAtaque()">▶ EXECUTAR SIMULAÇÃO DIDÁTICA</button>
+ <div id="resultadoSimulacao" class="scanner-result">
+  Simulador aguardando execução...
+ </div>
+</div>
+
+<!-- HISTÓRICO -->
 <div class="card">
  <h3>📋 Histórico de testes</h3>
  <input id="pesquisa" type="text"
   placeholder="Pesquisar por nome ou evento..."
   oninput="filtrarHistorico()">
- <button class="secondary" onclick="atualizarTudo()">
-  ↻ Atualizar histórico
- </button>
+ <button class="secondary" onclick="atualizarTudo()">↻ Atualizar histórico</button>
  <div id="historico">Carregando histórico...</div>
 </div>
 
@@ -293,19 +347,16 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
  SEGURANÇA • CONHECIMENTO • EVOLUÇÃO<br>
  Ambiente de aprendizagem e testes autorizados
 </footer>
-
 </div>
 
 <script>
-
-/* MATRIX - CÓDIGOS ANIMADOS */
+/* MATRIX */
 (function(){
  const canvas=document.getElementById("matrix");
  const ctx=canvas.getContext("2d");
  const letras="01アイウエオカキクケコサシスセソタチツテト";
  const tamanho=16;
  let colunas=[];
-
  function ajustar(){
   const dpr=Math.min(window.devicePixelRatio||1,2);
   canvas.width=innerWidth*dpr;
@@ -321,24 +372,19 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
   ctx.fillRect(0,0,innerWidth,innerHeight);
   ctx.fillStyle="#00ff99";
   ctx.font=tamanho+"px monospace";
-
   colunas.forEach((y,i)=>{
    const letra=letras[Math.floor(Math.random()*letras.length)];
    ctx.fillText(letra,i*tamanho,y*tamanho);
-   if(y*tamanho>innerHeight&&Math.random()>.975){
-    colunas[i]=0;
-   }
+   if(y*tamanho>innerHeight&&Math.random()>.975)colunas[i]=0;
    colunas[i]+=.65;
   });
-
   requestAnimationFrame(animar);
  }
  window.addEventListener("resize",ajustar);
- ajustar();
- animar();
+ ajustar();animar();
 })();
 
-/* CONFIGURAÇÃO SUPABASE */
+/* SUPABASE */
 const SUPABASE_URL="https://rnzmrbadzmgpunwhrifw.supabase.co";
 const SUPABASE_KEY="sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r";
 
@@ -357,13 +403,13 @@ let atualizando=false;
 let intervaloAtualizacao=null;
 let acessoLiberado=false;
 let papelUsuario=null;
+let dominioAutorizado=null;
 
 function mensagem(texto,erro=false){
  const campo=document.getElementById("mensagem");
  campo.textContent=texto;
  campo.style.color=erro?"#ff5252":"#00ff99";
 }
-
 function mostrarErro(error){
  console.error("Supabase:",error);
  return error.message+(error.code?" | Código: "+error.code:"");
@@ -372,20 +418,15 @@ function mostrarErro(error){
 /* LOGIN */
 async function entrar(event){
  event.preventDefault();
-
  const botao=document.getElementById("btnEntrar");
  const erro=document.getElementById("erroLogin");
  const email=document.getElementById("emailLogin").value.trim();
  const senha=document.getElementById("senhaLogin").value;
-
  botao.disabled=true;
  botao.textContent="VERIFICANDO...";
  erro.textContent="";
-
  try{
-  const {data,error}=await db.auth.signInWithPassword({
-   email,password:senha
-  });
+  const {data,error}=await db.auth.signInWithPassword({email,password:senha});
   if(error)throw error;
   await verificarAcesso(data.user);
  }catch(error){
@@ -398,54 +439,36 @@ async function entrar(event){
  }
 }
 
-/* VERIFICAR PERFIL */
+/* PERFIL E PERMISSÃO */
 async function verificarAcesso(user){
  const erro=document.getElementById("erroLogin");
-
  if(!user){
-  acessoLiberado=false;
-  papelUsuario=null;
-  mostrarLogin();
-  return;
+  acessoLiberado=false;papelUsuario=null;mostrarLogin();return;
  }
-
  try{
-  const {data:perfil,error}=await db
-   .from("user_profiles")
-   .select("role")
-   .eq("id",user.id)
-   .maybeSingle();
-
+  const {data:perfil,error}=await db.from("user_profiles")
+   .select("role").eq("id",user.id).maybeSingle();
   if(error)throw error;
-
   if(!perfil||!["admin","approved"].includes(perfil.role)){
    await db.auth.signOut();
    throw new Error("Sua conta ainda não está autorizada pelo administrador.");
   }
-
   papelUsuario=perfil.role;
   acessoLiberado=true;
-
   document.getElementById("tipoUsuario").textContent=
-   papelUsuario==="admin"?
-   "👑 Administrador":"👤 Usuário aprovado";
-
+   papelUsuario==="admin"?"👑 Administrador":"👤 Usuário aprovado";
   document.getElementById("loginTela").style.display="none";
   document.getElementById("painel").style.display="block";
-
   erro.textContent="";
   await iniciarPainel();
-
  }catch(error){
   console.error(error);
-  acessoLiberado=false;
-  papelUsuario=null;
+  acessoLiberado=false;papelUsuario=null;
   await db.auth.signOut();
   mostrarLogin();
   erro.textContent=error.message;
  }
 }
-
 function mostrarLogin(){
  document.getElementById("painel").style.display="none";
  document.getElementById("loginTela").style.display="block";
@@ -454,95 +477,59 @@ function mostrarLogin(){
 /* SAIR */
 async function sair(){
  if(intervaloAtualizacao){
-  clearInterval(intervaloAtualizacao);
-  intervaloAtualizacao=null;
+  clearInterval(intervaloAtualizacao);intervaloAtualizacao=null;
  }
-
- acessoLiberado=false;
- papelUsuario=null;
-
+ acessoLiberado=false;papelUsuario=null;dominioAutorizado=null;
  await db.auth.signOut();
  mostrarLogin();
-
  document.getElementById("emailLogin").value="";
  document.getElementById("senhaLogin").value="";
- document.getElementById("erroLogin").textContent=
-  "Você saiu da sua conta.";
+ document.getElementById("erroLogin").textContent="Você saiu da sua conta.";
 }
 
 /* CONEXÃO */
 async function testarConexao(){
  if(!acessoLiberado)return;
-
  const status=document.getElementById("status");
  const banco=document.getElementById("banco");
-
- status.textContent="Testando conexão...";
- banco.textContent="...";
-
+ status.textContent="Testando conexão...";banco.textContent="...";
  try{
-  const {error}=await db.from("lab_logs")
-   .select("id").limit(1);
-
+  const {error}=await db.from("lab_logs").select("id").limit(1);
   if(error)throw error;
-
   status.textContent="🟢 Banco conectado!";
-  status.className="online";
-  banco.textContent="ONLINE";
-
+  status.className="online";banco.textContent="ONLINE";
  }catch(error){
   status.textContent="🔴 "+mostrarErro(error);
-  status.className="offline";
-  banco.textContent="OFFLINE";
+  status.className="offline";banco.textContent="OFFLINE";
  }
 }
 
-/* REGISTRAR */
+/* REGISTRAR TESTE */
 async function registrarTeste(){
  if(!acessoLiberado)return;
-
  const campoNome=document.getElementById("nomeTeste");
  const campoEvento=document.getElementById("eventoTeste");
  const botao=document.getElementById("btnRegistrar");
-
  const nome=campoNome.value.trim();
  const evento=campoEvento.value.trim()||"teste_registrado";
-
- if(!nome){
-  mensagem("Digite o nome do teste.",true);
-  return;
- }
-
- botao.disabled=true;
- mensagem("Salvando registro...");
-
+ if(!nome){mensagem("Digite o nome do teste.",true);return;}
+ botao.disabled=true;mensagem("Salvando registro...");
  try{
-  const {error}=await db.from("lab_logs").insert([
-   {name:nome,event:evento}
-  ]);
-
+  const {error}=await db.from("lab_logs").insert([{name:nome,event:evento}]);
   if(error)throw error;
-
-  campoNome.value="";
-  campoEvento.value="";
-
+  campoNome.value="";campoEvento.value="";
   mensagem("✅ Teste registrado com sucesso!");
   await atualizarTudo();
-
  }catch(error){
   mensagem("Erro: "+mostrarErro(error),true);
- }finally{
-  botao.disabled=false;
- }
+ }finally{botao.disabled=false;}
 }
 
 /* TOTAL */
 async function carregarTotal(){
  const {count,error}=await db.from("lab_logs")
   .select("id",{count:"exact",head:true});
-
  if(error)throw error;
-
  document.getElementById("total").textContent=count??0;
 }
 
@@ -550,93 +537,57 @@ async function carregarTotal(){
 async function carregarHistorico(){
  const historico=document.getElementById("historico");
  historico.textContent="Carregando histórico...";
-
  const {data,error}=await db.from("lab_logs")
   .select("id,name,event,created_at")
-  .order("created_at",{ascending:false})
-  .limit(100);
-
+  .order("created_at",{ascending:false}).limit(100);
  if(error)throw error;
-
- registros=data||[];
- filtrarHistorico();
+ registros=data||[];filtrarHistorico();
 }
-
-/* ATUALIZAR */
 async function atualizarTudo(){
  if(!acessoLiberado||atualizando)return;
-
  atualizando=true;
-
  try{
-  await Promise.all([
-   carregarTotal(),
-   carregarHistorico()
-  ]);
-
+  await Promise.all([carregarTotal(),carregarHistorico()]);
   document.getElementById("ultimaAtualizacao").textContent=
-   "Última atualização: "+
-   new Date().toLocaleTimeString("pt-BR");
-
+   "Última atualização: "+new Date().toLocaleTimeString("pt-BR");
  }catch(error){
   console.error(error);
   document.getElementById("historico").textContent=
    "Erro ao atualizar: "+mostrarErro(error);
- }finally{
-  atualizando=false;
- }
+ }finally{atualizando=false;}
 }
 
-/* PESQUISAR */
+/* PESQUISA */
 function filtrarHistorico(){
  const historico=document.getElementById("historico");
- const termo=document.getElementById("pesquisa")
-  .value.toLowerCase().trim();
-
+ const termo=document.getElementById("pesquisa").value.toLowerCase().trim();
  historico.innerHTML="";
-
  const encontrados=registros.filter(item=>
   (item.name||"").toLowerCase().includes(termo)||
   (item.event||"").toLowerCase().includes(termo)
  );
-
  if(encontrados.length===0){
-  historico.textContent="Nenhum teste encontrado.";
-  return;
+  historico.textContent="Nenhum teste encontrado.";return;
  }
-
  encontrados.forEach(item=>{
-  const div=document.createElement("div");
-  div.className="log";
-
+  const div=document.createElement("div");div.className="log";
   const titulo=document.createElement("div");
-  titulo.className="log-title";
-  titulo.textContent=item.name||"Teste sem nome";
-
+  titulo.className="log-title";titulo.textContent=item.name||"Teste sem nome";
   const evento=document.createElement("small");
   evento.textContent="Evento: "+(item.event||"Não informado");
-
   const data=document.createElement("small");
   data.textContent=item.created_at?
-   new Date(item.created_at).toLocaleString("pt-BR"):
-   "Data não informada";
-
+   new Date(item.created_at).toLocaleString("pt-BR"):"Data não informada";
   div.append(titulo,evento,data);
-
   if(papelUsuario==="admin"){
    const editar=document.createElement("button");
-   editar.className="secondary";
-   editar.textContent="✏️ Editar";
+   editar.className="secondary";editar.textContent="✏️ Editar";
    editar.onclick=()=>editarTeste(item,div);
-
    const excluir=document.createElement("button");
-   excluir.className="danger";
-   excluir.textContent="🗑 Excluir";
+   excluir.className="danger";excluir.textContent="🗑 Excluir";
    excluir.onclick=()=>excluirTeste(item.id);
-
    div.append(editar,excluir);
   }
-
   historico.appendChild(div);
  });
 }
@@ -644,135 +595,203 @@ function filtrarHistorico(){
 /* EDITAR */
 async function editarTeste(item,div){
  if(!acessoLiberado||papelUsuario!=="admin")return;
-
  div.innerHTML="";
-
  const campoNome=document.createElement("input");
- campoNome.value=item.name||"";
- campoNome.maxLength=120;
+ campoNome.value=item.name||"";campoNome.maxLength=120;
  campoNome.placeholder="Nome do teste";
-
  const campoEvento=document.createElement("input");
- campoEvento.value=item.event||"";
- campoEvento.maxLength=500;
+ campoEvento.value=item.event||"";campoEvento.maxLength=500;
  campoEvento.placeholder="Descrição do evento";
-
- const salvar=document.createElement("button");
- salvar.textContent="💾 Salvar";
-
+ const salvar=document.createElement("button");salvar.textContent="💾 Salvar";
  const cancelar=document.createElement("button");
- cancelar.textContent="Cancelar";
- cancelar.className="secondary";
-
+ cancelar.textContent="Cancelar";cancelar.className="secondary";
  salvar.onclick=async()=>{
   if(!acessoLiberado||papelUsuario!=="admin")return;
-
-  const nome=campoNome.value.trim();
-  const evento=campoEvento.value.trim();
-
-  if(!nome||!evento){
-   alert("Preencha o nome e o evento.");
-   return;
-  }
-
-  salvar.disabled=true;
-  cancelar.disabled=true;
-
+  const nome=campoNome.value.trim(),evento=campoEvento.value.trim();
+  if(!nome||!evento){alert("Preencha o nome e o evento.");return;}
+  salvar.disabled=true;cancelar.disabled=true;
   try{
    const {data,error}=await db.from("lab_logs")
-    .update({name:nome,event:evento})
-    .eq("id",item.id)
+    .update({name:nome,event:evento}).eq("id",item.id)
     .select("id,name,event");
-
    if(error)throw error;
-
-   if(!data||data.length===0){
-    throw new Error(
-     "Nenhuma linha foi atualizada. Verifique as políticas RLS."
-    );
-   }
-
+   if(!data||data.length===0)
+    throw new Error("Nenhuma linha foi atualizada. Verifique as políticas RLS.");
    mensagem("✅ Registro atualizado e confirmado no banco!");
-
    registros=registros.map(registro=>
-    registro.id===item.id?
-    {...registro,...data[0]}:registro
-   );
-
+    registro.id===item.id?{...registro,...data[0]}:registro);
    await atualizarTudo();
-
   }catch(error){
    alert("Erro ao editar: "+mostrarErro(error));
-   salvar.disabled=false;
-   cancelar.disabled=false;
+   salvar.disabled=false;cancelar.disabled=false;
   }
  };
-
  cancelar.onclick=()=>filtrarHistorico();
-
- div.append(campoNome,campoEvento,salvar,cancelar);
- campoNome.focus();
+ div.append(campoNome,campoEvento,salvar,cancelar);campoNome.focus();
 }
 
 /* EXCLUIR */
 async function excluirTeste(id){
  if(!acessoLiberado||papelUsuario!=="admin")return;
-
  if(!confirm("Deseja realmente excluir este registro?"))return;
-
  try{
-  const {data,error}=await db.from("lab_logs")
-   .delete()
-   .eq("id",id)
-   .select("id");
-
+  const {data,error}=await db.from("lab_logs").delete().eq("id",id).select("id");
   if(error)throw error;
+  if(!data||data.length===0)
+   throw new Error("Nenhum registro excluído. Verifique a política DELETE.");
+  mensagem("🗑 Registro excluído!");await atualizarTudo();
+ }catch(error){alert("Erro ao excluir: "+mostrarErro(error));}
+}
 
-  if(!data||data.length===0){
-   throw new Error(
-    "Nenhum registro excluído. Verifique a política DELETE."
-   );
-  }
-
-  mensagem("🗑 Registro excluído!");
-  await atualizarTudo();
-
- }catch(error){
-  alert("Erro ao excluir: "+mostrarErro(error));
+/* WEB SECURITY SCANNER */
+function iniciarScanner(){
+ if(!acessoLiberado)return;
+ const campo=document.getElementById("dominioScanner");
+ const autorizacao=document.getElementById("autorizacaoScanner");
+ const resultado=document.getElementById("resultadoScanner");
+ if(!autorizacao.checked){
+  resultado.textContent="⚠️ Confirme a autorização antes de continuar.";
+  dominioAutorizado=null;return;
  }
+ const entrada=campo.value.trim();
+ if(!entrada){resultado.textContent="Digite um domínio.";return;}
+ let url;
+ try{
+  url=new URL(entrada.includes("://")?entrada:"https://"+entrada);
+  if(!["http:","https:"].includes(url.protocol)||
+     !url.hostname.includes(".")||url.username||url.password)
+   throw new Error("Domínio inválido.");
+  if(url.hostname==="localhost"||url.hostname.endsWith(".localhost")||
+     url.hostname.endsWith(".local"))
+   throw new Error("Domínio não permitido.");
+ }catch(error){
+  resultado.textContent="❌ "+error.message;dominioAutorizado=null;return;
+ }
+ dominioAutorizado=url.hostname;
+ resultado.textContent=
+  "✅ Domínio preparado: "+dominioAutorizado+
+  "\n\nSelecione uma ferramenta externa para realizar a análise.";
+ registrarEventoScanner("Domínio preparado: "+dominioAutorizado);
+}
+async function registrarEventoScanner(evento){
+ if(!acessoLiberado)return;
+ const {error}=await db.from("lab_logs").insert([{
+  name:"WEB SECURITY SCANNER",event:evento
+ }]);
+ if(error)console.error("Não foi possível registrar a atividade:",error);
+ else atualizarTudo();
+}
+function abrirScanner(tipo){
+ if(!acessoLiberado)return;
+ if(!dominioAutorizado){
+  alert("Primeiro prepare um domínio autorizado.");return;
+ }
+ const dominio=encodeURIComponent(dominioAutorizado);
+ let destino="";
+ if(tipo==="ssl")
+  destino="https://www.ssllabs.com/ssltest/analyze.html?d="+dominio;
+ if(tipo==="headers")
+  destino="https://securityheaders.com/?q="+dominio+"&followRedirects=on";
+ if(tipo==="mozilla")
+  destino="https://observatory.mozilla.org/";
+ if(destino)window.open(destino,"_blank","noopener,noreferrer");
+}
+
+/* PASSWORD SECURITY LAB: ANÁLISE LOCAL */
+function analisarSenha(){
+ if(!acessoLiberado)return;
+ const senha=document.getElementById("senhaAnalise").value;
+ const resultado=document.getElementById("resultadoSenha");
+ const barra=document.getElementById("forcaBarra");
+ if(!senha){
+  resultado.textContent="Digite uma senha para analisar.";
+  barra.style.width="0%";return;
+ }
+ let pontos=0;
+ if(senha.length>=12)pontos++;
+ if(senha.length>=16)pontos++;
+ if(/[a-z]/.test(senha))pontos++;
+ if(/[A-Z]/.test(senha))pontos++;
+ if(/[0-9]/.test(senha))pontos++;
+ if(/[^A-Za-z0-9]/.test(senha))pontos++;
+ const comum=["123456","password","senha","qwerty","admin","12345678"];
+ if(comum.includes(senha.toLowerCase()))pontos=0;
+ const percentual=Math.round((pontos/6)*100);
+ barra.style.width=percentual+"%";
+ let nivel="Fraca";
+ if(pontos>=3)nivel="Moderada";
+ if(pontos>=5)nivel="Forte";
+ if(pontos===6)nivel="Muito forte";
+ resultado.textContent=
+  "Resultado: "+nivel+
+  "\nComprimento: "+senha.length+" caracteres"+
+  "\nCritérios atendidos: "+pontos+" de 6"+
+  "\n\nRecomendação: use uma senha longa, única e não reutilizada.";
+}
+function limparSenha(){
+ document.getElementById("senhaAnalise").value="";
+ document.getElementById("resultadoSenha").textContent="Aguardando análise...";
+ document.getElementById("forcaBarra").style.width="0%";
+}
+
+/* IDENTIFICADOR DE FORMATO DE HASH */
+function identificarHash(){
+ if(!acessoLiberado)return;
+ const valor=document.getElementById("hashEntrada").value.trim();
+ const resultado=document.getElementById("resultadoHash");
+ if(!valor){resultado.textContent="Cole um hash para identificar.";return;}
+ let tipo="Formato não reconhecido";
+ if(/^\$2[aby]\$\d{2}\$/.test(valor))tipo="Possível bcrypt";
+ else if(/^\$argon2(id|i|d)\$/.test(valor))tipo="Possível Argon2";
+ else if(/^[a-f0-9]{32}$/i.test(valor))tipo="Possível MD5 (não recomendado)";
+ else if(/^[a-f0-9]{40}$/i.test(valor))tipo="Possível SHA-1 (não recomendado)";
+ else if(/^[a-f0-9]{64}$/i.test(valor))tipo="Possível SHA-256";
+ else if(/^[a-f0-9]{96}$/i.test(valor))tipo="Possível SHA-384";
+ else if(/^[a-f0-9]{128}$/i.test(valor))tipo="Possível SHA-512";
+ resultado.textContent=
+  tipo+"\n\nIdentificação baseada somente no formato e comprimento. "+
+  "Não confirma o algoritmo nem recupera a senha.";
+}
+
+/* SIMULADOR DIDÁTICO LOCAL */
+function simularAtaque(){
+ if(!acessoLiberado)return;
+ const resultado=document.getElementById("resultadoSimulacao");
+ const alvoFicticio="LAB-2026";
+ const listaFicticia=["123456","admin","senha","qwerty","LAB-2026"];
+ let tentativas=0, encontrou=false;
+ for(const tentativa of listaFicticia){
+  tentativas++;
+  if(tentativa===alvoFicticio){encontrou=true;break;}
+ }
+ resultado.textContent=
+  "SIMULAÇÃO EDUCATIVA CONCLUÍDA"+
+  "\nAmbiente: demonstração local fictícia"+
+  "\nTentativas ilustrativas: "+tentativas+
+  "\nResultado: "+(encontrou?"senha fictícia encontrada":"não encontrada")+
+  "\n\nNenhuma conta, site ou senha real foi testada.";
 }
 
 /* INICIAR PAINEL */
 async function iniciarPainel(){
  await testarConexao();
  await atualizarTudo();
-
- if(intervaloAtualizacao){
-  clearInterval(intervaloAtualizacao);
- }
-
+ if(intervaloAtualizacao)clearInterval(intervaloAtualizacao);
  intervaloAtualizacao=setInterval(atualizarTudo,15000);
 }
 
 /* VERIFICAR SESSÃO */
 async function iniciar(){
  mostrarLogin();
-
  const {data,error}=await db.auth.getSession();
-
  if(error){
   document.getElementById("erroLogin").textContent=
    "Erro ao verificar sessão: "+error.message;
   return;
  }
-
- if(data.session){
-  await verificarAcesso(data.session.user);
- }
+ if(data.session)await verificarAcesso(data.session.user);
 }
-
 iniciar();
-
 </script>
 </body>
 </html>
