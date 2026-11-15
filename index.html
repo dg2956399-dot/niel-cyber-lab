@@ -5,188 +5,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NIEL CYBER LAB V4</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-
-body{
- margin:0;
- padding:16px;
- background:#080d16;
- color:#00ff99;
- font-family:Arial,sans-serif;
-}
-
+body{margin:0;padding:16px;background:#080d16;color:#00ff99;font-family:Arial,sans-serif}
 .container{max-width:950px;margin:auto}
 header{text-align:center;padding:25px 0}
 header h1{text-shadow:0 0 15px #00ff99;letter-spacing:2px}
 header p{color:#91a5b5}
-
-.card{
- background:#111b29;
- border:1px solid #174b3b;
- border-radius:14px;
- padding:20px;
- margin:16px 0;
- box-shadow:0 0 15px #00ff9910;
-}
-
+.card{background:#111b29;border:1px solid #174b3b;border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 0 15px #00ff9910}
 h3{margin-top:0}
-
-input{
- width:100%;
- padding:13px;
- margin:8px 0;
- border-radius:8px;
- border:1px solid #245b49;
- background:#080d16;
- color:white;
-}
-
+input{width:100%;padding:13px;margin:8px 0;border-radius:8px;border:1px solid #245b49;background:#080d16;color:white}
 input:focus{outline:1px solid #00ff99}
-
-button{
- padding:12px 15px;
- border:0;
- border-radius:8px;
- background:#00ff99;
- color:#080d16;
- font-weight:bold;
- cursor:pointer;
- margin:5px 3px 5px 0;
-}
-
+button{padding:12px 15px;border:0;border-radius:8px;background:#00ff99;color:#080d16;font-weight:bold;cursor:pointer;margin:5px 3px 5px 0}
 button:hover{opacity:.85}
 button:disabled{opacity:.5;cursor:wait}
 .secondary{background:#263747;color:white}
 .danger{background:#e53935;color:white}
-
-.stats{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:12px;
-}
-
-.stat{
- background:#080d16;
- border:1px solid #245b49;
- border-radius:10px;
- padding:18px;
- text-align:center;
- color:#91a5b5;
-}
-
-.stat strong{
- display:block;
- font-size:28px;
- color:#00ff99;
- margin-top:8px;
-}
-
-.log{
- background:#080d16;
- border:1px solid #263747;
- border-radius:9px;
- padding:14px;
- margin-top:12px;
- color:white;
- overflow-wrap:anywhere;
-}
-
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stat{background:#080d16;border:1px solid #245b49;border-radius:10px;padding:18px;text-align:center;color:#91a5b5}
+.stat strong{display:block;font-size:28px;color:#00ff99;margin-top:8px}
+.log{background:#080d16;border:1px solid #263747;border-radius:9px;padding:14px;margin-top:12px;color:white;overflow-wrap:anywhere}
 .log-title{color:#00ff99;font-weight:bold;margin-bottom:8px}
 .log small{display:block;color:#91a5b5;margin:8px 0}
 #mensagem{overflow-wrap:anywhere}
 .online{color:#00ff99}
 .offline{color:#ff5252}
 #ultimaAtualizacao{color:#91a5b5;font-size:12px}
-
-/* TELA DE LOGIN */
-.login-screen{
- max-width:420px;
- margin:70px auto;
- background:#111b29;
- border:1px solid #174b3b;
- border-radius:15px;
- padding:25px;
- box-shadow:0 0 20px #00ff9910;
-}
-
-.login-screen h2{
- text-align:center;
- text-shadow:0 0 12px #00ff99;
-}
-
-.login-screen p{
- color:#91a5b5;
- text-align:center;
-}
-
-#erroLogin{
- color:#ff5252;
- text-align:center;
- overflow-wrap:anywhere;
-}
-
+.login-screen{max-width:420px;margin:70px auto;background:#111b29;border:1px solid #174b3b;border-radius:15px;padding:25px;box-shadow:0 0 20px #00ff9910}
+.login-screen h2{text-align:center;text-shadow:0 0 12px #00ff99}
+.login-screen p{color:#91a5b5;text-align:center}
+#erroLogin{color:#ff5252;text-align:center;overflow-wrap:anywhere}
 #painel{display:none}
-
-footer{
- text-align:center;
- color:#627586;
- padding:20px;
- font-size:12px;
-}
-
+footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 @media(max-width:500px){
- body{padding:10px}
- header h1{font-size:22px}
- .card{padding:14px}
- .stats{grid-template-columns:1fr 1fr}
+body{padding:10px}
+header h1{font-size:22px}
+.card{padding:14px}
+.stats{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
 <div class="login-screen" id="loginTela">
-
- <h2>🔐 NIEL CYBER LAB</h2>
- <p>Acesso restrito ao laboratório</p>
-
- <form onsubmit="entrar(event)">
-
-  <input
-   id="emailLogin"
-   type="email"
-   placeholder="Seu e-mail"
-   autocomplete="username"
-   required>
-
-  <input
-   id="senhaLogin"
-   type="password"
-   placeholder="Sua senha"
-   autocomplete="current-password"
-   required>
-
-  <button id="btnEntrar" type="submit" style="width:100%">
-   ENTRAR
-  </button>
-
- </form>
-
- <p id="erroLogin"></p>
-
+<h2>🔐 NIEL CYBER LAB</h2>
+<p>Acesso restrito ao laboratório</p>
+<form onsubmit="entrar(event)">
+<input id="emailLogin" type="email" placeholder="Seu e-mail" autocomplete="username" required>
+<input id="senhaLogin" type="password" placeholder="Sua senha" autocomplete="current-password" required>
+<button id="btnEntrar" type="submit" style="width:100%">ENTRAR</button>
+</form>
+<p id="erroLogin"></p>
 </div>
 
-<!-- PAINEL ORIGINAL V4 -->
 <div class="container" id="painel">
-
 <header>
 <h1>🔐 NIEL CYBER LAB</h1>
 <p>Laboratório de Segurança Digital | V4.0</p>
+<p id="tipoUsuario"></p>
 <button class="danger" onclick="sair()">🚪 Sair da conta</button>
 </header>
 
@@ -199,45 +78,24 @@ footer{
 <div class="card">
 <h3>📊 Painel de Controle</h3>
 <div class="stats">
-<div class="stat">
-Total de registros
-<strong id="total">0</strong>
-</div>
-<div class="stat">
-Banco de dados
-<strong id="banco">...</strong>
-</div>
+<div class="stat">Total de registros<strong id="total">0</strong></div>
+<div class="stat">Banco de dados<strong id="banco">...</strong></div>
 </div>
 <p id="ultimaAtualizacao">Aguardando atualização...</p>
 </div>
 
 <div class="card">
 <h3>🧪 Registrar novo teste</h3>
-
-<input id="nomeTeste" type="text"
- placeholder="Nome do teste" maxlength="120">
-
-<input id="eventoTeste" type="text"
- placeholder="Descrição do evento" maxlength="500">
-
-<button id="btnRegistrar" onclick="registrarTeste()">
-+ Registrar teste
-</button>
-
+<input id="nomeTeste" type="text" placeholder="Nome do teste" maxlength="120">
+<input id="eventoTeste" type="text" placeholder="Descrição do evento" maxlength="500">
+<button id="btnRegistrar" onclick="registrarTeste()">+ Registrar teste</button>
 <p id="mensagem">Aguardando registro...</p>
 </div>
 
 <div class="card">
 <h3>📋 Histórico de testes</h3>
-
-<input id="pesquisa" type="text"
- placeholder="Pesquisar por nome ou evento..."
- oninput="filtrarHistorico()">
-
-<button class="secondary" onclick="atualizarTudo()">
-↻ Atualizar histórico
-</button>
-
+<input id="pesquisa" type="text" placeholder="Pesquisar por nome ou evento..." oninput="filtrarHistorico()">
+<button class="secondary" onclick="atualizarTudo()">↻ Atualizar histórico</button>
 <div id="historico">Carregando histórico...</div>
 </div>
 
@@ -245,549 +103,366 @@ Banco de dados
 NIEL CYBER LAB © 2026<br>
 Ambiente de aprendizagem e testes autorizados
 </footer>
-
 </div>
 
 <script>
+const SUPABASE_URL="https://rnzmrbadzmgpunwhrifw.supabase.co";
+const SUPABASE_KEY="sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r";
 
-const SUPABASE_URL =
-"https://rnzmrbadzmgpunwhrifw.supabase.co";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
+auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+});
 
-const SUPABASE_KEY =
-"sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r";
-
-const db = window.supabase.createClient(
- SUPABASE_URL,
- SUPABASE_KEY,
- {
-  auth:{
-   persistSession:true,
-   autoRefreshToken:true,
-   detectSessionInUrl:true
-  }
- }
-);
-
-let registros = [];
-let atualizando = false;
-let intervaloAtualizacao = null;
-let acessoLiberado = false;
+let registros=[];
+let atualizando=false;
+let intervaloAtualizacao=null;
+let acessoLiberado=false;
+let papelUsuario=null;
 
 function mensagem(texto,erro=false){
- const campo=document.getElementById("mensagem");
- campo.textContent=texto;
- campo.style.color=erro?"#ff5252":"#00ff99";
+const campo=document.getElementById("mensagem");
+campo.textContent=texto;
+campo.style.color=erro?"#ff5252":"#00ff99";
 }
 
 function mostrarErro(error){
- console.error("Supabase:",error);
- return error.message+
-  (error.code?" | Código: "+error.code:"");
+console.error("Supabase:",error);
+return error.message+(error.code?" | Código: "+error.code:"");
 }
 
 /* LOGIN */
-
 async function entrar(event){
- event.preventDefault();
+event.preventDefault();
+const botao=document.getElementById("btnEntrar");
+const erro=document.getElementById("erroLogin");
+const email=document.getElementById("emailLogin").value.trim();
+const senha=document.getElementById("senhaLogin").value;
 
- const botao=document.getElementById("btnEntrar");
- const erro=document.getElementById("erroLogin");
+botao.disabled=true;
+botao.textContent="VERIFICANDO...";
+erro.textContent="";
 
- const email=document.getElementById("emailLogin").value.trim();
- const senha=document.getElementById("senhaLogin").value;
-
- botao.disabled=true;
- botao.textContent="VERIFICANDO...";
- erro.textContent="";
-
- try{
-
-  const {data,error}=await db.auth.signInWithPassword({
-   email:email,
-   password:senha
-  });
-
-  if(error) throw error;
-
-  await verificarAcesso(data.user);
-
- }catch(error){
-
-  console.error(error);
-  erro.textContent="Erro no login: "+error.message;
-
-  await db.auth.signOut();
-
- }finally{
-
-  botao.disabled=false;
-  botao.textContent="ENTRAR";
-
- }
+try{
+const {data,error}=await db.auth.signInWithPassword({email,password:senha});
+if(error) throw error;
+await verificarAcesso(data.user);
+}catch(error){
+console.error(error);
+erro.textContent="Erro no login: "+error.message;
+await db.auth.signOut();
+}finally{
+botao.disabled=false;
+botao.textContent="ENTRAR";
+}
 }
 
-/* VERIFICAR PERFIL E AUTORIZAÇÃO */
-
+/* VERIFICAR PERFIL */
 async function verificarAcesso(user){
+const erro=document.getElementById("erroLogin");
 
- const erro=document.getElementById("erroLogin");
+if(!user){
+acessoLiberado=false;
+papelUsuario=null;
+mostrarLogin();
+return;
+}
 
- if(!user){
-  acessoLiberado=false;
-  mostrarLogin();
-  return;
- }
+try{
+const {data:perfil,error}=await db
+.from("user_profiles")
+.select("role")
+.eq("id",user.id)
+.maybeSingle();
 
- try{
+if(error) throw error;
 
-  const {data:perfil,error}=await db
-   .from("user_profiles")
-   .select("role")
-   .eq("id",user.id)
-   .maybeSingle();
+if(!perfil||!["admin","approved"].includes(perfil.role)){
+await db.auth.signOut();
+throw new Error("Sua conta ainda não está autorizada pelo administrador.");
+}
 
-  if(error) throw error;
+papelUsuario=perfil.role;
+acessoLiberado=true;
 
-  if(
-   !perfil ||
-   !["admin","approved"].includes(perfil.role)
-  ){
+document.getElementById("tipoUsuario").textContent=
+papelUsuario==="admin"?"👑 Administrador":"👤 Usuário aprovado";
 
-   await db.auth.signOut();
+document.getElementById("loginTela").style.display="none";
+document.getElementById("painel").style.display="block";
+erro.textContent="";
 
-   throw new Error(
-    "Sua conta ainda não está autorizada pelo administrador."
-   );
+await iniciarPainel();
 
-  }
-
-  acessoLiberado=true;
-
-  document.getElementById("loginTela").style.display="none";
-  document.getElementById("painel").style.display="block";
-
-  erro.textContent="";
-
-  await iniciarPainel();
-
- }catch(error){
-
-  console.error(error);
-
-  acessoLiberado=false;
-
-  await db.auth.signOut();
-
-  mostrarLogin();
-
-  erro.textContent=error.message;
-
- }
-
+}catch(error){
+console.error(error);
+acessoLiberado=false;
+papelUsuario=null;
+await db.auth.signOut();
+mostrarLogin();
+erro.textContent=error.message;
+}
 }
 
 function mostrarLogin(){
-
- document.getElementById("painel").style.display="none";
- document.getElementById("loginTela").style.display="block";
-
+document.getElementById("painel").style.display="none";
+document.getElementById("loginTela").style.display="block";
 }
 
 async function sair(){
-
- if(intervaloAtualizacao){
-  clearInterval(intervaloAtualizacao);
-  intervaloAtualizacao=null;
- }
-
- acessoLiberado=false;
-
- await db.auth.signOut();
-
- mostrarLogin();
-
- document.getElementById("emailLogin").value="";
- document.getElementById("senhaLogin").value="";
-
- document.getElementById("erroLogin").textContent=
-  "Você saiu da sua conta.";
-
+if(intervaloAtualizacao){
+clearInterval(intervaloAtualizacao);
+intervaloAtualizacao=null;
+}
+acessoLiberado=false;
+papelUsuario=null;
+await db.auth.signOut();
+mostrarLogin();
+document.getElementById("emailLogin").value="";
+document.getElementById("senhaLogin").value="";
+document.getElementById("erroLogin").textContent="Você saiu da sua conta.";
 }
 
 /* CONEXÃO */
-
 async function testarConexao(){
-
- if(!acessoLiberado) return;
-
- const status=document.getElementById("status");
- const banco=document.getElementById("banco");
-
- status.textContent="Testando conexão...";
- banco.textContent="...";
-
- try{
-
-  const {error}=await db
-   .from("lab_logs")
-   .select("id")
-   .limit(1);
-
-  if(error) throw error;
-
-  status.textContent="🟢 Banco conectado!";
-  status.className="online";
-  banco.textContent="ONLINE";
-
- }catch(error){
-
-  status.textContent="🔴 "+mostrarErro(error);
-  status.className="offline";
-  banco.textContent="OFFLINE";
-
- }
-
+if(!acessoLiberado)return;
+const status=document.getElementById("status");
+const banco=document.getElementById("banco");
+status.textContent="Testando conexão...";
+banco.textContent="...";
+try{
+const {error}=await db.from("lab_logs").select("id").limit(1);
+if(error)throw error;
+status.textContent="🟢 Banco conectado!";
+status.className="online";
+banco.textContent="ONLINE";
+}catch(error){
+status.textContent="🔴 "+mostrarErro(error);
+status.className="offline";
+banco.textContent="OFFLINE";
+}
 }
 
 /* REGISTRAR */
-
 async function registrarTeste(){
+if(!acessoLiberado)return;
+const campoNome=document.getElementById("nomeTeste");
+const campoEvento=document.getElementById("eventoTeste");
+const botao=document.getElementById("btnRegistrar");
+const nome=campoNome.value.trim();
+const evento=campoEvento.value.trim()||"teste_registrado";
 
- if(!acessoLiberado) return;
+if(!nome){mensagem("Digite o nome do teste.",true);return;}
 
- const campoNome=document.getElementById("nomeTeste");
- const campoEvento=document.getElementById("eventoTeste");
- const botao=document.getElementById("btnRegistrar");
+botao.disabled=true;
+mensagem("Salvando registro...");
 
- const nome=campoNome.value.trim();
- const evento=campoEvento.value.trim()||"teste_registrado";
-
- if(!nome){
-  mensagem("Digite o nome do teste.",true);
-  return;
- }
-
- botao.disabled=true;
- mensagem("Salvando registro...");
-
- try{
-
-  const {error}=await db
-   .from("lab_logs")
-   .insert([{
-    name:nome,
-    event:evento
-   }]);
-
-  if(error) throw error;
-
-  campoNome.value="";
-  campoEvento.value="";
-
-  mensagem("✅ Teste registrado com sucesso!");
-
-  await atualizarTudo();
-
- }catch(error){
-
-  mensagem("Erro: "+mostrarErro(error),true);
-
- }finally{
-
-  botao.disabled=false;
-
- }
-
+try{
+const {error}=await db.from("lab_logs").insert([{name:nome,event:evento}]);
+if(error)throw error;
+campoNome.value="";
+campoEvento.value="";
+mensagem("✅ Teste registrado com sucesso!");
+await atualizarTudo();
+}catch(error){
+mensagem("Erro: "+mostrarErro(error),true);
+}finally{
+botao.disabled=false;
+}
 }
 
 /* TOTAL */
-
 async function carregarTotal(){
-
- const {count,error}=await db
-  .from("lab_logs")
-  .select("id",{
-   count:"exact",
-   head:true
-  });
-
- if(error) throw error;
-
- document.getElementById("total").textContent=count??0;
-
+const {count,error}=await db.from("lab_logs").select("id",{count:"exact",head:true});
+if(error)throw error;
+document.getElementById("total").textContent=count??0;
 }
 
 /* HISTÓRICO */
-
 async function carregarHistorico(){
-
- const historico=document.getElementById("historico");
- historico.textContent="Carregando...";
-
- const {data,error}=await db
-  .from("lab_logs")
-  .select("id,name,event,created_at")
-  .order("created_at",{ascending:false})
-  .limit(100);
-
- if(error) throw error;
-
- registros=data||[];
-
- filtrarHistorico();
-
+const historico=document.getElementById("historico");
+historico.textContent="Carregando...";
+const {data,error}=await db.from("lab_logs")
+.select("id,name,event,created_at")
+.order("created_at",{ascending:false})
+.limit(100);
+if(error)throw error;
+registros=data||[];
+filtrarHistorico();
 }
 
 /* ATUALIZAR */
-
 async function atualizarTudo(){
-
- if(!acessoLiberado || atualizando) return;
-
- atualizando=true;
-
- try{
-
-  await Promise.all([
-   carregarTotal(),
-   carregarHistorico()
-  ]);
-
-  document.getElementById("ultimaAtualizacao").textContent=
-   "Última atualização: "+
-   new Date().toLocaleTimeString("pt-BR");
-
- }catch(error){
-
-  console.error(error);
-
-  document.getElementById("historico").textContent=
-   "Erro ao atualizar: "+mostrarErro(error);
-
- }finally{
-
-  atualizando=false;
-
- }
-
+if(!acessoLiberado||atualizando)return;
+atualizando=true;
+try{
+await Promise.all([carregarTotal(),carregarHistorico()]);
+document.getElementById("ultimaAtualizacao").textContent=
+"Última atualização: "+new Date().toLocaleTimeString("pt-BR");
+}catch(error){
+console.error(error);
+document.getElementById("historico").textContent="Erro ao atualizar: "+mostrarErro(error);
+}finally{
+atualizando=false;
+}
 }
 
 /* PESQUISAR */
-
 function filtrarHistorico(){
+const historico=document.getElementById("historico");
+const termo=document.getElementById("pesquisa").value.toLowerCase().trim();
+historico.innerHTML="";
 
- const historico=document.getElementById("historico");
+const encontrados=registros.filter(item=>
+(item.name||"").toLowerCase().includes(termo)||
+(item.event||"").toLowerCase().includes(termo)
+);
 
- const termo=document.getElementById("pesquisa")
-  .value.toLowerCase().trim();
+if(encontrados.length===0){
+historico.textContent="Nenhum teste encontrado.";
+return;
+}
 
- historico.innerHTML="";
+encontrados.forEach(item=>{
+const div=document.createElement("div");
+div.className="log";
 
- const encontrados=registros.filter(item=>
-  (item.name||"").toLowerCase().includes(termo)||
-  (item.event||"").toLowerCase().includes(termo)
- );
+const titulo=document.createElement("div");
+titulo.className="log-title";
+titulo.textContent=item.name||"Teste sem nome";
 
- if(encontrados.length===0){
-  historico.textContent="Nenhum teste encontrado.";
-  return;
- }
+const evento=document.createElement("small");
+evento.textContent="Evento: "+(item.event||"Não informado");
 
- encontrados.forEach(item=>{
+const data=document.createElement("small");
+data.textContent=item.created_at?new Date(item.created_at).toLocaleString("pt-BR"):"Data não informada";
 
-  const div=document.createElement("div");
-  div.className="log";
+div.append(titulo,evento,data);
 
-  const titulo=document.createElement("div");
-  titulo.className="log-title";
-  titulo.textContent=item.name||"Teste sem nome";
+if(papelUsuario==="admin"){
+const editar=document.createElement("button");
+editar.className="secondary";
+editar.textContent="✏️ Editar";
+editar.onclick=()=>editarTeste(item,div);
 
-  const evento=document.createElement("small");
-  evento.textContent="Evento: "+(item.event||"Não informado");
+const excluir=document.createElement("button");
+excluir.className="danger";
+excluir.textContent="🗑 Excluir";
+excluir.onclick=()=>excluirTeste(item.id);
 
-  const data=document.createElement("small");
-  data.textContent=item.created_at
-   ?new Date(item.created_at).toLocaleString("pt-BR")
-   :"Data não informada";
+div.append(editar,excluir);
+}
 
-  const editar=document.createElement("button");
-  editar.className="secondary";
-  editar.textContent="✏️ Editar";
-  editar.onclick=()=>editarTeste(item,div);
-
-  const excluir=document.createElement("button");
-  excluir.className="danger";
-  excluir.textContent="🗑 Excluir";
-  excluir.onclick=()=>excluirTeste(item.id);
-
-  div.append(titulo,evento,data,editar,excluir);
-  historico.appendChild(div);
-
- });
-
+historico.appendChild(div);
+});
 }
 
 /* EDITAR */
-
 async function editarTeste(item,div){
+if(!acessoLiberado||papelUsuario!=="admin")return;
 
- div.innerHTML="";
+div.innerHTML="";
 
- const campoNome=document.createElement("input");
- campoNome.value=item.name||"";
- campoNome.maxLength=120;
- campoNome.placeholder="Nome do teste";
+const campoNome=document.createElement("input");
+campoNome.value=item.name||"";
+campoNome.maxLength=120;
+campoNome.placeholder="Nome do teste";
 
- const campoEvento=document.createElement("input");
- campoEvento.value=item.event||"";
- campoEvento.maxLength=500;
- campoEvento.placeholder="Descrição do evento";
+const campoEvento=document.createElement("input");
+campoEvento.value=item.event||"";
+campoEvento.maxLength=500;
+campoEvento.placeholder="Descrição do evento";
 
- const salvar=document.createElement("button");
- salvar.textContent="💾 Salvar";
+const salvar=document.createElement("button");
+salvar.textContent="💾 Salvar";
 
- const cancelar=document.createElement("button");
- cancelar.textContent="Cancelar";
- cancelar.className="secondary";
+const cancelar=document.createElement("button");
+cancelar.textContent="Cancelar";
+cancelar.className="secondary";
 
- salvar.onclick=async()=>{
+salvar.onclick=async()=>{
+if(!acessoLiberado||papelUsuario!=="admin")return;
 
-  const nome=campoNome.value.trim();
-  const evento=campoEvento.value.trim();
+const nome=campoNome.value.trim();
+const evento=campoEvento.value.trim();
 
-  if(!nome||!evento){
-   alert("Preencha o nome e o evento.");
-   return;
-  }
+if(!nome||!evento){alert("Preencha o nome e o evento.");return;}
 
-  salvar.disabled=true;
-  cancelar.disabled=true;
+salvar.disabled=true;
+cancelar.disabled=true;
 
-  try{
+try{
+const {data,error}=await db.from("lab_logs")
+.update({name:nome,event:evento})
+.eq("id",item.id)
+.select("id,name,event");
 
-   const {data,error}=await db
-    .from("lab_logs")
-    .update({
-     name:nome,
-     event:evento
-    })
-    .eq("id",item.id)
-    .select("id,name,event");
+if(error)throw error;
+if(!data||data.length===0)throw new Error("Nenhuma linha foi atualizada. Verifique as políticas RLS.");
 
-   if(error) throw error;
+mensagem("✅ Registro atualizado e confirmado no banco!");
+registros=registros.map(registro=>
+registro.id===item.id?{...registro,...data[0]}:registro
+);
+await atualizarTudo();
 
-   if(!data||data.length===0){
-    throw new Error(
-     "Nenhuma linha foi atualizada. Verifique as políticas RLS."
-    );
-   }
+}catch(error){
+alert("Erro ao editar: "+mostrarErro(error));
+salvar.disabled=false;
+cancelar.disabled=false;
+}
+};
 
-   mensagem("✅ Registro atualizado e confirmado no banco!");
-
-   registros=registros.map(registro=>
-    registro.id===item.id
-     ?{...registro,...data[0]}
-     :registro
-   );
-
-   await atualizarTudo();
-
-  }catch(error){
-
-   alert("Erro ao editar: "+mostrarErro(error));
-
-   salvar.disabled=false;
-   cancelar.disabled=false;
-
-  }
-
- };
-
- cancelar.onclick=()=>filtrarHistorico();
-
- div.append(campoNome,campoEvento,salvar,cancelar);
-
- campoNome.focus();
-
+cancelar.onclick=()=>filtrarHistorico();
+div.append(campoNome,campoEvento,salvar,cancelar);
+campoNome.focus();
 }
 
 /* EXCLUIR */
-
 async function excluirTeste(id){
+if(!acessoLiberado||papelUsuario!=="admin")return;
 
- if(!acessoLiberado) return;
+if(!confirm("Deseja realmente excluir este registro?"))return;
 
- if(!confirm("Deseja realmente excluir este registro?")){
-  return;
- }
+try{
+const {data,error}=await db.from("lab_logs")
+.delete()
+.eq("id",id)
+.select("id");
 
- try{
+if(error)throw error;
+if(!data||data.length===0)throw new Error("Nenhum registro excluído. Verifique a política DELETE.");
 
-  const {data,error}=await db
-   .from("lab_logs")
-   .delete()
-   .eq("id",id)
-   .select("id");
+mensagem("🗑 Registro excluído!");
+await atualizarTudo();
 
-  if(error) throw error;
-
-  if(!data||data.length===0){
-   throw new Error(
-    "Nenhum registro excluído. Verifique a política DELETE."
-   );
-  }
-
-  mensagem("🗑 Registro excluído!");
-
-  await atualizarTudo();
-
- }catch(error){
-
-  alert("Erro ao excluir: "+mostrarErro(error));
-
- }
+}catch(error){
+alert("Erro ao excluir: "+mostrarErro(error));
+}
+}
 
 /* INICIAR PAINEL */
-
-}
-
 async function iniciarPainel(){
+await testarConexao();
+await atualizarTudo();
 
- await testarConexao();
- await atualizarTudo();
-
- if(intervaloAtualizacao){
-  clearInterval(intervaloAtualizacao);
- }
-
- intervaloAtualizacao=setInterval(atualizarTudo,15000);
-
+if(intervaloAtualizacao)clearInterval(intervaloAtualizacao);
+intervaloAtualizacao=setInterval(atualizarTudo,15000);
 }
 
-/* VERIFICAR SESSÃO AO ABRIR */
-
+/* VERIFICAR SESSÃO */
 async function iniciar(){
+mostrarLogin();
+const {data,error}=await db.auth.getSession();
 
- mostrarLogin();
+if(error){
+document.getElementById("erroLogin").textContent="Erro ao verificar sessão: "+error.message;
+return;
+}
 
- const {data,error}=await db.auth.getSession();
-
- if(error){
-  document.getElementById("erroLogin").textContent=
-   "Erro ao verificar sessão: "+error.message;
-  return;
- }
-
- if(data.session){
-
-  await verificarAcesso(data.session.user);
-
- }
-
+if(data.session)await verificarAcesso(data.session.user);
 }
 
 iniciar();
-
 </script>
 </body>
 </html>
