@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIEL CYBER LAB V2</title>
+<title>NIEL CYBER LAB V3</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -12,37 +12,61 @@
 *{box-sizing:border-box}
 
 body{
- margin:0;padding:16px;
- background:#080d16;color:#00ff99;
+ margin:0;
+ padding:16px;
+ background:#080d16;
+ color:#00ff99;
  font-family:Arial,sans-serif;
 }
 
-.container{max-width:900px;margin:auto}
+.container{max-width:950px;margin:auto}
 
-header{text-align:center;padding:22px 0}
-header h1{text-shadow:0 0 15px #00ff99}
+header{
+ text-align:center;
+ padding:25px 0;
+}
+
+header h1{
+ text-shadow:0 0 15px #00ff99;
+ letter-spacing:2px;
+}
+
 header p{color:#91a5b5}
 
 .card{
- background:#111b29;border:1px solid #174b3b;
- border-radius:14px;padding:20px;margin:16px 0;
+ background:#111b29;
+ border:1px solid #174b3b;
+ border-radius:14px;
+ padding:20px;
+ margin:16px 0;
  box-shadow:0 0 15px #00ff9910;
 }
 
 h3{margin-top:0}
 
 input{
- width:100%;padding:13px;margin:8px 0;
- border-radius:8px;border:1px solid #245b49;
- background:#080d16;color:white;
+ width:100%;
+ padding:13px;
+ margin:8px 0;
+ border-radius:8px;
+ border:1px solid #245b49;
+ background:#080d16;
+ color:white;
 }
 
-input:focus{outline:1px solid #00ff99}
+input:focus{
+ outline:1px solid #00ff99;
+}
 
 button{
- padding:12px 15px;border:0;border-radius:8px;
- background:#00ff99;color:#080d16;
- font-weight:bold;cursor:pointer;margin:5px 3px 5px 0;
+ padding:12px 15px;
+ border:0;
+ border-radius:8px;
+ background:#00ff99;
+ color:#080d16;
+ font-weight:bold;
+ cursor:pointer;
+ margin:5px 3px 5px 0;
 }
 
 button:hover{opacity:.85}
@@ -52,38 +76,66 @@ button:disabled{opacity:.5;cursor:wait}
 .danger{background:#e53935;color:white}
 
 .stats{
- display:grid;grid-template-columns:repeat(2,1fr);
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
  gap:12px;
 }
 
 .stat{
- background:#080d16;border:1px solid #245b49;
- border-radius:10px;padding:18px;text-align:center;
+ background:#080d16;
+ border:1px solid #245b49;
+ border-radius:10px;
+ padding:18px;
+ text-align:center;
+ color:#91a5b5;
 }
 
 .stat strong{
- display:block;font-size:28px;margin-top:8px;
+ display:block;
+ font-size:28px;
+ color:#00ff99;
+ margin-top:8px;
 }
 
 .log{
- background:#080d16;border:1px solid #263747;
- border-radius:9px;padding:14px;margin-top:12px;
- color:white;overflow-wrap:anywhere;
+ background:#080d16;
+ border:1px solid #263747;
+ border-radius:9px;
+ padding:14px;
+ margin-top:12px;
+ color:white;
+ overflow-wrap:anywhere;
 }
 
-.log-title{color:#00ff99;font-weight:bold;margin-bottom:8px}
-.log small{display:block;color:#91a5b5;margin:8px 0}
+.log-title{
+ color:#00ff99;
+ font-weight:bold;
+ margin-bottom:8px;
+}
+
+.log small{
+ display:block;
+ color:#91a5b5;
+ margin:8px 0;
+}
 
 #mensagem{overflow-wrap:anywhere}
 .online{color:#00ff99}
 .offline{color:#ff5252}
+#ultimaAtualizacao{color:#91a5b5;font-size:12px}
 
-footer{text-align:center;color:#627586;padding:20px;font-size:12px}
+footer{
+ text-align:center;
+ color:#627586;
+ padding:20px;
+ font-size:12px;
+}
 
 @media(max-width:500px){
  body{padding:10px}
  header h1{font-size:22px}
  .card{padding:14px}
+ .stats{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -94,12 +146,12 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 
 <header>
 <h1>🔐 NIEL CYBER LAB</h1>
-<p>Laboratório de Segurança Digital | V2.0</p>
+<p>Laboratório de Segurança Digital | V3.0</p>
 </header>
 
 <div class="card">
 <h3>📡 Status do Banco</h3>
-<p id="status">Conectando...</p>
+<p id="status">Conectando ao Supabase...</p>
 <button onclick="testarConexao()">Testar conexão</button>
 </div>
 
@@ -118,7 +170,7 @@ Banco de dados
 </div>
 </div>
 
-<p id="ultimaAtualizacao" style="color:#91a5b5;font-size:12px">
+<p id="ultimaAtualizacao">
 Aguardando atualização...
 </p>
 </div>
@@ -126,29 +178,42 @@ Aguardando atualização...
 <div class="card">
 <h3>🧪 Registrar novo teste</h3>
 
-<input id="nomeTeste"
-placeholder="Digite o nome do teste"
-maxlength="120">
+<input
+ id="nomeTeste"
+ type="text"
+ placeholder="Nome do teste"
+ maxlength="120"
+>
+
+<input
+ id="eventoTeste"
+ type="text"
+ placeholder="Descrição do evento"
+ maxlength="500"
+>
 
 <button id="btnRegistrar" onclick="registrarTeste()">
 + Registrar teste
 </button>
 
-<p id="mensagem"></p>
+<p id="mensagem">Aguardando registro...</p>
 </div>
 
 <div class="card">
 <h3>📋 Histórico de testes</h3>
 
-<input id="pesquisa"
-placeholder="Pesquisar teste..."
-oninput="filtrarHistorico()">
+<input
+ id="pesquisa"
+ type="text"
+ placeholder="Pesquisar por nome ou evento..."
+ oninput="filtrarHistorico()"
+>
 
 <button class="secondary" onclick="atualizarTudo()">
 ↻ Atualizar histórico
 </button>
 
-<div id="historico">Carregando...</div>
+<div id="historico">Carregando histórico...</div>
 </div>
 
 <footer>
@@ -206,9 +271,12 @@ async function testarConexao(){
 }
 
 async function registrarTeste(){
- const campo = document.getElementById("nomeTeste");
+ const campoNome = document.getElementById("nomeTeste");
+ const campoEvento = document.getElementById("eventoTeste");
  const botao = document.getElementById("btnRegistrar");
- const nome = campo.value.trim();
+
+ const nome = campoNome.value.trim();
+ const evento = campoEvento.value.trim() || "teste_registrado";
 
  if(!nome){
   mensagem("Digite o nome do teste.",true);
@@ -223,13 +291,15 @@ async function registrarTeste(){
    .from("lab_logs")
    .insert([{
     name:nome,
-    event:"teste_registrado"
+    event:evento
    }]);
 
   if(error) throw error;
 
-  campo.value = "";
-  mensagem("✅ Registro salvo com sucesso!");
+  campoNome.value = "";
+  campoEvento.value = "";
+
+  mensagem("✅ Teste registrado com sucesso!");
 
   await atualizarTudo();
 
@@ -243,7 +313,10 @@ async function registrarTeste(){
 async function carregarTotal(){
  const {count,error} = await db
   .from("lab_logs")
-  .select("*",{count:"exact",head:true});
+  .select("*",{
+   count:"exact",
+   head:true
+  });
 
  if(error) throw error;
 
@@ -256,22 +329,19 @@ async function carregarHistorico(){
 
  historico.textContent = "Carregando...";
 
- try{
-  const {data,error} = await db
-   .from("lab_logs")
-   .select("id,name,event,created_at")
-   .order("created_at",{ascending:false})
-   .limit(100);
+ const {data,error} = await db
+  .from("lab_logs")
+  .select("id,name,event,created_at")
+  .order("created_at",{
+   ascending:false
+  })
+  .limit(100);
 
-  if(error) throw error;
+ if(error) throw error;
 
-  registros = data || [];
-  filtrarHistorico();
+ registros = data || [];
 
- }catch(error){
-  historico.textContent = "Erro: " + error.message;
-  throw error;
- }
+ filtrarHistorico();
 }
 
 async function atualizarTudo(){
@@ -291,6 +361,10 @@ async function atualizarTudo(){
 
  }catch(error){
   console.error(error);
+
+  document.getElementById("historico").textContent =
+   "Erro ao atualizar: " + error.message;
+
  }finally{
   atualizando = false;
  }
@@ -298,13 +372,15 @@ async function atualizarTudo(){
 
 function filtrarHistorico(){
  const historico = document.getElementById("historico");
+
  const termo = document.getElementById("pesquisa")
-  .value.toLowerCase();
+  .value.toLowerCase().trim();
 
  historico.innerHTML = "";
 
  const encontrados = registros.filter(item =>
-  (item.name || "").toLowerCase().includes(termo)
+  (item.name || "").toLowerCase().includes(termo) ||
+  (item.event || "").toLowerCase().includes(termo)
  );
 
  if(encontrados.length === 0){
@@ -321,7 +397,8 @@ function filtrarHistorico(){
   titulo.textContent = item.name || "Teste sem nome";
 
   const evento = document.createElement("small");
-  evento.textContent = "Evento: " + (item.event || "Não informado");
+  evento.textContent =
+   "Evento: " + (item.event || "Não informado");
 
   const data = document.createElement("small");
   data.textContent = item.created_at
@@ -338,7 +415,14 @@ function filtrarHistorico(){
   excluir.textContent = "🗑 Excluir";
   excluir.onclick = () => excluirTeste(item.id);
 
-  div.append(titulo,evento,data,editar,excluir);
+  div.append(
+   titulo,
+   evento,
+   data,
+   editar,
+   excluir
+  );
+
   historico.appendChild(div);
  });
 }
@@ -346,10 +430,15 @@ function filtrarHistorico(){
 function editarTeste(item,div){
  div.innerHTML = "";
 
- const campo = document.createElement("input");
- campo.value = item.name || "";
- campo.maxLength = 120;
- campo.placeholder = "Novo nome";
+ const campoNome = document.createElement("input");
+ campoNome.value = item.name || "";
+ campoNome.maxLength = 120;
+ campoNome.placeholder = "Nome do teste";
+
+ const campoEvento = document.createElement("input");
+ campoEvento.value = item.event || "";
+ campoEvento.maxLength = 500;
+ campoEvento.placeholder = "Descrição do evento";
 
  const salvar = document.createElement("button");
  salvar.textContent = "💾 Salvar";
@@ -359,10 +448,11 @@ function editarTeste(item,div){
  cancelar.className = "secondary";
 
  salvar.onclick = async () => {
-  const nome = campo.value.trim();
+  const nome = campoNome.value.trim();
+  const evento = campoEvento.value.trim();
 
-  if(!nome){
-   alert("Digite um nome válido.");
+  if(!nome || !evento){
+   alert("Preencha o nome e o evento.");
    return;
   }
 
@@ -371,13 +461,17 @@ function editarTeste(item,div){
   try{
    const {error} = await db
     .from("lab_logs")
-    .update({name:nome})
+    .update({
+     name:nome,
+     event:evento
+    })
     .eq("id",item.id);
 
    if(error) throw error;
 
-   await atualizarTudo();
    mensagem("✅ Registro atualizado!");
+
+   await atualizarTudo();
 
   }catch(error){
    alert("Erro ao editar: " + error.message);
@@ -387,12 +481,20 @@ function editarTeste(item,div){
 
  cancelar.onclick = () => filtrarHistorico();
 
- div.append(campo,salvar,cancelar);
- campo.focus();
+ div.append(
+  campoNome,
+  campoEvento,
+  salvar,
+  cancelar
+ );
+
+ campoNome.focus();
 }
 
 async function excluirTeste(id){
- if(!confirm("Deseja realmente excluir este registro?")) return;
+ if(!confirm("Deseja realmente excluir este registro?")){
+  return;
+ }
 
  try{
   const {error} = await db
@@ -403,6 +505,7 @@ async function excluirTeste(id){
   if(error) throw error;
 
   mensagem("🗑 Registro excluído!");
+
   await atualizarTudo();
 
  }catch(error){
@@ -410,12 +513,10 @@ async function excluirTeste(id){
  }
 }
 
-// Inicialização
 async function iniciar(){
  await testarConexao();
  await atualizarTudo();
 
- // Atualização automática a cada 15 segundos
  setInterval(atualizarTudo,15000);
 }
 
