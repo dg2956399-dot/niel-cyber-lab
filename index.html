@@ -102,6 +102,35 @@ button:disabled{opacity:.5;cursor:wait}
 .offline{color:#ff5252}
 #ultimaAtualizacao{color:#91a5b5;font-size:12px}
 
+/* TELA DE LOGIN */
+.login-screen{
+ max-width:420px;
+ margin:70px auto;
+ background:#111b29;
+ border:1px solid #174b3b;
+ border-radius:15px;
+ padding:25px;
+ box-shadow:0 0 20px #00ff9910;
+}
+
+.login-screen h2{
+ text-align:center;
+ text-shadow:0 0 12px #00ff99;
+}
+
+.login-screen p{
+ color:#91a5b5;
+ text-align:center;
+}
+
+#erroLogin{
+ color:#ff5252;
+ text-align:center;
+ overflow-wrap:anywhere;
+}
+
+#painel{display:none}
+
 footer{
  text-align:center;
  color:#627586;
@@ -119,11 +148,46 @@ footer{
 </head>
 
 <body>
-<div class="container">
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginTela">
+
+ <h2>🔐 NIEL CYBER LAB</h2>
+ <p>Acesso restrito ao laboratório</p>
+
+ <form onsubmit="entrar(event)">
+
+  <input
+   id="emailLogin"
+   type="email"
+   placeholder="Seu e-mail"
+   autocomplete="username"
+   required>
+
+  <input
+   id="senhaLogin"
+   type="password"
+   placeholder="Sua senha"
+   autocomplete="current-password"
+   required>
+
+  <button id="btnEntrar" type="submit" style="width:100%">
+   ENTRAR
+  </button>
+
+ </form>
+
+ <p id="erroLogin"></p>
+
+</div>
+
+<!-- PAINEL ORIGINAL V4 -->
+<div class="container" id="painel">
 
 <header>
 <h1>🔐 NIEL CYBER LAB</h1>
 <p>Laboratório de Segurança Digital | V4.0</p>
+<button class="danger" onclick="sair()">🚪 Sair da conta</button>
 </header>
 
 <div class="card">
@@ -185,6 +249,7 @@ Ambiente de aprendizagem e testes autorizados
 </div>
 
 <script>
+
 const SUPABASE_URL =
 "https://rnzmrbadzmgpunwhrifw.supabase.co";
 
@@ -196,15 +261,17 @@ const db = window.supabase.createClient(
  SUPABASE_KEY,
  {
   auth:{
-   persistSession:false,
-   autoRefreshToken:false,
-   detectSessionInUrl:false
+   persistSession:true,
+   autoRefreshToken:true,
+   detectSessionInUrl:true
   }
  }
 );
 
 let registros = [];
 let atualizando = false;
+let intervaloAtualizacao = null;
+let acessoLiberado = false;
 
 function mensagem(texto,erro=false){
  const campo=document.getElementById("mensagem");
@@ -218,7 +285,141 @@ function mostrarErro(error){
   (error.code?" | Código: "+error.code:"");
 }
 
+/* LOGIN */
+
+async function entrar(event){
+ event.preventDefault();
+
+ const botao=document.getElementById("btnEntrar");
+ const erro=document.getElementById("erroLogin");
+
+ const email=document.getElementById("emailLogin").value.trim();
+ const senha=document.getElementById("senhaLogin").value;
+
+ botao.disabled=true;
+ botao.textContent="VERIFICANDO...";
+ erro.textContent="";
+
+ try{
+
+  const {data,error}=await db.auth.signInWithPassword({
+   email:email,
+   password:senha
+  });
+
+  if(error) throw error;
+
+  await verificarAcesso(data.user);
+
+ }catch(error){
+
+  console.error(error);
+  erro.textContent="Erro no login: "+error.message;
+
+  await db.auth.signOut();
+
+ }finally{
+
+  botao.disabled=false;
+  botao.textContent="ENTRAR";
+
+ }
+}
+
+/* VERIFICAR PERFIL E AUTORIZAÇÃO */
+
+async function verificarAcesso(user){
+
+ const erro=document.getElementById("erroLogin");
+
+ if(!user){
+  acessoLiberado=false;
+  mostrarLogin();
+  return;
+ }
+
+ try{
+
+  const {data:perfil,error}=await db
+   .from("user_profiles")
+   .select("role")
+   .eq("id",user.id)
+   .maybeSingle();
+
+  if(error) throw error;
+
+  if(
+   !perfil ||
+   !["admin","approved"].includes(perfil.role)
+  ){
+
+   await db.auth.signOut();
+
+   throw new Error(
+    "Sua conta ainda não está autorizada pelo administrador."
+   );
+
+  }
+
+  acessoLiberado=true;
+
+  document.getElementById("loginTela").style.display="none";
+  document.getElementById("painel").style.display="block";
+
+  erro.textContent="";
+
+  await iniciarPainel();
+
+ }catch(error){
+
+  console.error(error);
+
+  acessoLiberado=false;
+
+  await db.auth.signOut();
+
+  mostrarLogin();
+
+  erro.textContent=error.message;
+
+ }
+
+}
+
+function mostrarLogin(){
+
+ document.getElementById("painel").style.display="none";
+ document.getElementById("loginTela").style.display="block";
+
+}
+
+async function sair(){
+
+ if(intervaloAtualizacao){
+  clearInterval(intervaloAtualizacao);
+  intervaloAtualizacao=null;
+ }
+
+ acessoLiberado=false;
+
+ await db.auth.signOut();
+
+ mostrarLogin();
+
+ document.getElementById("emailLogin").value="";
+ document.getElementById("senhaLogin").value="";
+
+ document.getElementById("erroLogin").textContent=
+  "Você saiu da sua conta.";
+
+}
+
+/* CONEXÃO */
+
 async function testarConexao(){
+
+ if(!acessoLiberado) return;
+
  const status=document.getElementById("status");
  const banco=document.getElementById("banco");
 
@@ -226,6 +427,7 @@ async function testarConexao(){
  banco.textContent="...";
 
  try{
+
   const {error}=await db
    .from("lab_logs")
    .select("id")
@@ -238,13 +440,21 @@ async function testarConexao(){
   banco.textContent="ONLINE";
 
  }catch(error){
+
   status.textContent="🔴 "+mostrarErro(error);
   status.className="offline";
   banco.textContent="OFFLINE";
+
  }
+
 }
 
+/* REGISTRAR */
+
 async function registrarTeste(){
+
+ if(!acessoLiberado) return;
+
  const campoNome=document.getElementById("nomeTeste");
  const campoEvento=document.getElementById("eventoTeste");
  const botao=document.getElementById("btnRegistrar");
@@ -261,6 +471,7 @@ async function registrarTeste(){
  mensagem("Salvando registro...");
 
  try{
+
   const {error}=await db
    .from("lab_logs")
    .insert([{
@@ -274,16 +485,25 @@ async function registrarTeste(){
   campoEvento.value="";
 
   mensagem("✅ Teste registrado com sucesso!");
+
   await atualizarTudo();
 
  }catch(error){
+
   mensagem("Erro: "+mostrarErro(error),true);
+
  }finally{
+
   botao.disabled=false;
+
  }
+
 }
 
+/* TOTAL */
+
 async function carregarTotal(){
+
  const {count,error}=await db
   .from("lab_logs")
   .select("id",{
@@ -294,9 +514,13 @@ async function carregarTotal(){
  if(error) throw error;
 
  document.getElementById("total").textContent=count??0;
+
 }
 
+/* HISTÓRICO */
+
 async function carregarHistorico(){
+
  const historico=document.getElementById("historico");
  historico.textContent="Carregando...";
 
@@ -309,15 +533,21 @@ async function carregarHistorico(){
  if(error) throw error;
 
  registros=data||[];
+
  filtrarHistorico();
+
 }
 
+/* ATUALIZAR */
+
 async function atualizarTudo(){
- if(atualizando) return;
+
+ if(!acessoLiberado || atualizando) return;
 
  atualizando=true;
 
  try{
+
   await Promise.all([
    carregarTotal(),
    carregarHistorico()
@@ -328,16 +558,26 @@ async function atualizarTudo(){
    new Date().toLocaleTimeString("pt-BR");
 
  }catch(error){
+
   console.error(error);
+
   document.getElementById("historico").textContent=
    "Erro ao atualizar: "+mostrarErro(error);
+
  }finally{
+
   atualizando=false;
+
  }
+
 }
 
+/* PESQUISAR */
+
 function filtrarHistorico(){
+
  const historico=document.getElementById("historico");
+
  const termo=document.getElementById("pesquisa")
   .value.toLowerCase().trim();
 
@@ -354,6 +594,7 @@ function filtrarHistorico(){
  }
 
  encontrados.forEach(item=>{
+
   const div=document.createElement("div");
   div.className="log";
 
@@ -381,11 +622,15 @@ function filtrarHistorico(){
 
   div.append(titulo,evento,data,editar,excluir);
   historico.appendChild(div);
+
  });
+
 }
 
-// FUNÇÃO DE EDIÇÃO CORRIGIDA
+/* EDITAR */
+
 async function editarTeste(item,div){
+
  div.innerHTML="";
 
  const campoNome=document.createElement("input");
@@ -406,6 +651,7 @@ async function editarTeste(item,div){
  cancelar.className="secondary";
 
  salvar.onclick=async()=>{
+
   const nome=campoNome.value.trim();
   const evento=campoEvento.value.trim();
 
@@ -418,6 +664,7 @@ async function editarTeste(item,div){
   cancelar.disabled=true;
 
   try{
+
    const {data,error}=await db
     .from("lab_logs")
     .update({
@@ -446,24 +693,36 @@ async function editarTeste(item,div){
    await atualizarTudo();
 
   }catch(error){
+
    alert("Erro ao editar: "+mostrarErro(error));
+
    salvar.disabled=false;
    cancelar.disabled=false;
+
   }
+
  };
 
  cancelar.onclick=()=>filtrarHistorico();
 
  div.append(campoNome,campoEvento,salvar,cancelar);
+
  campoNome.focus();
+
 }
 
+/* EXCLUIR */
+
 async function excluirTeste(id){
+
+ if(!acessoLiberado) return;
+
  if(!confirm("Deseja realmente excluir este registro?")){
   return;
  }
 
  try{
+
   const {data,error}=await db
    .from("lab_logs")
    .delete()
@@ -479,21 +738,56 @@ async function excluirTeste(id){
   }
 
   mensagem("🗑 Registro excluído!");
+
   await atualizarTudo();
 
  }catch(error){
+
   alert("Erro ao excluir: "+mostrarErro(error));
+
  }
+
+/* INICIAR PAINEL */
+
 }
 
-async function iniciar(){
+async function iniciarPainel(){
+
  await testarConexao();
  await atualizarTudo();
 
- setInterval(atualizarTudo,15000);
+ if(intervaloAtualizacao){
+  clearInterval(intervaloAtualizacao);
+ }
+
+ intervaloAtualizacao=setInterval(atualizarTudo,15000);
+
+}
+
+/* VERIFICAR SESSÃO AO ABRIR */
+
+async function iniciar(){
+
+ mostrarLogin();
+
+ const {data,error}=await db.auth.getSession();
+
+ if(error){
+  document.getElementById("erroLogin").textContent=
+   "Erro ao verificar sessão: "+error.message;
+  return;
+ }
+
+ if(data.session){
+
+  await verificarAcesso(data.session.user);
+
+ }
+
 }
 
 iniciar();
+
 </script>
 </body>
 </html>
