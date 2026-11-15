@@ -4,152 +4,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIEL CYBER LAB</title>
+<title>NIEL CYBER LAB V2</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* { box-sizing:border-box; }
+*{box-sizing:border-box}
 
-body {
-  margin:0;
-  padding:20px;
-  background:#080d16;
-  color:#00ff99;
-  font-family:Arial,sans-serif;
+body{
+ margin:0;padding:16px;
+ background:#080d16;color:#00ff99;
+ font-family:Arial,sans-serif;
 }
 
-.container {
-  max-width:850px;
-  margin:auto;
+.container{max-width:900px;margin:auto}
+
+header{text-align:center;padding:22px 0}
+header h1{text-shadow:0 0 15px #00ff99}
+header p{color:#91a5b5}
+
+.card{
+ background:#111b29;border:1px solid #174b3b;
+ border-radius:14px;padding:20px;margin:16px 0;
+ box-shadow:0 0 15px #00ff9910;
 }
 
-header {
-  text-align:center;
-  padding:20px 0;
+h3{margin-top:0}
+
+input{
+ width:100%;padding:13px;margin:8px 0;
+ border-radius:8px;border:1px solid #245b49;
+ background:#080d16;color:white;
 }
 
-header h1 {
-  font-size:28px;
-  text-shadow:0 0 12px #00ff99;
+input:focus{outline:1px solid #00ff99}
+
+button{
+ padding:12px 15px;border:0;border-radius:8px;
+ background:#00ff99;color:#080d16;
+ font-weight:bold;cursor:pointer;margin:5px 3px 5px 0;
 }
 
-header p { color:#91a5b5; }
+button:hover{opacity:.85}
+button:disabled{opacity:.5;cursor:wait}
 
-.card {
-  background:#111b29;
-  border:1px solid #174b3b;
-  border-radius:14px;
-  padding:20px;
-  margin:18px 0;
-  box-shadow:0 0 15px #00ff9910;
+.secondary{background:#263747;color:white}
+.danger{background:#e53935;color:white}
+
+.stats{
+ display:grid;grid-template-columns:repeat(2,1fr);
+ gap:12px;
 }
 
-.card h3 {
-  margin-top:0;
-  color:#00ff99;
+.stat{
+ background:#080d16;border:1px solid #245b49;
+ border-radius:10px;padding:18px;text-align:center;
 }
 
-.status {
-  font-weight:bold;
-  color:#fff;
+.stat strong{
+ display:block;font-size:28px;margin-top:8px;
 }
 
-input {
-  width:100%;
-  padding:14px;
-  margin:8px 0;
-  border-radius:8px;
-  border:1px solid #245b49;
-  background:#080d16;
-  color:white;
-  outline:none;
+.log{
+ background:#080d16;border:1px solid #263747;
+ border-radius:9px;padding:14px;margin-top:12px;
+ color:white;overflow-wrap:anywhere;
 }
 
-input:focus {
-  border-color:#00ff99;
-}
+.log-title{color:#00ff99;font-weight:bold;margin-bottom:8px}
+.log small{display:block;color:#91a5b5;margin:8px 0}
 
-button {
-  padding:12px 15px;
-  border:0;
-  border-radius:8px;
-  background:#00ff99;
-  color:#080d16;
-  font-weight:bold;
-  cursor:pointer;
-  margin:5px 3px 5px 0;
-}
+#mensagem{overflow-wrap:anywhere}
+.online{color:#00ff99}
+.offline{color:#ff5252}
 
-button:hover { opacity:.85; }
+footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 
-.secondary {
-  background:#263747;
-  color:white;
-}
-
-.danger {
-  background:#e53935;
-  color:white;
-}
-
-.stats {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-
-.stat {
-  background:#080d16;
-  border:1px solid #245b49;
-  border-radius:10px;
-  padding:18px;
-  text-align:center;
-}
-
-.stat strong {
-  display:block;
-  font-size:27px;
-  margin-top:8px;
-}
-
-.log {
-  background:#080d16;
-  border:1px solid #263747;
-  border-radius:9px;
-  padding:14px;
-  margin-top:12px;
-  color:white;
-  overflow-wrap:anywhere;
-}
-
-.log-title {
-  color:#00ff99;
-  font-weight:bold;
-  margin-bottom:8px;
-}
-
-.log small {
-  display:block;
-  color:#91a5b5;
-  margin:8px 0;
-}
-
-#mensagem {
-  overflow-wrap:anywhere;
-}
-
-footer {
-  text-align:center;
-  color:#627586;
-  padding:20px;
-  font-size:12px;
-}
-
-@media(max-width:500px) {
-  body { padding:12px; }
-  header h1 { font-size:23px; }
-  .card { padding:15px; }
+@media(max-width:500px){
+ body{padding:10px}
+ header h1{font-size:22px}
+ .card{padding:14px}
 }
 </style>
 </head>
@@ -159,67 +93,67 @@ footer {
 <div class="container">
 
 <header>
-  <h1>🔐 NIEL CYBER LAB</h1>
-  <p>Laboratório de Segurança Digital</p>
+<h1>🔐 NIEL CYBER LAB</h1>
+<p>Laboratório de Segurança Digital | V2.0</p>
 </header>
 
 <div class="card">
-  <h3>📡 Status do Banco</h3>
-  <p id="status" class="status">Conectando...</p>
-  <button onclick="testarConexao()">Testar conexão</button>
+<h3>📡 Status do Banco</h3>
+<p id="status">Conectando...</p>
+<button onclick="testarConexao()">Testar conexão</button>
 </div>
 
 <div class="card">
-  <h3>📊 Painel de Controle</h3>
+<h3>📊 Painel de Controle</h3>
 
-  <div class="stats">
-    <div class="stat">
-      Total de testes
-      <strong id="total">0</strong>
-    </div>
+<div class="stats">
+<div class="stat">
+Total de registros
+<strong id="total">0</strong>
+</div>
 
-    <div class="stat">
-      Banco de dados
-      <strong id="banco">...</strong>
-    </div>
-  </div>
+<div class="stat">
+Banco de dados
+<strong id="banco">...</strong>
+</div>
+</div>
+
+<p id="ultimaAtualizacao" style="color:#91a5b5;font-size:12px">
+Aguardando atualização...
+</p>
 </div>
 
 <div class="card">
-  <h3>🧪 Registrar novo teste</h3>
+<h3>🧪 Registrar novo teste</h3>
 
-  <input
-    id="nomeTeste"
-    placeholder="Digite o nome do teste"
-    maxlength="120"
-  >
+<input id="nomeTeste"
+placeholder="Digite o nome do teste"
+maxlength="120">
 
-  <button onclick="registrarTeste()">
-    + Registrar teste
-  </button>
+<button id="btnRegistrar" onclick="registrarTeste()">
++ Registrar teste
+</button>
 
-  <p id="mensagem"></p>
+<p id="mensagem"></p>
 </div>
 
 <div class="card">
-  <h3>📋 Histórico de testes</h3>
+<h3>📋 Histórico de testes</h3>
 
-  <input
-    id="pesquisa"
-    placeholder="Pesquisar teste..."
-    oninput="filtrarHistorico()"
-  >
+<input id="pesquisa"
+placeholder="Pesquisar teste..."
+oninput="filtrarHistorico()">
 
-  <button class="secondary" onclick="carregarHistorico()">
-    ↻ Atualizar histórico
-  </button>
+<button class="secondary" onclick="atualizarTudo()">
+↻ Atualizar histórico
+</button>
 
-  <div id="historico">Carregando...</div>
+<div id="historico">Carregando...</div>
 </div>
 
 <footer>
-  NIEL CYBER LAB © 2026<br>
-  Ambiente de aprendizagem e testes autorizados
+NIEL CYBER LAB © 2026<br>
+Ambiente de aprendizagem e testes autorizados
 </footer>
 
 </div>
@@ -232,200 +166,261 @@ const SUPABASE_KEY =
 "sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r";
 
 const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
+ SUPABASE_URL,
+ SUPABASE_KEY
 );
 
 let registros = [];
+let atualizando = false;
 
-async function testarConexao() {
-  const status = document.getElementById("status");
-  const banco = document.getElementById("banco");
-
-  status.textContent = "Testando conexão...";
-  banco.textContent = "...";
-
-  try {
-    const { error } = await db
-      .from("lab_logs")
-      .select("id")
-      .limit(1);
-
-    if (error) throw error;
-
-    status.textContent = "🟢 Banco conectado!";
-    banco.textContent = "ONLINE";
-
-  } catch(error) {
-    status.textContent = "🔴 Erro: " + error.message;
-    banco.textContent = "OFFLINE";
-  }
+function mensagem(texto, erro=false){
+ const campo = document.getElementById("mensagem");
+ campo.textContent = texto;
+ campo.style.color = erro ? "#ff5252" : "#00ff99";
 }
 
-async function registrarTeste() {
-  const campo = document.getElementById("nomeTeste");
-  const mensagem = document.getElementById("mensagem");
+async function testarConexao(){
+ const status = document.getElementById("status");
+ const banco = document.getElementById("banco");
 
+ status.textContent = "Testando conexão...";
+ banco.textContent = "...";
+
+ try{
+  const {error} = await db
+   .from("lab_logs")
+   .select("id")
+   .limit(1);
+
+  if(error) throw error;
+
+  status.textContent = "🟢 Banco conectado!";
+  status.className = "online";
+  banco.textContent = "ONLINE";
+
+ }catch(error){
+  status.textContent = "🔴 " + error.message;
+  status.className = "offline";
+  banco.textContent = "OFFLINE";
+ }
+}
+
+async function registrarTeste(){
+ const campo = document.getElementById("nomeTeste");
+ const botao = document.getElementById("btnRegistrar");
+ const nome = campo.value.trim();
+
+ if(!nome){
+  mensagem("Digite o nome do teste.",true);
+  return;
+ }
+
+ botao.disabled = true;
+ mensagem("Salvando registro...");
+
+ try{
+  const {error} = await db
+   .from("lab_logs")
+   .insert([{
+    name:nome,
+    event:"teste_registrado"
+   }]);
+
+  if(error) throw error;
+
+  campo.value = "";
+  mensagem("✅ Registro salvo com sucesso!");
+
+  await atualizarTudo();
+
+ }catch(error){
+  mensagem("Erro: " + error.message,true);
+ }finally{
+  botao.disabled = false;
+ }
+}
+
+async function carregarTotal(){
+ const {count,error} = await db
+  .from("lab_logs")
+  .select("*",{count:"exact",head:true});
+
+ if(error) throw error;
+
+ document.getElementById("total").textContent =
+  count ?? 0;
+}
+
+async function carregarHistorico(){
+ const historico = document.getElementById("historico");
+
+ historico.textContent = "Carregando...";
+
+ try{
+  const {data,error} = await db
+   .from("lab_logs")
+   .select("id,name,event,created_at")
+   .order("created_at",{ascending:false})
+   .limit(100);
+
+  if(error) throw error;
+
+  registros = data || [];
+  filtrarHistorico();
+
+ }catch(error){
+  historico.textContent = "Erro: " + error.message;
+  throw error;
+ }
+}
+
+async function atualizarTudo(){
+ if(atualizando) return;
+
+ atualizando = true;
+
+ try{
+  await Promise.all([
+   carregarTotal(),
+   carregarHistorico()
+  ]);
+
+  document.getElementById("ultimaAtualizacao").textContent =
+   "Última atualização: " +
+   new Date().toLocaleTimeString("pt-BR");
+
+ }catch(error){
+  console.error(error);
+ }finally{
+  atualizando = false;
+ }
+}
+
+function filtrarHistorico(){
+ const historico = document.getElementById("historico");
+ const termo = document.getElementById("pesquisa")
+  .value.toLowerCase();
+
+ historico.innerHTML = "";
+
+ const encontrados = registros.filter(item =>
+  (item.name || "").toLowerCase().includes(termo)
+ );
+
+ if(encontrados.length === 0){
+  historico.textContent = "Nenhum teste encontrado.";
+  return;
+ }
+
+ encontrados.forEach(item => {
+  const div = document.createElement("div");
+  div.className = "log";
+
+  const titulo = document.createElement("div");
+  titulo.className = "log-title";
+  titulo.textContent = item.name || "Teste sem nome";
+
+  const evento = document.createElement("small");
+  evento.textContent = "Evento: " + (item.event || "Não informado");
+
+  const data = document.createElement("small");
+  data.textContent = item.created_at
+   ? new Date(item.created_at).toLocaleString("pt-BR")
+   : "Data não informada";
+
+  const editar = document.createElement("button");
+  editar.className = "secondary";
+  editar.textContent = "✏️ Editar";
+  editar.onclick = () => editarTeste(item,div);
+
+  const excluir = document.createElement("button");
+  excluir.className = "danger";
+  excluir.textContent = "🗑 Excluir";
+  excluir.onclick = () => excluirTeste(item.id);
+
+  div.append(titulo,evento,data,editar,excluir);
+  historico.appendChild(div);
+ });
+}
+
+function editarTeste(item,div){
+ div.innerHTML = "";
+
+ const campo = document.createElement("input");
+ campo.value = item.name || "";
+ campo.maxLength = 120;
+ campo.placeholder = "Novo nome";
+
+ const salvar = document.createElement("button");
+ salvar.textContent = "💾 Salvar";
+
+ const cancelar = document.createElement("button");
+ cancelar.textContent = "Cancelar";
+ cancelar.className = "secondary";
+
+ salvar.onclick = async () => {
   const nome = campo.value.trim();
 
-  if (!nome) {
-    mensagem.textContent = "Digite o nome do teste.";
-    return;
+  if(!nome){
+   alert("Digite um nome válido.");
+   return;
   }
 
-  mensagem.textContent = "Salvando...";
+  salvar.disabled = true;
 
-  try {
-    const { error } = await db
-      .from("lab_logs")
-      .insert([{
-        name: nome,
-        event: "teste_registrado"
-      }]);
+  try{
+   const {error} = await db
+    .from("lab_logs")
+    .update({name:nome})
+    .eq("id",item.id);
 
-    if (error) throw error;
+   if(error) throw error;
 
-    mensagem.textContent = "✅ Teste registrado com sucesso!";
-    campo.value = "";
+   await atualizarTudo();
+   mensagem("✅ Registro atualizado!");
 
-    await carregarHistorico();
-
-  } catch(error) {
-    mensagem.textContent = "Erro: " + error.message;
+  }catch(error){
+   alert("Erro ao editar: " + error.message);
+   salvar.disabled = false;
   }
+ };
+
+ cancelar.onclick = () => filtrarHistorico();
+
+ div.append(campo,salvar,cancelar);
+ campo.focus();
 }
 
-async function carregarHistorico() {
-  const historico = document.getElementById("historico");
+async function excluirTeste(id){
+ if(!confirm("Deseja realmente excluir este registro?")) return;
 
-  historico.textContent = "Carregando...";
+ try{
+  const {error} = await db
+   .from("lab_logs")
+   .delete()
+   .eq("id",id);
 
-  try {
-    const { data, error } = await db
-      .from("lab_logs")
-      .select("id,name,event,created_at")
-      .order("created_at", { ascending:false })
-      .limit(100);
+  if(error) throw error;
 
-    if (error) throw error;
+  mensagem("🗑 Registro excluído!");
+  await atualizarTudo();
 
-    registros = data || [];
-
-    document.getElementById("total").textContent =
-      registros.length;
-
-    filtrarHistorico();
-
-  } catch(error) {
-    historico.textContent = "Erro: " + error.message;
-  }
+ }catch(error){
+  alert("Erro ao excluir: " + error.message);
+ }
 }
 
-function filtrarHistorico() {
-  const historico = document.getElementById("historico");
+// Inicialização
+async function iniciar(){
+ await testarConexao();
+ await atualizarTudo();
 
-  const termo = document
-    .getElementById("pesquisa")
-    .value.toLowerCase();
-
-  historico.innerHTML = "";
-
-  const encontrados = registros.filter(item =>
-    (item.name || "").toLowerCase().includes(termo)
-  );
-
-  if (encontrados.length === 0) {
-    historico.textContent = "Nenhum teste encontrado.";
-    return;
-  }
-
-  encontrados.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "log";
-
-    const titulo = document.createElement("div");
-    titulo.className = "log-title";
-    titulo.textContent = item.name ?? item.event ?? "Teste sem nome";
-
-    const evento = document.createElement("small");
-    evento.textContent = "Evento: " + (item.event || "Não informado");
-
-    const data = document.createElement("small");
-    data.textContent = item.created_at
-      ? new Date(item.created_at).toLocaleString("pt-BR")
-      : "Data não informada";
-
-    const editar = document.createElement("button");
-    editar.className = "secondary";
-    editar.textContent = "✏️ Editar";
-    editar.onclick = () => editarTeste(item);
-
-    const excluir = document.createElement("button");
-    excluir.className = "danger";
-    excluir.textContent = "🗑 Excluir";
-    excluir.onclick = () => excluirTeste(item.id);
-
-    div.append(titulo, evento, data, editar, excluir);
-    historico.appendChild(div);
-  });
+ // Atualização automática a cada 15 segundos
+ setInterval(atualizarTudo,15000);
 }
 
-async function editarTeste(item) {
-  const novoNome = prompt(
-    "Digite o novo nome do teste:",
-    item.name || ""
-  );
-
-  if (novoNome === null) return;
-
-  if (!novoNome.trim()) {
-    alert("O nome não pode ficar vazio.");
-    return;
-  }
-
-  try {
-    const { error } = await db
-      .from("lab_logs")
-      .update({ name: novoNome.trim() })
-      .eq("id", item.id);
-
-    if (error) throw error;
-
-    alert("Teste atualizado!");
-    await carregarHistorico();
-
-  } catch(error) {
-    alert("Erro ao editar: " + error.message);
-  }
-}
-
-async function excluirTeste(id) {
-  if (!confirm("Deseja realmente excluir este teste?")) {
-    return;
-  }
-
-  try {
-    const { error } = await db
-      .from("lab_logs")
-      .delete()
-      .eq("id", id);
-
-    if (error) throw error;
-
-    alert("Registro excluído!");
-    await carregarHistorico();
-
-  } catch(error) {
-    alert("Erro ao excluir: " + error.message);
-  }
-}
-
-testarConexao();
-carregarHistorico();
+iniciar();
 </script>
 
 </body>
 </html>
-
-
-
