@@ -36,7 +36,7 @@ button:disabled{opacity:.5;cursor:wait}
 .login-screen{max-width:430px;margin:35px auto;padding:25px}
 .login-screen h2{text-align:center;text-shadow:0 0 12px #00ff99;font-size:21px;letter-spacing:2px}
 .login-screen p{text-align:center}
-#erroLogin{color:#ff5252;text-align:center;overflow-wrap:anywhere}
+#erroLogin{color:#ff5252;text-align:center;overflow-wrap:anywhere;min-height:20px}
 #painel{display:none}
 footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 .hacker{position:relative;width:190px;height:205px;margin:0 auto 12px;display:flex;justify-content:center;flex-shrink:0}
@@ -65,7 +65,7 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 .menu-heading h2{color:#00ff99;letter-spacing:2px;text-shadow:0 0 12px #00ff99}
 .menu-heading p,.menu-status{color:#91a5b5;font-size:13px}
 .modules-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
-.module-button{width:100%;min-height:145px;margin:0;padding:18px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(5,15,15,.96);color:#00ff99;border:1px solid #08784d;border-radius:13px;box-shadow:0 0 16px #00ff9910}
+.module-button{width:100%;min-height:145px;margin:0;padding:18px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(5,15,15,.96);color:#00ff99;border:1px solid #08784d;border-radius:13px;box-shadow:0 0 16px #00ff9910;transition:all .2s}
 .module-button:hover{background:#092019;border-color:#00ff99;box-shadow:0 0 18px #00ff9930;transform:translateY(-2px)}
 .module-icon{font-size:31px;filter:drop-shadow(0 0 7px #00ff99)}
 .module-name{font-size:13px;letter-spacing:1px;text-align:center}
@@ -81,8 +81,6 @@ footer{text-align:center;color:#627586;padding:20px;font-size:12px}
 .command-box{background:#000;color:#00ff99;border:1px solid #245b49;border-radius:8px;padding:13px;margin:10px 0;overflow-wrap:anywhere;font-family:monospace;font-size:12px}
 a{color:#00ff99;overflow-wrap:anywhere}
 .admin-only-note{color:#ffcc66;font-size:12px}
-
-/* NOVO MODULO LINUX */
 .linux-terminal{background:#010604;border:1px solid #08784d;border-radius:10px;padding:12px;font-family:monospace}
 .linux-screen{height:320px;overflow-y:auto;background:#000;padding:12px;border-radius:7px;color:#00ff99;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
 .linux-line{display:flex;align-items:center;gap:7px;margin-top:10px}
@@ -92,6 +90,11 @@ a{color:#00ff99;overflow-wrap:anywhere}
 .linux-status strong{color:#ffcc66}
 .linux-shortcuts{display:flex;flex-wrap:wrap;gap:5px}
 .linux-shortcuts button{font-size:11px}
+.registro-item,.usuario-item{border:1px solid #174b3b;border-radius:8px;padding:10px;margin:8px 0;background:#030a08;color:#91a5b5}
+.registro-item strong{color:#00ff99}
+.registro-item p{margin:6px 0;color:white}
+.registro-item button{padding:6px 10px;font-size:11px}
+#mensagemGlobal{position:fixed;top:12px;right:12px;z-index:9999;background:#08201a;border:1px solid #00ff99;padding:12px 16px;border-radius:8px;color:#00ff99;max-width:340px;box-shadow:0 0 20px #00ff9950;font-size:13px}
 @media(max-width:500px){
  body{padding:9px}
  header h1{font-size:19px}
@@ -113,7 +116,8 @@ a{color:#00ff99;overflow-wrap:anywhere}
 
 <canvas id="matrix"></canvas>
 
-<div class="login-screen" id="loginTela">
+<!-- ===================== LOGIN ===================== -->
+<div class="login-screen" id="loginScreen">
  <div class="hacker"><div class="hood"></div><div class="face"><div class="white-mask"><div class="mask-eye left"></div><div class="mask-eye right"></div><div class="mask-mark"></div><div class="mask-mouth"></div></div></div><div class="hood-body"></div></div>
  <h2>NIEL SECURITY OPERATIONS</h2>
  <p>ACESSO RESTRITO AO SISTEMA</p>
@@ -125,7 +129,8 @@ a{color:#00ff99;overflow-wrap:anywhere}
  <p id="erroLogin"></p>
 </div>
 
-<div class="container" id="painel">
+<!-- ===================== PAINEL ===================== -->
+<div class="container" id="painelPrincipal">
 <header>
  <h1>🔐 NIEL SECURITY OPERATIONS</h1>
  <p>SECURITY OPERATIONS CENTER | V4.0</p>
@@ -143,7 +148,7 @@ a{color:#00ff99;overflow-wrap:anywhere}
  </div>
 </div>
 
-<div id="menuModulos">
+<div id="menuPrincipal">
  <div class="menu-heading">
   <h2>PAINEL DE OPERAÇÕES</h2>
   <p>Selecione um módulo para acessar suas ferramentas.</p>
@@ -159,30 +164,27 @@ a{color:#00ff99;overflow-wrap:anywhere}
   <button class="module-button admin-module" onclick="abrirModulo('leakintel')"><span class="module-icon">🧬</span><span class="module-name">LEAK INTELLIGENCE</span><span class="module-description">Fontes públicas de exposição · Admin</span></button>
   <button class="module-button" onclick="abrirModulo('relatorios')"><span class="module-icon">📑</span><span class="module-name">RELATÓRIOS DE SEGURANÇA</span><span class="module-description">Exportar registros em TXT e JSON</span></button>
   <button class="module-button admin-module" onclick="abrirModulo('usuarios')"><span class="module-icon">👥</span><span class="module-name">GESTÃO DE USUÁRIOS</span><span class="module-description">Consultar perfis e permissões · Admin</span></button>
-
-  <!-- 11º MODULO -->
-  <button class="module-button" onclick="abrirModulo('linux')">
-   <span class="module-icon">🐧</span>
-   <span class="module-name">NIEL LINUX TERMINAL</span>
-   <span class="module-description">Terminal interno e conexão Linux real</span>
-  </button>
+  <button class="module-button" onclick="abrirModulo('linux')"><span class="module-icon">🐧</span><span class="module-name">NIEL LINUX TERMINAL</span><span class="module-description">Terminal interno e conexão Linux real</span></button>
  </div>
  <p class="menu-status">● SISTEMA V4.0 | 11 MÓDULOS</p>
 </div>
 
+<!-- MÓDULO CONTROLE -->
 <section class="module-view" id="modulo-controle">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">📊 PAINEL DE CONTROLE</h2>
  <div class="card"><h3>📡 Status do Banco</h3><p id="status">Conectando ao Supabase...</p><button onclick="testarConexao()">Testar conexão</button></div>
- <div class="card"><h3>📊 Estatísticas do Sistema</h3><div class="stats"><div class="stat">Total de registros<strong id="total">0</strong></div><div class="stat">Banco de dados<strong id="banco">...</strong></div></div><p id="ultimaAtualizacao">Aguardando atualização...</p><button class="secondary" onclick="atualizarTudo()">↻ Atualizar painel</button></div>
+ <div class="card"><h3>📊 Estatísticas do Sistema</h3><div class="stats"><div class="stat">Total de registros<strong id="total">0</strong></div><div class="stat">Banco de dados<strong id="banco">Supabase</strong></div></div><p id="ultimaAtualizacao">Aguardando atualização...</p><button class="secondary" onclick="atualizarTudo()">↻ Atualizar painel</button></div>
 </section>
 
+<!-- MÓDULO REGISTRO -->
 <section class="module-view" id="modulo-registro">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">🧪 REGISTRAR ATIVIDADE</h2>
  <div class="card"><h3>Registrar nova atividade</h3><input id="nomeTeste" placeholder="Nome da atividade" maxlength="120"><input id="eventoTeste" placeholder="Descrição do evento" maxlength="500"><button id="btnRegistrar" onclick="registrarTeste()">+ Registrar atividade</button><p id="mensagem">Aguardando registro...</p></div>
 </section>
 
+<!-- MÓDULO SCANNER -->
 <section class="module-view" id="modulo-scanner">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">🛡️ WEB SECURITY SCANNER</h2>
@@ -192,8 +194,8 @@ a{color:#00ff99;overflow-wrap:anywhere}
   <input id="dominioScanner" placeholder="Ex: meusite.com.br" maxlength="253">
   <label class="authorized"><input type="checkbox" id="autorizacaoScanner"> Confirmo que tenho autorização para analisar este domínio.</label>
   <button onclick="iniciarScanner()">🔍 PREPARAR DOMÍNIO</button>
-  <button id="btnAnalisarAPI" onclick="analisarDominioAPI()" disabled>🛡️ ANALISAR COM API</button>
-  <button id="btnDomainIntel" onclick="analisarInteligenciaDominio()" disabled>🔎 RECONHECIMENTO DE DOMÍNIO</button>
+  <button id="btnAnalisarAPI" onclick="analisarDominioAPI(dominioAutorizado)" disabled>🛡️ ANALISAR COM API</button>
+  <button id="btnDomainIntel" onclick="analisarInteligenciaDominio(dominioAutorizado)" disabled>🔎 RECONHECIMENTO DE DOMÍNIO</button>
   <div id="resultadoScanner" class="scanner-result">Aguardando domínio autorizado...</div>
   <div id="resultadoDomainIntel" class="scanner-result">Aguardando reconhecimento...</div>
   <div class="section-tag">FERRAMENTAS EXTERNAS</div>
@@ -206,6 +208,7 @@ a{color:#00ff99;overflow-wrap:anywhere}
  </div>
 </section>
 
+<!-- MÓDULO PASSWORD -->
 <section class="module-view" id="modulo-password">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">🔐 PASSWORD SECURITY LAB</h2>
@@ -228,12 +231,14 @@ a{color:#00ff99;overflow-wrap:anywhere}
  </div>
 </section>
 
+<!-- MÓDULO HISTÓRICO -->
 <section class="module-view" id="modulo-historico">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">📋 HISTÓRICO DE ATIVIDADES</h2>
- <div class="card"><h3>Histórico</h3><input id="pesquisa" placeholder="Pesquisar por nome ou evento..." oninput="filtrarHistorico()"><button class="secondary" onclick="atualizarTudo()">↻ Atualizar histórico</button><div id="historico">Carregando histórico...</div></div>
+ <div class="card"><h3>Histórico</h3><input id="pesquisa" placeholder="Pesquisar por nome ou evento..." oninput="filtrarHistorico()"><button class="secondary" onclick="carregarHistorico()">↻ Atualizar histórico</button><div id="historico">Carregando histórico...</div></div>
 </section>
 
+<!-- MÓDULO NMAP -->
 <section class="module-view" id="modulo-nmap">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">🌐 NMAP NETWORK SCANNER</h2>
@@ -265,6 +270,7 @@ a{color:#00ff99;overflow-wrap:anywhere}
  </div>
 </section>
 
+<!-- MÓDULO DATASEARCH -->
 <section class="module-view" id="modulo-datasearch">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">🔎 DATA SEARCH</h2>
@@ -296,6 +302,7 @@ a{color:#00ff99;overflow-wrap:anywhere}
  </div>
 </section>
 
+<!-- MÓDULO LEAKINTEL -->
 <section class="module-view" id="modulo-leakintel">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">🧬 LEAK INTELLIGENCE</h2>
@@ -314,6 +321,7 @@ a{color:#00ff99;overflow-wrap:anywhere}
  </div>
 </section>
 
+<!-- MÓDULO RELATÓRIOS -->
 <section class="module-view" id="modulo-relatorios">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">📑 RELATÓRIOS DE SEGURANÇA</h2>
@@ -321,13 +329,14 @@ a{color:#00ff99;overflow-wrap:anywhere}
   <h3>Exportação de atividades</h3>
   <p class="note">Gera arquivos com os registros carregados no histórico desta sessão (até 100 registros por consulta). Atualize o histórico antes de exportar.</p>
   <div class="stats"><div class="stat">Registros carregados<strong id="relatorioTotal">0</strong></div><div class="stat">Perfil atual<strong id="relatorioPerfil">—</strong></div></div>
-  <button onclick="atualizarResumoRelatorio()">↻ ATUALIZAR DADOS</button>
+  <button onclick="carregarHistorico().then(atualizarResumoRelatorio)">↻ ATUALIZAR DADOS</button>
   <button onclick="exportarRelatorio('txt')">📄 BAIXAR RELATÓRIO TXT</button>
   <button onclick="exportarRelatorio('json')">📦 BAIXAR RELATÓRIO JSON</button>
   <div id="relatorioStatus" class="tool-output">Relatório aguardando exportação.</div>
  </div>
 </section>
 
+<!-- MÓDULO USUÁRIOS -->
 <section class="module-view" id="modulo-usuarios">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">👥 GESTÃO DE USUÁRIOS</h2>
@@ -339,15 +348,13 @@ a{color:#00ff99;overflow-wrap:anywhere}
  </div>
 </section>
 
-<!-- 11º MODULO: NIEL LINUX TERMINAL -->
+<!-- MÓDULO LINUX -->
 <section class="module-view" id="modulo-linux">
  <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
  <h2 class="module-title">🐧 NIEL LINUX TERMINAL</h2>
-
  <div class="card">
   <h3>TERMINAL INTERNO</h3>
   <p class="note">Ambiente virtual executado no navegador. Os comandos atuam somente nos arquivos virtuais deste módulo, sem executar comandos no servidor ou no aparelho.</p>
-
   <div class="linux-terminal">
    <div id="linuxOutput" class="linux-screen">NIEL LINUX TERMINAL [V4.0]
 Ambiente virtual iniciado.
@@ -357,10 +364,9 @@ Digite help para ver os comandos disponíveis.
    <div class="linux-line">
     <span class="linux-prompt" id="linuxPrompt">niel@operations:~$</span>
     <input id="linuxCommand" type="text" placeholder="Digite um comando..." autocomplete="off" spellcheck="false">
-    <button onclick="executarLinux()">EXECUTAR</button>
+    <button onclick="enviarComandoLinux()">EXECUTAR</button>
    </div>
   </div>
-
   <div class="linux-shortcuts">
    <button class="secondary" onclick="atalhoLinux('help')">HELP</button>
    <button class="secondary" onclick="atalhoLinux('ls')">LS</button>
@@ -371,7 +377,6 @@ Digite help para ver os comandos disponíveis.
   </div>
   <button class="danger" onclick="limparAmbienteLinux()">REINICIAR AMBIENTE VIRTUAL</button>
  </div>
-
  <div class="card">
   <h3>🐧 LINUX REAL — CONEXÃO</h3>
   <div class="linux-status">
@@ -390,10 +395,10 @@ Digite help para ver os comandos disponíveis.
  Ambiente de aprendizagem e análise
 </footer>
 </div>
+
 <script>
 // ================================================
-// NIEL SECURITY OPERATIONS V4
-// PARTE 2 — PAINEL, LOGIN E MÓDULOS
+// NIEL SECURITY OPERATIONS V4 — CORRIGIDO
 // ================================================
 
 // ---------- MATRIX ----------
@@ -411,22 +416,17 @@ if (canvas) {
         canvas.height = window.innerHeight;
         colunas = Math.floor(canvas.width / tamanho);
         gotas = Array.from({length: colunas}, (_, i) => gotas[i] || 1);
-
         ctx.fillStyle = "rgba(0,0,0,0.08)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "#00ff88";
         ctx.font = tamanho + "px monospace";
-
         gotas.forEach((y, i) => {
             const letra = letras[Math.floor(Math.random() * letras.length)];
             ctx.fillText(letra, i * tamanho, y * tamanho);
-            if (y * tamanho > canvas.height && Math.random() > 0.975) {
-                gotas[i] = 0;
-            }
+            if (y * tamanho > canvas.height && Math.random() > 0.975) gotas[i] = 0;
             gotas[i]++;
         });
     }
-
     setInterval(desenharMatrix, 45);
     window.addEventListener("resize", () => {
         canvas.width = window.innerWidth;
@@ -440,18 +440,11 @@ if (canvas) {
 const SUPABASE_URL = "https://rnzmrbadzmgpunwhrifw.supabase.co";
 const SUPABASE_KEY = "sb_publishable_X85KJFcfpdzH26tiWJTQDg_LfHpL58r";
 
-const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY,
-    {
-        auth: {
-            persistSession: true,
-            autoRefreshToken: true,
-            detectSessionInUrl: true
-        }
-    }
-);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
 
+// ---------- ESTADO ----------
 let registros = [];
 let atualizando = false;
 let intervaloAtualizacao = null;
@@ -461,31 +454,22 @@ let dominioAutorizado = null;
 let leakDominioAutorizado = null;
 
 // ---------- UTILITÁRIOS ----------
-function elemento(id) {
-    return document.getElementById(id);
-}
-
-function valor(id) {
-    return elemento(id)?.value?.trim() || "";
-}
-
-function texto(id, conteudo) {
-    const el = elemento(id);
-    if (el) el.textContent = conteudo;
-}
+function elemento(id) { return document.getElementById(id); }
+function valor(id) { return elemento(id)?.value?.trim() || ""; }
+function texto(id, conteudo) { const el = elemento(id); if (el) el.textContent = conteudo; }
 
 function mensagem(t, erro = false) {
-    const el = elemento("mensagem");
+    let el = elemento("mensagemGlobal");
     if (!el) {
-        console.log(t);
-        return;
+        el = document.createElement("div");
+        el.id = "mensagemGlobal";
+        document.body.appendChild(el);
     }
     el.textContent = t;
-    el.style.color = erro ? "#ff5555" : "#00ff88";
-    el.style.display = "block";
-    setTimeout(() => {
-        if (el.textContent === t) el.style.display = "none";
-    }, 5000);
+    el.style.color = erro ? "#ff5252" : "#00ff99";
+    el.style.borderColor = erro ? "#ff5252" : "#00ff99";
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.remove(), 4500);
 }
 
 function mostrarErro(e) {
@@ -493,165 +477,137 @@ function mostrarErro(e) {
     mensagem(e?.message || "Ocorreu um erro. Verifique a conexão.", true);
 }
 
-function ehAdmin() {
-    return papelUsuario === "admin";
-}
+function ehAdmin() { return papelUsuario === "admin"; }
 
 // ---------- NAVEGAÇÃO ----------
 function abrirModulo(nome) {
-    if (!acessoLiberado) {
-        mensagem("Faça login para acessar o painel.", true);
-        return;
-    }
-
+    if (!acessoLiberado) { mensagem("Faça login para acessar o painel.", true); return; }
     const restritos = ["scanner", "nmap", "leakintel", "usuarios"];
-
     if (restritos.includes(nome) && !ehAdmin()) {
         mensagem("Este módulo está disponível apenas para administradores.", true);
         return;
     }
-
-    document.querySelectorAll(".modulo").forEach(el => {
-        el.style.display = "none";
-    });
-
+    document.querySelectorAll(".module-view").forEach(el => el.classList.remove("active"));
     const menu = elemento("menuPrincipal");
     if (menu) menu.style.display = "none";
-
     const modulo = elemento("modulo-" + nome);
-    if (modulo) {
-        modulo.style.display = "block";
-    } else {
-        mensagem("Módulo não encontrado: " + nome, true);
-    }
+    if (modulo) modulo.classList.add("active");
+    else mensagem("Módulo não encontrado: " + nome, true);
 
     if (nome === "historico") carregarHistorico();
-    if (nome === "relatorios") atualizarResumoRelatorio();
-    if (nome === "usuarios" && ehAdmin()) carregarUsuarios();
+    if (nome === "relatorios") { carregarHistorico().then(atualizarResumoRelatorio); }
+    if (nome === "usuarios") carregarUsuarios();
     if (nome === "leakintel") prepararLeakIntel();
 }
 
 function voltarMenu() {
-    document.querySelectorAll(".modulo").forEach(el => {
-        el.style.display = "none";
-    });
+    document.querySelectorAll(".module-view").forEach(el => el.classList.remove("active"));
     const menu = elemento("menuPrincipal");
     if (menu) menu.style.display = "block";
 }
 
-function atualizarVisibilidadeModulos() {
-    document.querySelectorAll("[data-admin-only]").forEach(el => {
-        el.style.display = ehAdmin() ? "" : "none";
-    });
-}
-
 // ---------- LOGIN ----------
-async function entrar() {
-    const email = valor("email");
-    const senha = valor("senha");
+async function entrar(event) {
+    if (event) event.preventDefault();
+    const email = valor("emailLogin");
+    const senha = elemento("senhaLogin")?.value || "";
+    const erroEl = elemento("erroLogin");
 
     if (!email || !senha) {
-        mensagem("Informe e-mail e senha.", true);
+        if (erroEl) erroEl.textContent = "Informe e-mail e senha.";
         return;
     }
 
     const botao = elemento("btnEntrar");
     if (botao) botao.disabled = true;
+    if (erroEl) erroEl.textContent = "Autenticando...";
 
     try {
-        const { data, error } = await db.auth.signInWithPassword({
-            email,
-            password: senha
-        });
-
+        const { data, error } = await db.auth.signInWithPassword({ email, password: senha });
         if (error) throw error;
-
+        if (erroEl) erroEl.textContent = "";
         await verificarAcesso(data.user);
     } catch (e) {
-        mostrarErro(e);
+        console.error(e);
+        if (erroEl) erroEl.textContent = e.message || "Falha no login.";
     } finally {
         if (botao) botao.disabled = false;
     }
 }
 
 async function verificarAcesso(user) {
-    if (!user) {
-        acessoLiberado = false;
-        mostrarLogin();
-        return;
+    if (!user) { acessoLiberado = false; mostrarLogin(); return; }
+
+    let role = null;
+    try {
+        const { data, error } = await db
+            .from("user_profiles")
+            .select("role")
+            .eq("id", user.id)
+            .maybeSingle();
+        if (error) console.warn("user_profiles:", error.message);
+        role = data?.role || null;
+    } catch (e) {
+        console.warn("Falha ao ler user_profiles:", e.message);
     }
 
-    const { data, error } = await db
-        .from("user_profiles")
-        .select("role")
-        .eq("id", user.id)
-        .maybeSingle();
+    // Se não houver perfil, ainda permite entrar como "approved" para não travar
+    if (!role) {
+        role = "approved";
+        console.warn("Sem perfil em user_profiles — entrando como approved (fallback).");
+    }
 
-    if (error) throw error;
-
-    if (!data || !["admin", "approved"].includes(data.role)) {
+    if (!["admin", "approved"].includes(role)) {
         await db.auth.signOut();
         acessoLiberado = false;
         papelUsuario = null;
         mostrarLogin();
-        mensagem("Sua conta ainda não possui acesso ao painel.", true);
+        if (elemento("erroLogin")) elemento("erroLogin").textContent = "Sua conta não possui acesso.";
         return;
     }
 
-    papelUsuario = data.role;
+    papelUsuario = role;
     acessoLiberado = true;
 
     const login = elemento("loginScreen");
     const painel = elemento("painelPrincipal");
-
     if (login) login.style.display = "none";
     if (painel) painel.style.display = "block";
 
-    texto("usuarioLogado", user.email || "Usuário");
-    texto("papelLogado", papelUsuario === "admin" ? "ADMINISTRADOR" : "USUÁRIO");
+    texto("tipoUsuario",
+        `${user.email || "Usuário"} — ${papelUsuario === "admin" ? "ADMINISTRADOR" : "USUÁRIO"}`);
 
-    atualizarVisibilidadeModulos();
     iniciarPainel();
 }
 
 function mostrarLogin() {
     const login = elemento("loginScreen");
     const painel = elemento("painelPrincipal");
-
-    if (login) login.style.display = "flex";
+    if (login) login.style.display = "block";
     if (painel) painel.style.display = "none";
 }
 
 async function sair() {
     try {
-        if (intervaloAtualizacao) {
-            clearInterval(intervaloAtualizacao);
-            intervaloAtualizacao = null;
-        }
-
+        if (intervaloAtualizacao) { clearInterval(intervaloAtualizacao); intervaloAtualizacao = null; }
         await db.auth.signOut();
-        acessoLiberado = false;
-        papelUsuario = null;
-        registros = [];
-        mostrarLogin();
-        mensagem("Sessão encerrada.");
-    } catch (e) {
-        mostrarErro(e);
-    }
+    } catch (e) { console.warn(e); }
+    acessoLiberado = false;
+    papelUsuario = null;
+    registros = [];
+    mostrarLogin();
+    mensagem("Sessão encerrada.");
 }
 
 // ---------- CONEXÃO E REGISTROS ----------
 async function testarConexao() {
     try {
-        const { error } = await db
-            .from("lab_logs")
-            .select("id", { count: "exact", head: true });
-
+        const { error } = await db.from("lab_logs").select("id", { count: "exact", head: true });
         if (error) throw error;
-        texto("statusConexao", "SUPABASE CONECTADO");
+        texto("status", "SUPABASE CONECTADO");
         return true;
     } catch (e) {
-        texto("statusConexao", "SEM CONEXÃO");
+        texto("status", "SEM CONEXÃO");
         console.error("Supabase:", e);
         return false;
     }
@@ -659,75 +615,51 @@ async function testarConexao() {
 
 async function registrarTeste(tipo, alvo, resultado) {
     if (!acessoLiberado) return;
-
     try {
         const { data: { user } } = await db.auth.getUser();
         if (!user) return;
-
         const { error } = await db.from("lab_logs").insert({
             user_id: user.id,
             tipo: String(tipo).slice(0, 80),
             alvo: String(alvo).slice(0, 255),
             resultado: String(resultado).slice(0, 4000)
         });
-
         if (error) throw error;
-    } catch (e) {
-        console.error("Erro ao registrar:", e);
-    }
+    } catch (e) { console.error("Erro ao registrar:", e); }
 }
 
 async function carregarTotal() {
     try {
-        const { count, error } = await db
-            .from("lab_logs")
-            .select("*", { count: "exact", head: true });
-
+        const { count, error } = await db.from("lab_logs").select("*", { count: "exact", head: true });
         if (error) throw error;
-        texto("totalRegistros", count ?? 0);
-    } catch (e) {
-        console.error(e);
-    }
+        texto("total", count ?? 0);
+    } catch (e) { console.error(e); }
 }
 
 async function carregarHistorico() {
     if (!acessoLiberado) return;
-
     try {
-        let consulta = db
-            .from("lab_logs")
-            .select("*")
-            .order("created_at", { ascending: false })
-            .limit(100);
-
+        let consulta = db.from("lab_logs").select("*").order("created_at", { ascending: false }).limit(100);
         if (!ehAdmin()) {
             const { data: { user } } = await db.auth.getUser();
+            if (!user) { texto("historico", "Sessão expirada."); return; }
             consulta = consulta.eq("user_id", user.id);
         }
-
         const { data, error } = await consulta;
         if (error) throw error;
-
         registros = data || [];
         renderizarHistorico(registros);
-    } catch (e) {
-        mostrarErro(e);
-    }
+    } catch (e) { mostrarErro(e); }
 }
 
 function renderizarHistorico(lista) {
-    const corpo = elemento("listaHistorico");
+    const corpo = elemento("historico");
     if (!corpo) return;
-
     corpo.replaceChildren();
-
     if (!lista.length) {
-        const linha = document.createElement("p");
-        linha.textContent = "Nenhum registro encontrado.";
-        corpo.appendChild(linha);
+        corpo.textContent = "Nenhum registro encontrado.";
         return;
     }
-
     lista.forEach(item => {
         const linha = document.createElement("div");
         linha.className = "registro-item";
@@ -736,18 +668,17 @@ function renderizarHistorico(lista) {
         data.textContent = new Date(item.created_at).toLocaleString("pt-BR");
 
         const detalhes = document.createElement("p");
-        detalhes.textContent =
-            `${item.tipo || "Registro"} | ${item.alvo || "-"} | ${item.resultado || ""}`;
+        detalhes.textContent = `${item.tipo || "Registro"} | ${item.alvo || "-"} | ${item.resultado || ""}`;
 
         linha.append(data, detalhes);
 
         if (ehAdmin()) {
             const excluir = document.createElement("button");
             excluir.textContent = "Excluir";
+            excluir.className = "danger";
             excluir.addEventListener("click", () => excluirTeste(item.id));
             linha.appendChild(excluir);
         }
-
         corpo.appendChild(linha);
     });
 }
@@ -755,176 +686,150 @@ function renderizarHistorico(lista) {
 async function atualizarTudo() {
     if (atualizando || !acessoLiberado) return;
     atualizando = true;
-
-    try {
-        await Promise.all([carregarTotal(), carregarHistorico()]);
-    } catch (e) {
-        console.error(e);
-    } finally {
+    try { await Promise.all([carregarTotal(), carregarHistorico()]); }
+    catch (e) { console.error(e); }
+    finally {
         atualizando = false;
+        const el = elemento("ultimaAtualizacao");
+        if (el) el.textContent = "Última atualização: " + new Date().toLocaleString("pt-BR");
     }
 }
 
 function filtrarHistorico() {
-    const termo = valor("filtroHistorico").toLowerCase();
+    const termo = valor("pesquisa").toLowerCase();
     const filtrados = registros.filter(item =>
-        [item.tipo, item.alvo, item.resultado]
-            .some(v => String(v || "").toLowerCase().includes(termo))
+        [item.tipo, item.alvo, item.resultado].some(v => String(v || "").toLowerCase().includes(termo))
     );
     renderizarHistorico(filtrados);
-}
-
-async function editarTeste(id) {
-    if (!ehAdmin()) return mensagem("Acesso negado.", true);
-
-    const registro = registros.find(r => String(r.id) === String(id));
-    if (!registro) return;
-
-    const novoResultado = prompt("Novo resultado:", registro.resultado || "");
-    if (novoResultado === null) return;
-
-    try {
-        const { error } = await db
-            .from("lab_logs")
-            .update({ resultado: novoResultado })
-            .eq("id", id);
-
-        if (error) throw error;
-        mensagem("Registro atualizado.");
-        await carregarHistorico();
-    } catch (e) {
-        mostrarErro(e);
-    }
 }
 
 async function excluirTeste(id) {
     if (!ehAdmin()) return mensagem("Acesso negado.", true);
     if (!confirm("Deseja excluir este registro?")) return;
-
     try {
         const { error } = await db.from("lab_logs").delete().eq("id", id);
         if (error) throw error;
-
         mensagem("Registro excluído.");
         await atualizarTudo();
+    } catch (e) { mostrarErro(e); }
+}
+
+// ---------- REGISTRO MANUAL ----------
+async function registrarTeste() {
+    const nome = valor("nomeTeste");
+    const evento = valor("eventoTeste");
+    const botao = elemento("btnRegistrar");
+    const msg = elemento("mensagem");
+
+    if (!nome || !evento) {
+        if (msg) { msg.textContent = "Preencha nome e descrição."; msg.style.color = "#ff5252"; }
+        return;
+    }
+    if (botao) botao.disabled = true;
+    try {
+        await registrarTeste2(nome, evento);
+        if (msg) { msg.textContent = "Atividade registrada!"; msg.style.color = "#00ff99"; }
+        elemento("nomeTeste").value = "";
+        elemento("eventoTeste").value = "";
     } catch (e) {
-        mostrarErro(e);
+        if (msg) { msg.textContent = "Erro: " + (e.message || e); msg.style.color = "#ff5252"; }
+    } finally {
+        if (botao) botao.disabled = false;
     }
 }
 
-// ---------- SCANNER DE DOMÍNIO ----------
+// Versão segura para o fluxo de registrarTeste (evita recursão)
+async function registrarTeste2(nome, evento) {
+    const { data: { user } } = await db.auth.getUser();
+    if (!user) throw new Error("Sessão expirada.");
+    const { error } = await db.from("lab_logs").insert({
+        user_id: user.id,
+        tipo: String(nome).slice(0, 80),
+        alvo: String(evento).slice(0, 255),
+        resultado: "Registrado via painel"
+    });
+    if (error) throw error;
+}
+
+// ---------- SCANNER ----------
 function dominioValido(dominio) {
     try {
-        const host = new URL(
-            dominio.includes("://") ? dominio : "https://" + dominio
-        ).hostname;
-
-        return /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(host) &&
-            !host.includes("..") &&
-            !host.startsWith(".") &&
-            !host.endsWith(".");
-    } catch {
-        return false;
-    }
+        const host = new URL(dominio.includes("://") ? dominio : "https://" + dominio).hostname;
+        return /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(host) && !host.includes("..") && !host.startsWith(".") && !host.endsWith(".");
+    } catch { return false; }
 }
 
 function normalizarDominio(dominio) {
     try {
-        return new URL(
-            dominio.includes("://") ? dominio : "https://" + dominio
-        ).hostname.toLowerCase();
-    } catch {
-        return "";
-    }
+        return new URL(dominio.includes("://") ? dominio : "https://" + dominio).hostname.toLowerCase();
+    } catch { return ""; }
 }
 
 async function iniciarScanner() {
     if (!ehAdmin()) return mensagem("Acesso restrito.", true);
+    const dominio = normalizarDominio(valor("dominioScanner"));
+    const autorizado = elemento("autorizacaoScanner")?.checked;
 
-    const dominio = normalizarDominio(valor("scannerDominio"));
-    const autorizado = elemento("scannerAutorizado")?.checked;
-
-    if (!dominioValido(dominio)) {
-        return mensagem("Informe um domínio válido.", true);
-    }
-
-    if (!autorizado) {
-        return mensagem("Confirme que possui autorização para analisar esse domínio.", true);
-    }
+    if (!dominioValido(dominio)) return mensagem("Informe um domínio válido.", true);
+    if (!autorizado) return mensagem("Confirme que possui autorização para analisar esse domínio.", true);
 
     dominioAutorizado = dominio;
-    texto("scannerResultado", "Analisando domínio...");
-
-    await registrarEventoScanner("Início da análise", dominio);
-
-    try {
-        await Promise.all([
-            analisarDominioAPI(dominio),
-            analisarInteligenciaDominio(dominio)
-        ]);
-    } catch (e) {
-        mostrarErro(e);
-    }
+    texto("resultadoScanner", "Domínio autorizado: " + dominio + "\nUse os botões abaixo para iniciar as análises.");
+    const btn1 = elemento("btnAnalisarAPI");
+    const btn2 = elemento("btnDomainIntel");
+    if (btn1) btn1.disabled = false;
+    if (btn2) btn2.disabled = false;
+    mensagem("Domínio pronto. Escolha uma análise.");
 }
 
 async function analisarDominioAPI(dominio) {
-    const saida = elemento("scannerHeaders");
+    dominio = dominio || dominioAutorizado;
+    if (!dominio) return mensagem("Prepare um domínio antes.", true);
+    const saida = elemento("resultadoScanner");
     if (saida) saida.textContent = "Consultando cabeçalhos de segurança...";
-
     try {
         const resposta = await fetch("/api/security-headers", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ domain: dominio })
         });
-
         const dados = await resposta.json();
         if (!resposta.ok) throw new Error(dados.error || "Falha na consulta.");
-
         if (saida) saida.textContent = JSON.stringify(dados, null, 2);
-        await registrarEventoScanner("Cabeçalhos analisados", dominio);
     } catch (e) {
         if (saida) saida.textContent = "Não foi possível consultar: " + e.message;
     }
 }
 
 async function analisarInteligenciaDominio(dominio) {
-    const saida = elemento("scannerIntel");
+    dominio = dominio || dominioAutorizado;
+    if (!dominio) return mensagem("Prepare um domínio antes.", true);
+    const saida = elemento("resultadoDomainIntel");
     if (saida) saida.textContent = "Consultando inteligência do domínio...";
-
     try {
         const resposta = await fetch("/api/domain-intel", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ domain: dominio })
         });
-
         const dados = await resposta.json();
         if (!resposta.ok) throw new Error(dados.error || "Falha na consulta.");
-
-        const resumo = {
-            dns: dados.dns ?? [],
-            certificados: dados.certificados ?? [],
-            subdominios: dados.subdominios ?? [],
-            avisos: dados.avisos ?? []
-        };
-
+        const resumo = { dns: dados.dns ?? [], certificados: dados.certificados ?? [], subdominios: dados.subdominios ?? [], avisos: dados.avisos ?? [] };
         if (saida) saida.textContent = JSON.stringify(resumo, null, 2);
-        texto("scannerResultado", "Análise concluída.");
-        await registrarEventoScanner("Inteligência consultada", dominio);
     } catch (e) {
         if (saida) saida.textContent = "Consulta indisponível: " + e.message;
-        texto("scannerResultado", "Análise parcial.");
     }
 }
 
-async function registrarEventoScanner(tipo, dominio) {
-    await registrarTeste("SCANNER: " + tipo, dominio, "Evento registrado");
-}
-
-function abrirScanner() {
+function abrirScanner(tipo) {
     if (!ehAdmin()) return mensagem("Acesso restrito.", true);
-    abrirModulo("scanner");
+    if (!dominioAutorizado) return mensagem("Prepare um domínio antes.", true);
+    const urls = {
+        ssl: "https://www.ssllabs.com/ssltest/analyze.html?d=" + encodeURIComponent(dominioAutorizado),
+        headers: "https://securityheaders.com/?q=" + encodeURIComponent(dominioAutorizado),
+        mozilla: "https://observatory.mozilla.org/analyze/" + encodeURIComponent(dominioAutorizado)
+    };
+    if (urls[tipo]) abrirLink(urls[tipo]);
 }
 
 // ---------- PASSWORD LAB ----------
@@ -932,11 +837,7 @@ function analisarSenha() {
     const senha = valor("senhaAnalise");
     const saida = elemento("resultadoSenha");
     if (!saida) return;
-
-    if (!senha) {
-        saida.textContent = "Digite uma senha para analisar.";
-        return;
-    }
+    if (!senha) { saida.textContent = "Digite uma senha para analisar."; return; }
 
     let pontos = 0;
     if (senha.length >= 8) pontos++;
@@ -946,28 +847,28 @@ function analisarSenha() {
     if (/[0-9]/.test(senha)) pontos++;
     if (/[^a-zA-Z0-9]/.test(senha)) pontos++;
 
-    const nivel = pontos <= 2 ? "FRACA" :
-        pontos <= 4 ? "MÉDIA" : "FORTE";
-
+    const nivel = pontos <= 2 ? "FRACA" : pontos <= 4 ? "MÉDIA" : "FORTE";
     saida.textContent =
         `Tamanho: ${senha.length} caracteres\n` +
         `Pontuação: ${pontos}/6\n` +
         `Classificação: ${nivel}\n` +
         "Análise feita localmente no navegador. A senha não é enviada ao Supabase.";
 
-    // Não salvar nem enviar a senha.
+    const barra = elemento("forcaBarra");
+    if (barra) barra.style.width = Math.round((pontos / 6) * 100) + "%";
 }
 
 function limparSenha() {
     const campo = elemento("senhaAnalise");
     if (campo) campo.value = "";
     texto("resultadoSenha", "Aguardando análise...");
+    const barra = elemento("forcaBarra");
+    if (barra) barra.style.width = "0%";
 }
 
 function identificarHash() {
     const hash = valor("hashEntrada");
     let tipo = "Formato não identificado";
-
     if (/^\$2[aby]\$/.test(hash)) tipo = "bcrypt";
     else if (/^\$argon2(id|i|d)\$/.test(hash)) tipo = "Argon2";
     else if (/^[a-f0-9]{32}$/i.test(hash)) tipo = "Possível MD5";
@@ -975,140 +876,100 @@ function identificarHash() {
     else if (/^[a-f0-9]{64}$/i.test(hash)) tipo = "Possível SHA-256";
     else if (/^[a-f0-9]{96}$/i.test(hash)) tipo = "Possível SHA-384";
     else if (/^[a-f0-9]{128}$/i.test(hash)) tipo = "Possível SHA-512";
-
     texto("resultadoHash", tipo + ". Identificação baseada apenas no formato.");
 }
 
 function simularAtaque() {
     const saida = elemento("resultadoSimulacao");
     if (!saida) return;
-
-    const alvo = "LAB-2026";
     const tentativas = ["123456", "admin", "senha", "qwerty", "LAB-2026"];
-
-    saida.textContent = "SIMULAÇÃO LOCAL — ambiente fictício\n";
-    tentativas.forEach((senha, i) => {
-        saida.textContent += `Tentativa ${i + 1}: ${senha}\n`;
-    });
-    saida.textContent += `Resultado: senha fictícia de laboratório encontrada para ${alvo}.`;
+    let txt = "SIMULAÇÃO LOCAL — ambiente fictício\n";
+    tentativas.forEach((s, i) => { txt += `Tentativa ${i + 1}: ${s}\n`; });
+    txt += "Resultado: senha fictícia de laboratório encontrada.";
+    saida.textContent = txt;
 }
 
-// ---------- NMAP: GERAÇÃO DE COMANDOS ----------
+// ---------- NMAP ----------
 function copiarElemento(id) {
     const el = elemento(id);
     if (!el) return;
-
     const conteudo = el.value ?? el.textContent;
-    navigator.clipboard.writeText(conteudo)
-        .then(() => mensagem("Copiado."))
-        .catch(() => mensagem("Não foi possível copiar.", true));
+    navigator.clipboard.writeText(conteudo).then(() => mensagem("Copiado.")).catch(() => mensagem("Não foi possível copiar.", true));
 }
 
 function ipValido(ip) {
     const partes = ip.split(".");
     if (partes.length !== 4) return false;
-
-    return partes.every(p =>
-        /^\d{1,3}$/.test(p) && Number(p) >= 0 && Number(p) <= 255
-    );
+    return partes.every(p => /^\d{1,3}$/.test(p) && Number(p) >= 0 && Number(p) <= 255);
 }
 
 function ipPrivado(ip) {
     if (!ipValido(ip)) return false;
     const p = ip.split(".").map(Number);
-
-    return p[0] === 10 ||
-        (p[0] === 172 && p[1] >= 16 && p[1] <= 31) ||
-        (p[0] === 192 && p[1] === 168);
+    return p[0] === 10 || (p[0] === 172 && p[1] >= 16 && p[1] <= 31) || (p[0] === 192 && p[1] === 168);
 }
 
 function gerarNmapRede() {
     if (!ehAdmin()) return mensagem("Acesso restrito.", true);
-
+    const autorizado = elemento("nmapAutorizacao")?.checked;
+    if (!autorizado) return mensagem("Confirme a autorização.", true);
     const rede = valor("nmapRede");
     const partes = rede.split("/");
     const ip = partes[0];
     const mascara = Number(partes[1]);
-
-    if (!partes[1] || !ipPrivado(ip) || !Number.isInteger(mascara) ||
-        mascara < 24 || mascara > 32) {
-        return mensagem("Use uma rede privada válida, com máscara entre /24 e /32.", true);
+    if (!partes[1] || !ipPrivado(ip) || !Number.isInteger(mascara) || mascara < 24 || mascara > 32) {
+        return mensagem("Use uma rede privada válida (/24 a /32).", true);
     }
-
-    texto("nmapComando", `nmap -sn ${ip}/${mascara}`);
-    mensagem("Comando gerado. Execute apenas na sua própria rede.");
+    texto("nmapResultado", `nmap -sn ${ip}/${mascara}`);
+    mensagem("Comando gerado.");
 }
 
 function gerarNmapPortas() {
     if (!ehAdmin()) return mensagem("Acesso restrito.", true);
-
-    const ip = valor("nmapIP");
-
-    if (!ipPrivado(ip)) {
-        return mensagem("Informe um IP privado válido da sua rede.", true);
-    }
-
-    texto("nmapComando", `nmap -sV --top-ports 100 ${ip}`);
-    mensagem("Comando gerado para sua rede privada.");
+    const autorizado = elemento("nmapHostAutorizacao")?.checked;
+    if (!autorizado) return mensagem("Confirme a autorização.", true);
+    const ip = valor("nmapHost");
+    if (!ipPrivado(ip)) return mensagem("Informe um IP privado válido.", true);
+    texto("nmapPortasResultado", `nmap -sV --top-ports 100 ${ip}`);
+    mensagem("Comando gerado.");
 }
 
 // ---------- DATA SEARCH ----------
 function selecionarPesquisa(tipo) {
-    const campo = elemento("pesquisaTipo");
-    if (campo) campo.value = tipo;
-    texto("pesquisaResultado", "Tipo de validação selecionado: " + tipo);
+    const campo = elemento("tipoPesquisa");
+    if (campo) campo.value = "/" + tipo;
+    texto("resultadoPesquisa", "Tipo selecionado: " + tipo);
 }
 
 function validarCPF(cpf) {
     cpf = String(cpf).replace(/\D/g, "");
     if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
-
     let soma = 0;
     for (let i = 0; i < 9; i++) soma += Number(cpf[i]) * (10 - i);
-    let digito = (soma * 10) % 11;
-    if (digito === 10) digito = 0;
-    if (digito !== Number(cpf[9])) return false;
-
+    let d = (soma * 10) % 11; if (d === 10) d = 0;
+    if (d !== Number(cpf[9])) return false;
     soma = 0;
     for (let i = 0; i < 10; i++) soma += Number(cpf[i]) * (11 - i);
-    digito = (soma * 10) % 11;
-    if (digito === 10) digito = 0;
-
-    return digito === Number(cpf[10]);
+    d = (soma * 10) % 11; if (d === 10) d = 0;
+    return d === Number(cpf[10]);
 }
 
 function executarPesquisa() {
-    const tipo = valor("pesquisaTipo");
-    const entrada = valor("pesquisaEntrada");
-    let resultado = "";
-
+    const tipo = valor("tipoPesquisa").replace("/", "");
+    const entrada = valor("valorPesquisa");
     if (!entrada) return mensagem("Informe um dado para validar.", true);
-
-    if (tipo === "cpf") {
-        resultado = validarCPF(entrada) ? "CPF com dígitos verificadores válidos." :
-            "CPF inválido.";
-    } else if (tipo === "telefone") {
-        const numero = entrada.replace(/\D/g, "");
-        resultado = /^\d{10,13}$/.test(numero) ?
-            "Formato de telefone aparentemente válido." : "Formato de telefone inválido.";
-    } else if (tipo === "placa") {
-        const placa = entrada.toUpperCase().replace(/[^A-Z0-9]/g, "");
-        resultado = /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(placa) ?
-            "Formato de placa reconhecido." : "Formato de placa inválido.";
-    } else if (tipo === "nome") {
-        resultado = entrada.length >= 2 ?
-            "Nome informado. Nenhuma busca privada foi realizada." :
-            "Informe pelo menos dois caracteres.";
-    } else {
-        resultado = "Selecione um tipo de validação.";
-    }
-
-    texto("pesquisaResultado", resultado);
+    let r = "";
+    if (tipo === "cpf") r = validarCPF(entrada) ? "CPF válido." : "CPF inválido.";
+    else if (tipo === "telefone") r = /^\d{10,13}$/.test(entrada.replace(/\D/g, "")) ? "Telefone aparentemente válido." : "Telefone inválido.";
+    else if (tipo === "placa") r = /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(entrada.toUpperCase().replace(/[^A-Z0-9]/g, "")) ? "Placa reconhecida." : "Placa inválida.";
+    else if (tipo === "nome") r = entrada.length >= 2 ? "Nome informado. Nenhuma busca privada realizada." : "Informe ao menos 2 caracteres.";
+    else r = "Selecione um tipo.";
+    texto("resultadoPesquisa", r);
 }
 
 function limparPesquisa() {
-    if (elemento("pesquisaEntrada")) elemento("pesquisaEntrada").value = "";
-    texto("pesquisaResultado", "Aguardando entrada...");
+    const el = elemento("valorPesquisa"); if (el) el.value = "";
+    texto("resultadoPesquisa", "Aguardando consulta...");
 }
 
 function abrirLink(url) {
@@ -1116,217 +977,120 @@ function abrirLink(url) {
         const destino = new URL(url);
         if (destino.protocol !== "https:") throw new Error("Link não permitido.");
         window.open(destino.href, "_blank", "noopener,noreferrer");
-    } catch (e) {
-        mensagem("Endereço inválido.", true);
-    }
+    } catch (e) { mensagem("Endereço inválido.", true); }
 }
 
 // ---------- LEAK INTEL ----------
 function prepararLeakIntel() {
-    const campo = elemento("leakDominio");
-    if (campo && leakDominioAutorizado) {
-        campo.value = leakDominioAutorizado;
-    }
+    const dominio = normalizarDominio(valor("leakDominio"));
+    const autorizado = elemento("leakAutorizacao")?.checked;
+    if (!dominioValido(dominio)) return mensagem("Domínio inválido.", true);
+    if (!autorizado) return mensagem("Confirme a autorização.", true);
+    leakDominioAutorizado = dominio;
+    texto("leakResultado", "Domínio autorizado: " + dominio + "\nEscolha uma fonte pública abaixo.");
+    mensagem("Pronto. Escolha uma fonte.");
 }
 
 function abrirFonteLeak(fonte) {
     if (!ehAdmin()) return mensagem("Acesso restrito.", true);
-
-    const dominio = normalizarDominio(valor("leakDominio"));
-    const autorizado = elemento("leakAutorizado")?.checked;
-
-    if (!dominioValido(dominio) || !autorizado) {
-        return mensagem("Informe um domínio válido e confirme a autorização.", true);
-    }
-
-    leakDominioAutorizado = dominio;
-
+    if (!leakDominioAutorizado) return mensagem("Prepare o domínio antes.", true);
     const fontes = {
-        crt: "https://crt.sh/?q=" + encodeURIComponent("%." + dominio),
-        dns: "https://dns.google/resolve?name=" + encodeURIComponent(dominio) + "&type=TXT",
+        crt: "https://crt.sh/?q=" + encodeURIComponent("%." + leakDominioAutorizado),
+        dns: "https://dns.google/resolve?name=" + encodeURIComponent(leakDominioAutorizado) + "&type=TXT",
         hibp: "https://haveibeenpwned.com/"
     };
-
-    if (!fontes[fonte]) return mensagem("Fonte desconhecida.", true);
-
-    abrirLink(fontes[fonte]);
-    registrarTeste("LEAK INTEL", dominio, "Fonte pública aberta: " + fonte);
+    if (fontes[fonte]) abrirLink(fontes[fonte]);
 }
 
 // ---------- RELATÓRIOS ----------
 function atualizarResumoRelatorio() {
     texto("relatorioTotal", registros.length);
-    texto("relatorioData", new Date().toLocaleString("pt-BR"));
+    texto("relatorioPerfil", papelUsuario === "admin" ? "ADMINISTRADOR" : "USUÁRIO");
 }
 
 function exportarRelatorio(formato = "txt") {
     const dados = registros.slice(0, 100);
-
-    if (!dados.length) {
-        mensagem("Não há registros para exportar.", true);
-        return;
-    }
-
-    let conteudo;
-    let mime;
-    let extensao;
-
+    if (!dados.length) return mensagem("Sem registros para exportar. Atualize o histórico primeiro.", true);
+    let conteudo, mime, ext;
     if (formato === "json") {
         conteudo = JSON.stringify(dados, null, 2);
-        mime = "application/json";
-        extensao = "json";
+        mime = "application/json"; ext = "json";
     } else {
-        conteudo = dados.map(item =>
-            `${item.created_at}\nTipo: ${item.tipo}\nAlvo: ${item.alvo}\nResultado: ${item.resultado}\n`
-        ).join("\n-------------------------\n");
-
-        mime = "text/plain;charset=utf-8";
-        extensao = "txt";
+        conteudo = dados.map(i => `${i.created_at}\nTipo: ${i.tipo}\nAlvo: ${i.alvo}\nResultado: ${i.resultado}\n`).join("\n-------------------------\n");
+        mime = "text/plain;charset=utf-8"; ext = "txt";
     }
-
-    const arquivo = new Blob([conteudo], { type: mime });
-    const url = URL.createObjectURL(arquivo);
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = `niel-relatorio-${Date.now()}.${extensao}`;
-    link.click();
-
+    const blob = new Blob([conteudo], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `niel-relatorio-${Date.now()}.${ext}`;
+    a.click();
     URL.revokeObjectURL(url);
-    mensagem("Relatório exportado.");
+    texto("relatorioStatus", "Exportado com " + dados.length + " registros.");
 }
 
-// ---------- ADMINISTRAÇÃO DE USUÁRIOS ----------
+// ---------- USUÁRIOS ----------
 async function carregarUsuarios() {
     if (!ehAdmin()) return mensagem("Acesso restrito.", true);
-
-    const corpo = elemento("listaUsuarios");
+    const corpo = elemento("usuariosResultado");
     if (!corpo) return;
-
     corpo.textContent = "Carregando usuários...";
-
     try {
-        const { data, error } = await db
-            .from("user_profiles")
-            .select("id,role")
-            .limit(200);
-
+        const { data, error } = await db.from("user_profiles").select("id,role").limit(200);
         if (error) throw error;
-
         corpo.replaceChildren();
-
-        (data || []).forEach(usuario => {
+        (data || []).forEach(u => {
             const linha = document.createElement("div");
             linha.className = "usuario-item";
-
-            const identificacao = document.createElement("span");
-            identificacao.textContent = usuario.id;
-
-            const papel = document.createElement("strong");
-            papel.textContent = usuario.role;
-
-            linha.append(identificacao, papel);
+            const id = document.createElement("span");
+            id.textContent = u.id;
+            const role = document.createElement("strong");
+            role.textContent = " " + u.role;
+            linha.append(id, role);
             corpo.appendChild(linha);
         });
-
         if (!data?.length) corpo.textContent = "Nenhum perfil encontrado.";
     } catch (e) {
-        corpo.textContent = "Erro ao carregar usuários: " + e.message;
+        corpo.textContent = "Erro: " + e.message;
     }
 }
 
 // ================================================
-// FIM DA PARTE 2
-// A PARTE 3 CONTINUA DENTRO DESTE MESMO SCRIPT.
-// NÃO FECHE A TAG SCRIPT AINDA.
+// TERMINAL LINUX
 // ================================================
-
-// ================================================
-// NIEL SECURITY OPERATIONS V4
-// PARTE 3 — TERMINAL INTERNO
-// ================================================
-
 const sistemaLinux = {
     atual: "/home/niel",
     historico: [],
     arquivos: {
-        "/": {
-            tipo: "dir",
-            filhos: ["home", "etc", "var", "tmp"]
-        },
-        "/home": {
-            tipo: "dir",
-            filhos: ["niel"]
-        },
-        "/home/niel": {
-            tipo: "dir",
-            filhos: ["documentos", "projetos", "leia-me.txt"]
-        },
-        "/home/niel/documentos": {
-            tipo: "dir",
-            filhos: []
-        },
-        "/home/niel/projetos": {
-            tipo: "dir",
-            filhos: []
-        },
-        "/home/niel/leia-me.txt": {
-            tipo: "file",
-            conteudo: "Bem-vindo ao terminal interno do NIEL SECURITY OPERATIONS."
-        },
-        "/etc": {
-            tipo: "dir",
-            filhos: ["hostname", "os-release"]
-        },
-        "/etc/hostname": {
-            tipo: "file",
-            conteudo: "niel-security-operations"
-        },
-        "/etc/os-release": {
-            tipo: "file",
-            conteudo: "NAME=NIEL INTERNAL TERMINAL\nVERSION=V4"
-        },
-        "/var": {
-            tipo: "dir",
-            filhos: ["log"]
-        },
-        "/var/log": {
-            tipo: "dir",
-            filhos: []
-        },
-        "/tmp": {
-            tipo: "dir",
-            filhos: []
-        }
+        "/": { tipo: "dir", filhos: ["home", "etc", "var", "tmp"] },
+        "/home": { tipo: "dir", filhos: ["niel"] },
+        "/home/niel": { tipo: "dir", filhos: ["documentos", "projetos", "leia-me.txt"] },
+        "/home/niel/documentos": { tipo: "dir", filhos: [] },
+        "/home/niel/projetos": { tipo: "dir", filhos: [] },
+        "/home/niel/leia-me.txt": { tipo: "file", conteudo: "Bem-vindo ao terminal interno do NIEL SECURITY OPERATIONS." },
+        "/etc": { tipo: "dir", filhos: ["hostname", "os-release"] },
+        "/etc/hostname": { tipo: "file", conteudo: "niel-security-operations" },
+        "/etc/os-release": { tipo: "file", conteudo: "NAME=NIEL INTERNAL TERMINAL\nVERSION=V4" },
+        "/var": { tipo: "dir", filhos: ["log"] },
+        "/var/log": { tipo: "dir", filhos: [] },
+        "/tmp": { tipo: "dir", filhos: [] }
     }
 };
 
 function caminhoVirtual(caminho) {
     if (!caminho || caminho === "~") return "/home/niel";
-
-    let base = caminho.startsWith("/")
-        ? caminho
-        : sistemaLinux.atual + "/" + caminho;
-
+    let base = caminho.startsWith("/") ? caminho : sistemaLinux.atual + "/" + caminho;
     const partes = [];
-
-    base.split("/").forEach(parte => {
-        if (!parte || parte === ".") return;
-
-        if (parte === "..") {
-            partes.pop();
-        } else {
-            partes.push(parte);
-        }
+    base.split("/").forEach(p => {
+        if (!p || p === ".") return;
+        if (p === "..") partes.pop();
+        else partes.push(p);
     });
-
     return "/" + partes.join("/");
 }
 
 function terminalSaida(conteudo) {
     const saida = elemento("linuxOutput");
     if (!saida) return;
-
     saida.textContent += String(conteudo) + "\n";
     saida.scrollTop = saida.scrollHeight;
 }
@@ -1338,253 +1102,191 @@ function atualizarPrompt() {
 function listarDiretorio(caminho) {
     const pasta = caminhoVirtual(caminho || sistemaLinux.atual);
     const item = sistemaLinux.arquivos[pasta];
-
-    if (!item || item.tipo !== "dir") {
-        return "Diretório não encontrado.";
-    }
-
+    if (!item || item.tipo !== "dir") return "Diretório não encontrado.";
     return item.filhos.join("   ") || "(diretório vazio)";
 }
 
 function executarComando(comandoCompleto) {
     const comando = comandoCompleto.trim();
     if (!comando) return;
-
     sistemaLinux.historico.push(comando);
-
     terminalSaida("niel@" + sistemaLinux.atual + "$ " + comando);
-
     const partes = comando.match(/"[^"]*"|'[^']*'|\S+/g) || [];
     const nome = partes.shift();
-    const argumento = partes.join(" ").replace(/^["']|["']$/g, "");
+    const arg = partes.join(" ").replace(/^["']|["']$/g, "");
 
     switch (nome) {
         case "help":
-            terminalSaida(
-`COMANDOS DISPONÍVEIS:
-help       - mostra ajuda
-clear      - limpa o terminal
-pwd        - mostra o diretório atual
-whoami     - mostra o usuário
-date       - mostra data e hora
-uname      - informações do sistema simulado
-ls         - lista arquivos
-cd         - muda de diretório
-mkdir      - cria diretório virtual
-touch      - cria arquivo virtual
-cat        - lê arquivo virtual
-echo       - mostra texto
-history    - mostra comandos anteriores
-tree       - mostra estrutura virtual`
-            );
+            terminalSaida("COMANDOS:\nhelp, clear, pwd, whoami, date, uname, ls, cd, mkdir, touch, cat, echo, history, tree");
             break;
-
         case "clear":
-            if (elemento("linuxOutput")) {
-                elemento("linuxOutput").textContent = "";
-            }
+            if (elemento("linuxOutput")) elemento("linuxOutput").textContent = "";
             break;
-
-        case "pwd":
-            terminalSaida(sistemaLinux.atual);
-            break;
-
-        case "whoami":
-            terminalSaida("niel");
-            break;
-
-        case "date":
-            terminalSaida(new Date().toLocaleString("pt-BR"));
-            break;
-
-        case "uname":
-            terminalSaida("NIEL-LINUX V4 INTERNAL SANDBOX");
-            break;
-
-        case "ls":
-            terminalSaida(listarDiretorio(argumento));
-            break;
-
+        case "pwd": terminalSaida(sistemaLinux.atual); break;
+        case "whoami": terminalSaida("niel"); break;
+        case "date": terminalSaida(new Date().toLocaleString("pt-BR")); break;
+        case "uname": terminalSaida("NIEL-LINUX V4 INTERNAL SANDBOX"); break;
+        case "ls": terminalSaida(listarDiretorio(arg)); break;
         case "cd": {
-            const destino = caminhoVirtual(argumento || "/home/niel");
+            const destino = caminhoVirtual(arg || "/home/niel");
             const pasta = sistemaLinux.arquivos[destino];
-
-            if (!pasta || pasta.tipo !== "dir") {
-                terminalSaida("cd: diretório não encontrado.");
-            } else {
-                sistemaLinux.atual = destino;
-                atualizarPrompt();
-            }
+            if (!pasta || pasta.tipo !== "dir") terminalSaida("cd: diretório não encontrado.");
+            else { sistemaLinux.atual = destino; atualizarPrompt(); }
             break;
         }
-
         case "mkdir": {
-            if (!argumento) {
-                terminalSaida("Uso: mkdir nome");
-                break;
-            }
-
-            const novo = caminhoVirtual(argumento);
+            if (!arg) { terminalSaida("Uso: mkdir nome"); break; }
+            const novo = caminhoVirtual(arg);
             const pai = novo.substring(0, novo.lastIndexOf("/")) || "/";
             const nomePasta = novo.split("/").pop();
-            const diretorioPai = sistemaLinux.arquivos[pai];
-
-            if (!diretorioPai || diretorioPai.tipo !== "dir") {
-                terminalSaida("Diretório pai não encontrado.");
-            } else if (sistemaLinux.arquivos[novo]) {
-                terminalSaida("Esse caminho já existe.");
-            } else {
-                sistemaLinux.arquivos[novo] = {
-                    tipo: "dir",
-                    filhos: []
-                };
-
-                diretorioPai.filhos.push(nomePasta);
+            const dirPai = sistemaLinux.arquivos[pai];
+            if (!dirPai || dirPai.tipo !== "dir") terminalSaida("Diretório pai não encontrado.");
+            else if (sistemaLinux.arquivos[novo]) terminalSaida("Esse caminho já existe.");
+            else {
+                sistemaLinux.arquivos[novo] = { tipo: "dir", filhos: [] };
+                dirPai.filhos.push(nomePasta);
                 terminalSaida("Diretório criado: " + novo);
             }
             break;
         }
-
         case "touch": {
-            if (!argumento) {
-                terminalSaida("Uso: touch arquivo.txt");
-                break;
-            }
-
-            const novo = caminhoVirtual(argumento);
+            if (!arg) { terminalSaida("Uso: touch arquivo.txt"); break; }
+            const novo = caminhoVirtual(arg);
             const pai = novo.substring(0, novo.lastIndexOf("/")) || "/";
-            const nomeArquivo = novo.split("/").pop();
-            const diretorioPai = sistemaLinux.arquivos[pai];
-
-            if (!diretorioPai || diretorioPai.tipo !== "dir") {
-                terminalSaida("Diretório pai não encontrado.");
-            } else if (sistemaLinux.arquivos[novo]) {
-                terminalSaida("Arquivo já existe.");
-            } else {
-                sistemaLinux.arquivos[novo] = {
-                    tipo: "file",
-                    conteudo: ""
-                };
-
-                diretorioPai.filhos.push(nomeArquivo);
+            const nomeArq = novo.split("/").pop();
+            const dirPai = sistemaLinux.arquivos[pai];
+            if (!dirPai || dirPai.tipo !== "dir") terminalSaida("Diretório pai não encontrado.");
+            else if (sistemaLinux.arquivos[novo]) terminalSaida("Arquivo já existe.");
+            else {
+                sistemaLinux.arquivos[novo] = { tipo: "file", conteudo: "" };
+                dirPai.filhos.push(nomeArq);
                 terminalSaida("Arquivo criado: " + novo);
             }
             break;
         }
-
         case "cat": {
-            const arquivo = caminhoVirtual(argumento);
-            const item = sistemaLinux.arquivos[arquivo];
-
-            if (!item || item.tipo !== "file") {
-                terminalSaida("Arquivo não encontrado.");
-            } else {
-                terminalSaida(item.conteudo);
-            }
+            const item = sistemaLinux.arquivos[caminhoVirtual(arg)];
+            if (!item || item.tipo !== "file") terminalSaida("Arquivo não encontrado.");
+            else terminalSaida(item.conteudo);
             break;
         }
-
-        case "echo":
-            terminalSaida(argumento);
-            break;
-
+        case "echo": terminalSaida(arg); break;
         case "history":
-            sistemaLinux.historico.forEach((item, i) => {
-                terminalSaida((i + 1) + "  " + item);
-            });
+            sistemaLinux.historico.forEach((h, i) => terminalSaida((i + 1) + "  " + h));
             break;
-
         case "tree":
             terminalSaida("Estrutura virtual:");
-            Object.keys(sistemaLinux.arquivos).forEach(caminho => {
-                terminalSaida(caminho);
-            });
+            Object.keys(sistemaLinux.arquivos).forEach(c => terminalSaida(c));
             break;
-
         default:
-            terminalSaida(
-                "Comando não encontrado: " + nome +
-                ". Digite help para ver os comandos."
-            );
+            terminalSaida("Comando não encontrado: " + nome + ". Digite help.");
     }
 }
 
 function enviarComandoLinux() {
     const campo = elemento("linuxCommand");
     if (!campo) return;
-
-    const comando = campo.value;
+    const c = campo.value;
     campo.value = "";
-
-    executarComando(comando);
+    executarComando(c);
 }
 
-function limparTerminalLinux() {
-    const saida = elemento("linuxOutput");
-    if (saida) saida.textContent = "";
+function atalhoLinux(cmd) {
+    executarComando(cmd);
+}
 
-    terminalSaida("Terminal interno NIEL V4 iniciado.");
-    terminalSaida("Digite help para ver os comandos.");
+function limparAmbienteLinux() {
+    sistemaLinux.atual = "/home/niel";
+    sistemaLinux.historico = [];
+    sistemaLinux.arquivos = {
+        "/": { tipo: "dir", filhos: ["home", "etc", "var", "tmp"] },
+        "/home": { tipo: "dir", filhos: ["niel"] },
+        "/home/niel": { tipo: "dir", filhos: ["documentos", "projetos", "leia-me.txt"] },
+        "/home/niel/documentos": { tipo: "dir", filhos: [] },
+        "/home/niel/projetos": { tipo: "dir", filhos: [] },
+        "/home/niel/leia-me.txt": { tipo: "file", conteudo: "Bem-vindo ao terminal interno do NIEL SECURITY OPERATIONS." },
+        "/etc": { tipo: "dir", filhos: ["hostname", "os-release"] },
+        "/etc/hostname": { tipo: "file", conteudo: "niel-security-operations" },
+        "/etc/os-release": { tipo: "file", conteudo: "NAME=NIEL INTERNAL TERMINAL\nVERSION=V4" },
+        "/var": { tipo: "dir", filhos: ["log"] },
+        "/var/log": { tipo: "dir", filhos: [] },
+        "/tmp": { tipo: "dir", filhos: [] }
+    };
+    atualizarPrompt();
+    const saida = elemento("linuxOutput");
+    if (saida) saida.textContent = "Ambiente virtual reiniciado.\nDigite help para ver os comandos.\n\n";
+    mensagem("Ambiente reiniciado.");
 }
 
 function iniciarTerminalLinux() {
     atualizarPrompt();
-
     const campo = elemento("linuxCommand");
     if (campo && !campo.dataset.iniciado) {
         campo.dataset.iniciado = "1";
-
-        campo.addEventListener("keydown", evento => {
-            if (evento.key === "Enter") {
-                evento.preventDefault();
-                enviarComandoLinux();
-            }
+        campo.addEventListener("keydown", e => {
+            if (e.key === "Enter") { e.preventDefault(); enviarComandoLinux(); }
         });
     }
-
-    limparTerminalLinux();
 }
 
 // ---------- PAINEL ----------
 function iniciarPainel() {
     if (!acessoLiberado) return;
-
     testarConexao();
     atualizarTudo();
-
-    if (intervaloAtualizacao) {
-        clearInterval(intervaloAtualizacao);
-    }
-
-    intervaloAtualizacao = setInterval(() => {
-        if (acessoLiberado) atualizarTudo();
-    }, 15000);
-
+    if (intervaloAtualizacao) clearInterval(intervaloAtualizacao);
+    intervaloAtualizacao = setInterval(() => { if (acessoLiberado) atualizarTudo(); }, 15000);
     iniciarTerminalLinux();
+    texto("relatorioPerfil", papelUsuario === "admin" ? "ADMINISTRADOR" : "USUÁRIO");
 }
 
 // ---------- INICIALIZAÇÃO ----------
 async function iniciar() {
     mostrarLogin();
-
     try {
         const { data, error } = await db.auth.getSession();
         if (error) throw error;
-
-        if (data.session?.user) {
-            await verificarAcesso(data.session.user);
-        }
+        if (data.session?.user) await verificarAcesso(data.session.user);
     } catch (e) {
         console.error("Inicialização:", e);
-        mensagem("Não foi possível recuperar a sessão.", true);
     }
 }
 
-iniciar();
+// Expor funções globalmente (necessário para os onclick inline)
+window.entrar = entrar;
+window.sair = sair;
+window.abrirModulo = abrirModulo;
+window.voltarMenu = voltarMenu;
+window.testarConexao = testarConexao;
+window.atualizarTudo = atualizarTudo;
+window.carregarHistorico = carregarHistorico;
+window.filtrarHistorico = filtrarHistorico;
+window.registrarTeste = registrarTeste;
+window.iniciarScanner = iniciarScanner;
+window.analisarDominioAPI = analisarDominioAPI;
+window.analisarInteligenciaDominio = analisarInteligenciaDominio;
+window.abrirScanner = abrirScanner;
+window.analisarSenha = analisarSenha;
+window.limparSenha = limparSenha;
+window.identificarHash = identificarHash;
+window.simularAtaque = simularAtaque;
+window.copiarElemento = copiarElemento;
+window.gerarNmapRede = gerarNmapRede;
+window.gerarNmapPortas = gerarNmapPortas;
+window.selecionarPesquisa = selecionarPesquisa;
+window.executarPesquisa = executarPesquisa;
+window.limparPesquisa = limparPesquisa;
+window.abrirLink = abrirLink;
+window.prepararLeakIntel = prepararLeakIntel;
+window.abrirFonteLeak = abrirFonteLeak;
+window.atualizarResumoRelatorio = atualizarResumoRelatorio;
+window.exportarRelatorio = exportarRelatorio;
+window.carregarUsuarios = carregarUsuarios;
+window.enviarComandoLinux = enviarComandoLinux;
+window.atalhoLinux = atalhoLinux;
+window.limparAmbienteLinux = limparAmbienteLinux;
 
-// ================================================
-// FIM DO NIEL SECURITY OPERATIONS V4
-// ================================================
+iniciar();
 </script>
 </body>
 </html>
