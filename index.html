@@ -186,8 +186,15 @@ a{color:#00ff99;overflow-wrap:anywhere}
   <button class="module-button" onclick="abrirModulo('relatorios')"><span class="module-icon">📑</span><span class="module-name">RELATÓRIOS DE SEGURANÇA</span><span class="module-description">Exportar registros em TXT e JSON</span></button>
   <button class="module-button admin-module" onclick="abrirModulo('usuarios')"><span class="module-icon">👥</span><span class="module-name">GESTÃO DE USUÁRIOS</span><span class="module-description">Consultar perfis e permissões · Admin</span></button>
   <button class="module-button" onclick="abrirModulo('linux')"><span class="module-icon">🐧</span><span class="module-name">NIEL LINUX TERMINAL</span><span class="module-description">Terminal interno e conexão Linux real</span></button>
+  
+  <!-- NOVO BOTÃO RED TEAM AQUI -->
+  <button class="module-button admin-module" onclick="abrirModulo('redteam')">
+   <span class="module-icon">☠️</span>
+   <span class="module-name">RED TEAM OPERATIONS</span>
+   <span class="module-description">Simulação de operações ofensivas · Admin</span>
+  </button>
  </div>
- <p class="menu-status">● SISTEMA V4.0 | 11 MÓDULOS</p>
+ <p class="menu-status">● SISTEMA V4.0 | 12 MÓDULOS</p>
 </div>
 
 <!-- MÓDULO CONTROLE -->
@@ -398,39 +405,52 @@ Digite help para ver os comandos disponíveis.
   </div>
   <button class="danger" onclick="limparAmbienteLinux()">REINICIAR AMBIENTE VIRTUAL</button>
  </div>
+</section>
+
+<!-- NOVO MÓDULO RED TEAM -->
+<section class="module-view" id="modulo-redteam">
+ <button class="module-back" onclick="voltarMenu()">← VOLTAR AO MENU</button>
+ <h2 class="module-title" style="color:#ff003c; text-shadow:0 0 10px #ff003c80;">☠️ RED TEAM OPERATIONS</h2>
  
- <!-- RED TEAM HUD AQUI -->
  <div class="card redteam-card">
   <h3 style="text-align:center; color:#ff003c; text-shadow:0 0 10px #ff003c80; letter-spacing:2px;">
-    ☠️ RED TEAM OPERATIONS
+    CENTRAL DE COMANDO OFENSIVA
   </h3>
-  
+  <p class="note" style="text-align:center;">Ambiente de simulação tática. Nenhuma ação real é executada contra alvos externos.</p>
+
   <div class="hud-redteam">
     <div class="anel-vermelho tracejado"></div>
     <div class="anel-vermelho interno"></div>
-    
     <div class="mira-cruz">
       <div class="linha-h"></div>
       <div class="linha-v"></div>
     </div>
-
     <div class="hud-centro">
-      <span class="status-alvo"></span>
+      <span class="status-alvo" id="redteam-alvo-indicador"></span>
       <strong id="redteam-status">STAND-BY</strong>
-      <p>Nenhum alvo engajado<br>Aguardando autorização</p>
+      <p id="redteam-log">Nenhum alvo engajado<br>Aguardando autorização</p>
     </div>
   </div>
 
-  <div class="redteam-controls">
-    <button class="danger" onclick="ativarRedTeam()">🔴 INICIAR OPERAÇÃO</button>
-    <button class="secondary" onclick="resetRedTeam()">↺ RESETAR</button>
+  <div style="margin-top: 20px; width:100%;">
+    <label class="tool-label">ALVO AUTORIZADO (IP ou Domínio)</label>
+    <input id="redteamAlvo" placeholder="Ex: 192.168.1.10 ou teste.local" maxlength="100">
+    
+    <label class="authorized">
+      <input type="checkbox" id="redteamAutorizacao"> 
+      Confirmo que tenho autorização formal por escrito para simular operações contra este alvo.
+    </label>
+    
+    <div class="redteam-controls">
+      <button class="danger" onclick="iniciarOperacaoRedTeam()">🔴 INICIAR ENGAJAMENTO</button>
+      <button class="secondary" onclick="resetRedTeam()">↺ RESETAR HUD</button>
+    </div>
   </div>
 
-  <p class="note" style="text-align:center; color:#663333; margin-top:15px;">
-    ⚠️ Módulo ofensivo. Use apenas em ambientes controlados e com autorização formal.
-  </p>
+  <div class="tool-output" id="redteamOutput" style="color: #ff003c; border-color: #5a0010; background: #0a0000; width:100%;">
+    [SISTEMA] Aguardando parâmetros de operação...
+  </div>
  </div>
- 
 </section>
 
 <footer>
@@ -530,7 +550,7 @@ function ehAdmin() { return papelUsuario === "admin"; }
 // ---------- NAVEGAÇÃO ----------
 function abrirModulo(nome) {
     if (!acessoLiberado) { mensagem("Faça login para acessar o painel.", true); return; }
-    const restritos = ["scanner", "nmap", "leakintel", "usuarios"];
+    const restritos = ["scanner", "nmap", "leakintel", "usuarios", "redteam"];
     if (restritos.includes(nome) && !ehAdmin()) {
         mensagem("Este módulo está disponível apenas para administradores.", true);
         return;
@@ -662,7 +682,6 @@ async function testarConexao() {
     }
 }
 
-// Correção: Função genérica renomeada para evitar conflito com a do formulário
 async function registrarLog(tipo, alvo, resultado) {
     if (!acessoLiberado) return;
     try {
@@ -700,7 +719,7 @@ async function carregarHistorico() {
         if (error) throw error;
         registros = data || [];
         renderizarHistorico(registros);
-        atualizarResumoRelatorio(); // Atualiza o contador se estiver na tela
+        atualizarResumoRelatorio();
     } catch (e) { mostrarErro(e); }
 }
 
@@ -779,7 +798,6 @@ async function registrarAtividade() {
     }
     if (botao) botao.disabled = true;
     try {
-        // Chama a função genérica corrigida (registrarLog)
         await registrarLog(nome, evento, "Registrado via painel");
         if (msg) { msg.textContent = "Atividade registrada!"; msg.style.color = "#00ff99"; }
         elemento("nomeTeste").value = "";
@@ -1068,7 +1086,7 @@ function exportarRelatorio(formato = "txt") {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url; a.download = `niel-relatorio-${Date.now()}.${ext}`;
-    document.body.appendChild(a); // Correção: garante suporte em todos os navegadores
+    document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
@@ -1236,13 +1254,13 @@ function enviarComandoLinux() {
     const c = campo.value;
     campo.value = "";
     executarComando(c);
-    campo.focus(); // Correção: mantém o teclado aberto no celular
+    campo.focus();
 }
 
 function atalhoLinux(cmd) {
     executarComando(cmd);
     const campo = elemento("linuxCommand");
-    if (campo) campo.focus(); // Correção: foca o input após clicar no atalho
+    if (campo) campo.focus();
 }
 
 function limparAmbienteLinux() {
@@ -1280,42 +1298,89 @@ function iniciarTerminalLinux() {
 }
 
 // ================================================
-// RED TEAM HUD LOGIC
+// MÓDULO RED TEAM OPERATIONS (SIMULAÇÃO)
 // ================================================
-function ativarRedTeam() {
-    const status = elemento("redteam-status");
-    const alvo = document.querySelector(".status-alvo");
-    if (!status) return;
 
-    status.textContent = "ENGAGED";
-    status.style.color = "#00ff99";
-    status.style.textShadow = "0 0 15px #00ff99";
+async function iniciarOperacaoRedTeam() {
+    if (!ehAdmin()) return mensagem("Acesso restrito a administradores.", true);
     
-    if (alvo) {
-        alvo.style.background = "#00ff99";
-        alvo.style.boxShadow = "0 0 20px #00ff99";
+    const alvo = valor("redteamAlvo");
+    const autorizado = elemento("redteamAutorizacao")?.checked;
+    const statusEl = elemento("redteam-status");
+    const logEl = elemento("redteam-log");
+    const outputEl = elemento("redteamOutput");
+    const indicador = elemento("redteam-alvo-indicador");
+
+    if (!alvo) return mensagem("Informe um alvo válido.", true);
+    if (!autorizado) return mensagem("Você precisa confirmar a autorização.", true);
+
+    // Muda o estado visual do HUD
+    statusEl.textContent = "ENGAGED";
+    statusEl.style.color = "#00ff99";
+    statusEl.style.textShadow = "0 0 15px #00ff99";
+    
+    if (indicador) {
+        indicador.style.background = "#00ff99";
+        indicador.style.boxShadow = "0 0 20px #00ff99";
+        indicador.style.animation = "pulsarRed 0.6s infinite"; // Acelera a pulsação
     }
+    
+    if (logEl) logEl.innerHTML = `Alvo: ${alvo}<br>Status: Ativo`;
     
     const hud = document.querySelector(".hud-redteam");
     if (hud) hud.style.boxShadow = "inset 0 0 30px #00ff9930, 0 0 30px #00ff9950";
-    
-    mensagem("⚠️ RED TEAM: Operação iniciada. Alvo engajado.", true);
+
+    // Simulação de logs táticos
+    if (outputEl) {
+        outputEl.innerHTML = `[INICIANDO] Operação contra ${alvo}...<br>`;
+        
+        await new Promise(r => setTimeout(r, 800));
+        
+        outputEl.innerHTML += `[RECON] Coletando informações públicas...<br>`;
+        
+        await new Promise(r => setTimeout(r, 1000));
+        
+        outputEl.innerHTML += `[SCAN] Mapeando superfície de ataque...<br>`;
+        
+        await new Promise(r => setTimeout(r, 1200));
+        
+        outputEl.innerHTML += `[EXPLOIT] Testando vetores simulados...<br>`;
+        
+        await new Promise(r => setTimeout(r, 1200));
+        
+        outputEl.innerHTML += `[SUCESSO] Engajamento simulado concluído.<br>`;
+        outputEl.innerHTML += `⚠️ LEMBRETE: Este é um ambiente educacional. Nenhuma ação real foi tomada no alvo.`;
+        
+        // Registra no banco de dados
+        registrarLog("Red Team", alvo, "Simulação de engajamento concluída").catch(e => console.warn(e));
+    }
 }
 
 function resetRedTeam() {
-    const status = elemento("redteam-status");
-    const alvo = document.querySelector(".status-alvo");
-    if (!status) return;
+    const statusEl = elemento("redteam-status");
+    const logEl = elemento("redteam-log");
+    const outputEl = elemento("redteamOutput");
+    const indicador = elemento("redteam-alvo-indicador");
+    const campoAlvo = elemento("redteamAlvo");
+    const checkAutorizacao = elemento("redteamAutorizacao");
 
-    status.textContent = "STAND-BY";
-    status.style.color = "#ff003c";
-    status.style.textShadow = "0 0 10px #ff003c";
+    if (!statusEl) return;
+
+    statusEl.textContent = "STAND-BY";
+    statusEl.style.color = "#ff003c";
+    statusEl.style.textShadow = "0 0 10px #ff003c";
     
-    if (alvo) {
-        alvo.style.background = "#ff003c";
-        alvo.style.boxShadow = "0 0 15px #ff003c";
+    if (indicador) {
+        indicador.style.background = "#ff003c";
+        indicador.style.boxShadow = "0 0 15px #ff003c";
+        indicador.style.animation = "pulsarRed 1.2s infinite"; // Volta a pulsação normal
     }
     
+    if (logEl) logEl.innerHTML = "Nenhum alvo engajado<br>Aguardando autorização";
+    if (outputEl) outputEl.innerHTML = "[SISTEMA] Aguardando parâmetros de operação...";
+    if (campoAlvo) campoAlvo.value = "";
+    if (checkAutorizacao) checkAutorizacao.checked = false;
+
     const hud = document.querySelector(".hud-redteam");
     if (hud) hud.style.boxShadow = "inset 0 0 30px #ff003c30, 0 0 20px #ff003c20";
     
@@ -1348,7 +1413,7 @@ async function iniciar() {
     }
 }
 
-// Expor funções globalmente (necessário para os onclick inline)
+// Expor funções globalmente
 window.entrar = entrar;
 window.sair = sair;
 window.abrirModulo = abrirModulo;
@@ -1381,7 +1446,7 @@ window.carregarUsuarios = carregarUsuarios;
 window.enviarComandoLinux = enviarComandoLinux;
 window.atalhoLinux = atalhoLinux;
 window.limparAmbienteLinux = limparAmbienteLinux;
-window.ativarRedTeam = ativarRedTeam;
+window.iniciarOperacaoRedTeam = iniciarOperacaoRedTeam;
 window.resetRedTeam = resetRedTeam;
 
 iniciar();
